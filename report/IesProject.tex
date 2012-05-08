@@ -1,0 +1,97 @@
+\documentclass[parskip,
+			oneside,
+			%longdoc,
+			10pt,
+			noheadingspace,
+			accentcolor=tud1d,
+			bigchapter,
+			%draft,
+			colorback]{tudreport}
+
+%% Spracheinstellungen
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+\usepackage{microtype} % optischer Randausgleich bei pdflatex mit Zeichendehnung
+
+%% Grafikeinstellungen
+\usepackage{float} % u.a. genaue Plazierung von Gleitobjekten mit H
+\usepackage{wrapfig}
+\addto\captionsngerman{%
+  \renewcommand{\figurename}{Abb.}%
+}
+
+%% Tabelleneinstellungen
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{tabularx}
+
+%% Mathematik
+\usepackage{amsmath}
+\usepackage{nicefrac}
+\usepackage{icomma}
+
+%% sonstige Einstellungen
+\usepackage{paralist}% erweiterte Listenumgebung (z.B. compactitem)
+\usepackage{textcomp} % verschiedene Symbole
+\usepackage{hyperref}
+\renewcommand\plparsep{1ex}
+\usepackage{enumerate}
+
+\usepackage[printonlyused]{acronym}
+
+\usepackage[fixlanguage]{babelbib}
+\selectbiblanguage{german}
+
+
+\title{Design of an Accelerated Event-based Server}
+\subtitle{Projektseminar-Arbeit vorgelegt von Peter Schuster}
+\subsubtitle{Betreuer: Dipl.-Ing. Boris Traskov\\
+			 Beginn: 02.05.2012 \textbar\ Abgabe: 31.12.2011\\
+			 Institut für Datentechnik\hfill\textbar\hfill FG Integrierte Elektronische Systeme \hfill\textbar\hfill Prof.\,Dr.-Ing.\, Klaus Hofmann}
+\setinstitutionlogo{ies-logo.pdf}
+\institution{Institut für Datentechnik\\FG Integrierte Elektronische Systeme \\Prof. Dr.-Ing. Klaus Hofmann}
+%\settitlepicture{images/spartan}
+\begin{document}
+
+%% Titel %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\maketitle
+\cleardoublepage
+
+%% Vorgeplnkel %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{empty}
+%\pagenumbering{none}
+\pagenumbering{arabic}
+
+\tableofcontents
+
+\newpage
+\phantomsection %notwendig, damit Link nicht unterhalb der Überschrift zeigt
+\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+\listoffigures
+
+\phantomsection
+\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis} %Eintrag im Inhaltsverzeichnis
+\begin{acronym}[FPGA]
+ \acro{FPGA}{Field Programmable Gate Array}
+\end{acronym}
+
+%% Hauptteil %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{headings}
+
+
+\include{einleitung}
+
+%% Anhang %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+\clearpage
+% \nocite{*}
+%\newpage %neue Seite, damit Link auf Seitenanfang zeigt
+%\phantomsection %notwendig, damit Link nicht unterhalb der Überschrift zeigt
+\addcontentsline{toc}{chapter}{Literaturverzeichnis} %Eintrag im Inhaltsverzeichnis
+\bibliographystyle{plain}
+\bibliography{literaturverzeichnis}
+
+
+\end{document}

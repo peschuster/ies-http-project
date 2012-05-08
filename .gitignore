@@ -1,3 +1,4 @@
+# LaTex
 *.aux
 *.bbl
 *.blg
@@ -25,3 +26,4 @@
 *.maf
 *.mtc
 *.mtc0
+report/IesProject.pdf
