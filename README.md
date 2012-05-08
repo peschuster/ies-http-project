@@ -1,4 +1,7 @@
-ies-project-ebs
+IES Project Seminar: Evend Based Server
 ===============
 
- IES Project Seminar: Evend Based Server
+
+## Structure
+
+`report/` - Project report (LaTeX)
