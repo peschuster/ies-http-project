@@ -39,7 +39,9 @@
 \renewcommand\plparsep{1ex}
 \usepackage{enumerate}
 
-\usepackage[printonlyused]{acronym}
+\usepackage[toc]{glossaries}
+\usepackage{makeidx}
+\makeindex
 
 \usepackage[fixlanguage]{babelbib}
 \selectbiblanguage{german}
@@ -71,11 +73,10 @@
 \addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
 \listoffigures
 
-\phantomsection
-\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis} %Eintrag im Inhaltsverzeichnis
-\begin{acronym}[FPGA]
- \acro{FPGA}{Field Programmable Gate Array}
-\end{acronym}
+
+% include glossary
+\include{glossary}
+\makeglossaries
 
 %% Hauptteil %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagestyle{headings}
@@ -85,6 +86,10 @@
 
 %% Anhang %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
+
+\clearpage
+\printglossaries
+
 \clearpage
 % \nocite{*}
 %\newpage %neue Seite, damit Link auf Seitenanfang zeigt
