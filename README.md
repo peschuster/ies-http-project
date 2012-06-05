@@ -32,3 +32,7 @@ IES Project Seminar: Evend Based Server
 **Duration**: 1-2 weeks  
 **Start**: 01.08.2012  
 **End**: 10.08.2012
+
+#### 4. Project presentation
+
+**Contemplated date**: 6.-20.09.2012
