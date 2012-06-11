@@ -14,11 +14,11 @@ NormalPos.top=26
 NormalPos.right=1242
 NormalPos.bottom=730
 Class=LaTeXView
-Document=IesProject.tex
+Document=einleitung.tex
 
 [Frame0_View0,0]
 TopLine=0
-Cursor=0
+Cursor=691
 
 [Frame1]
 Flags=0
@@ -32,11 +32,11 @@ NormalPos.top=26
 NormalPos.right=1242
 NormalPos.bottom=730
 Class=LaTeXView
-Document=einleitung.tex
+Document=IesProject.tex
 
 [Frame1_View0,0]
-TopLine=0
-Cursor=559
+TopLine=21
+Cursor=1994
 
 [Frame2]
 Flags=0
