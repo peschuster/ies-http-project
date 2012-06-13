@@ -1,0 +1,1 @@
+xmd -tcl ../data/genace.tcl -hw ../implementation/download.bit -elf ../microblaze_0/code/iic_ddr2.elf -ace iic_ddr2.ace -board ml505 -target mdm
