@@ -39,19 +39,21 @@
 \renewcommand\plparsep{1ex}
 \usepackage{enumerate}
 
-\usepackage[printonlyused]{acronym}
+\usepackage[toc]{glossaries}
+\usepackage{makeidx}
+\makeindex
 
 \usepackage[fixlanguage]{babelbib}
 \selectbiblanguage{german}
 
 
 \title{Design of an Accelerated Event-based Server}
-\subtitle{Projektseminar-Arbeit vorgelegt von Peter Schuster}
-\subsubtitle{Betreuer: Dipl.-Ing. Boris Traskov\\
-			 Beginn: 02.05.2012 \textbar\ Abgabe: 31.12.2011\\
-			 Institut für Datentechnik\hfill\textbar\hfill FG Integrierte Elektronische Systeme \hfill\textbar\hfill Prof.\,Dr.-Ing.\, Klaus Hofmann}
+\subtitle{Project Seminar Report by Peter Schuster}
+\subsubtitle{Advisor: Dipl.-Ing. Boris Traskov\\
+			 Start: 02.05.2012 \textbar\ Abgabe: 31.12.2011\\
+			 Institut of Computer Engineering\hfill\textbar\hfill Integrierte Elektronische Systeme Lab \hfill\textbar\hfill Prof.\,Dr.-Ing.\, Klaus Hofmann}
 \setinstitutionlogo{ies-logo.pdf}
-\institution{Institut für Datentechnik\\FG Integrierte Elektronische Systeme \\Prof. Dr.-Ing. Klaus Hofmann}
+\institution{Institut of Computer Engineering\\Integrierte Elektronische Systeme Lab\\Prof. Dr.-Ing. Klaus Hofmann}
 %\settitlepicture{images/spartan}
 \begin{document}
 
@@ -68,14 +70,13 @@
 
 \newpage
 \phantomsection %notwendig, damit Link nicht unterhalb der Überschrift zeigt
-\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+\addcontentsline{toc}{chapter}{List of figures}
 \listoffigures
 
-\phantomsection
-\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis} %Eintrag im Inhaltsverzeichnis
-\begin{acronym}[FPGA]
- \acro{FPGA}{Field Programmable Gate Array}
-\end{acronym}
+
+% include glossary
+\include{glossary}
+\makeglossaries
 
 %% Hauptteil %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagestyle{headings}
@@ -85,11 +86,15 @@
 
 %% Anhang %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
+
+\clearpage
+\printglossaries
+
 \clearpage
 % \nocite{*}
 %\newpage %neue Seite, damit Link auf Seitenanfang zeigt
 %\phantomsection %notwendig, damit Link nicht unterhalb der Überschrift zeigt
-\addcontentsline{toc}{chapter}{Literaturverzeichnis} %Eintrag im Inhaltsverzeichnis
+\addcontentsline{toc}{chapter}{Literature} %Eintrag im Inhaltsverzeichnis
 \bibliographystyle{plain}
 \bibliography{literaturverzeichnis}
 

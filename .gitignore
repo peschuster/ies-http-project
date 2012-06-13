@@ -62,10 +62,8 @@ report/IesProject.pdf
 /projects/*/pcores
 /projects/*/XpsGuiSessionLock
 /projects/*/SDK/SDK_Export
-*.log
 *.svf
 *.scr
-*.cmd
 *.bak
 *~
 *.elf
