@@ -74,7 +74,7 @@ implementation/system_leds_positions_wrapper.ngc \
 implementation/system_push_buttons_5bit_wrapper.ngc \
 implementation/system_dip_switches_8bit_wrapper.ngc \
 implementation/system_iic_eeprom_wrapper.ngc \
-implementation/system_sram_wrapper.ngc \
+implementation/system_sram_flash_wrapper.ngc \
 implementation/system_ddr2_sdram_wrapper.ngc \
 implementation/system_sysace_compactflash_wrapper.ngc \
 implementation/system_xps_timer_0_wrapper.ngc \
