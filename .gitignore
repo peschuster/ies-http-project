@@ -27,3 +27,46 @@
 *.mtc
 *.mtc0
 report/IesProject.pdf
+
+/external
+/temp
+/sdk-workspace/.metadata
+/sdk-workspace/*/Debug/
+!/sdk-workspace/*/Debug/makefile
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.tar.bz
+*.tar.gz
+*.zip
+
+# Xilinx
+/projects/*test/*
+/projects/test*/*
+/projects/*/ppc405_?
+/projects/*/implementation
+/projects/*/synthesis
+/projects/*/hdl
+/projects/*/report
+/projects/*/blkdiagram
+/projects/*/__xps
+/projects/*/pcores
+/projects/*/XpsGuiSessionLock
+/projects/*/SDK/SDK_Export
+*.log
+*.svf
+*.scr
+*.cmd
+*.bak
+*~
+*.elf
+*.ace
