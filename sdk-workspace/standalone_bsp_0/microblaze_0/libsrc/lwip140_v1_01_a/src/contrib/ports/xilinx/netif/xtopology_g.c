@@ -2,10 +2,10 @@
 
 struct xtopology_t xtopology[] = {
 	{
-		0x81000000,
-		xemac_type_xps_emaclite,
+		0x82000000,
+		xemac_type_xps_ll_temac,
 		0x81800000,
-		0,
+		-1,
 		0x0,
 		0x0,
 	},
