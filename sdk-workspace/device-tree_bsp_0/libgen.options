@@ -1,0 +1,3 @@
+PROCESSOR=microblaze_0
+REPOSITORIES=-lp C:/developuni/ies_project/external/device-tree -lp C:/developuni/ies_project/tools/u-boot-bsp-latest/uboot
+HWSPEC=../wopcie_hw_platform/system.xml
