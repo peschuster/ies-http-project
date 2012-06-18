@@ -1,20 +1,53 @@
 \chapter{Introduction}
 
+Context of this project seminar is ongoing research for high performance network interface cards at the Integrated Electronics Systems Labs by my supervisor Boris Traskov. 
+The ability to provide network interfaces at low cost, becomes especially relevant in the future "`internet of things"' when all devices are connected amongst each other.
+
 Das Projektseminar steht im Kontext der Forschung an High-Performance Netzwerkkarten zur Übertragung von Daten mit bis zu 40 GB/s. TCP Offload Engine
 
 \section{Objective}
 
-Ziel des Projektseminars ist es einen \gls{fpga} zu programmieren um über eine Ethernet-Schnittstelle Daten zwischen dem Evaluationsboard und einem weiteren Gerät 
-auszutauschen und Lasttests durchzuführen.
+Objective of this project seminar was to setup a hardware system on a \gls{fpga} utilizing IP cores, configure and compile Linux for the previous specified hardware, install a nginx Web server on top of Linux and do some benchmarks, to prove that the setup system is capable to utilize the full Gigabit Ethernet interface without breaking down on attempted \gls{dos} attacks.
 
 \section{Environment}
 
-Für die Versuche, Messungen und Tests wird das Evaluationsboard ML505 von XILINX verwendet. Die Programmierung des \gls{fpga} erfolgt über das \textit{Xilinx ISE Studio}, bzw. \textit{Xilinx SDK}.
+All development, measurements and tests were done on the XILINX XUPV5-LX110T evaluation board.
+
+The XILINX XUP5-LX110T evaluation board is a modified version of the ML505 board for universities. Only difference between the two boards is a larger \gls{fpga} chip on the XUP5-LX110T, containing the Virtex-5 XC5VLX110T with 17,280 slices and four in hardware implemented Ethernet MACs\footnote{MAC: Medium Access Control}, where as the ML505 boards contains only the XC5VLX50 with 7,200 slices and no in hardware implemented Ethernet MACs.
+
+The initial hardware design for the \gls{fpga} was build using the \textit{\gls{xps}}. Further modifications to the hardware system were done modifying the respective configurations files.
+
+Software development was done using the \textit{Xilinx SDK}, which provides mechanisms for generating device drivers and header files from the \textit{\gls{mhs}} file, created by the \textit{\gls{xps}}.
 
 \section{Context}
 
+Before going into detail of the implementation and evaluation of measurements were going to take a look at the broader context of the project.
+
+In our environment an increasing amount of data is created by any and every device. Furthermore, the amount of transferred data over networks (i.e. the internet) increases dramatically). This generates a demand for high speed network interfaces, on the one hand and high performance, low cost full stack network implementations on the other hand. 
+
+Service providers and back-end nodes need to be able to transfer large amounts of data to multiple receivers concurrently, requiring high speed network interfaces. To circumvent - potentially unnecessary - \gls{cpu} utilization, much of the work can be "`offloaded"' to a network interface, providing a higher level of abstraction to the transfer of data, than current state of the art.
+
+In the future scenario with all and every device being connected to each other, often described as the "`internet of things"', an increasing demand for simple to implement network interfaces, not requiring the present of an operating system or high performance processors, is created. 
 
 \chapter{Implementation}
+
+\section{The Hardware System}
+
+A \gls{fpga} consists of a large number of slices. In the Xilinx Virtex-5 \gls{fpga} family every slices contains four \gls{lut} and two flip-flops. The \gls{lut}s define how the flip-flops and slices are connected to each other and can be programmed with a so called bitstream. Therefore a \gls{fpga} can be programmed with any  hardware layout, containing logical gates and flip-flops, with-out the expensive and time-consuming process of producing electronic chips from silicon wafers.
+
+Additionally to these slices a \gls{fpga} often comes with already implemented hardware cores, which can be used by a system implemented using the slices of the \gls{fpga}. This hardware cores can not be "`overriden"' and might contain any kind of system or device, like access controllers for external hardware or full processors.
+
+In this project seminar a \gls{soc} was build using predefined IP cores for the cpu and additional devices.
+
+The used XC5VLX110T does not have a build-in processor like the XC5VFX series. Therefore a single core \textit{Microblaze} processor was implemented. The \textit{Microblaze} processor is a proprietary processor, developed by Xilinx for their \gls{fpga} families, follwing the Harvard architecture with seperate data and instruction memory. A \textit{Microblaze} processor was choosen before the popular \textit{ARM} processors, because it is part of the Xilinx development kits and can be used without any additional costs. Besides for the planned system no signifcant drawbacks of the \textit{Microblaze} processor compared to the \textit{ARM} processor family are known.
+
+The connection between the \textit{Microblaze} processor and other devices on the chip is realized using the \gls{plb} invented by IBM as part of the \textit{CoreConnect} bus system.
+
+The XUP5-LX110T board comes with a large 256 MB DDR2 memory which was used as main memory for the system. For non-volatile storage of the \gls{fpga} configuration a 32 Megabyte flash memory chip was used, which is also part of the evaluation board.
+
+\section{Firmware}
+
+
 
 \chapter{Evaluation}
 
