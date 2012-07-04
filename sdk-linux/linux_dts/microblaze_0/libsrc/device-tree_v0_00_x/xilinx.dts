@@ -91,7 +91,7 @@
 			xlnx,dynamic-bus-sizing = <0x1>;
 			xlnx,ecc-use-ce-exception = <0x0>;
 			xlnx,edge-is-positive = <0x1>;
-			xlnx,endianness = <0x0>;
+			xlnx,endianness = <0x1>;
 			xlnx,family = "virtex5";
 			xlnx,fault-tolerant = <0x0>;
 			xlnx,fpu-exception = <0x0>;
@@ -188,7 +188,7 @@
 				interrupt-parent = <&xps_intc_0>;
 				interrupts = < 3 2 >;
 				llink-connected = <&PIM2>;
-				local-mac-address = [ 00 0a 35 e1 d1 00 ];
+				local-mac-address = [ 00 0a 35 97 3f 00 ];
 				reg = < 0x87000000 0x40 >;
 				xlnx,avb = <0x0>;
 				xlnx,bus2core-clk-ratio = <0x1>;
