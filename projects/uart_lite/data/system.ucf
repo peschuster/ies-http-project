@@ -1,4 +1,8 @@
 #  Virtex 5 ML505 Evaluation Platform
+Net fpga_0_RS232_Uart_1_RX_pin LOC = AG15  |  IOSTANDARD=LVCMOS33;
+Net fpga_0_RS232_Uart_1_TX_pin LOC = AG20  |  IOSTANDARD=LVCMOS33;
+Net fpga_0_RS232_Uart_2_RX_pin LOC=G10  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_RS232_Uart_2_TX_pin LOC=F10  |  IOSTANDARD = LVCMOS33;
 Net fpga_0_LEDs_8Bit_GPIO_IO_pin<0> LOC = AE24  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
 Net fpga_0_LEDs_8Bit_GPIO_IO_pin<1> LOC = AD24  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
 Net fpga_0_LEDs_8Bit_GPIO_IO_pin<2> LOC = AD25  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
@@ -143,8 +147,34 @@ Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<4> LOC=Y29  |  IOSTANDARD = DIFF_SSTL18_II;
 Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<5> LOC=E27  |  IOSTANDARD = DIFF_SSTL18_II;
 Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<6> LOC=G28  |  IOSTANDARD = DIFF_SSTL18_II;
 Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<7> LOC=H27  |  IOSTANDARD = DIFF_SSTL18_II;
-Net RS232_Uart_1_RX_pin LOC = AG15  |  IOSTANDARD=LVCMOS33;
-Net RS232_Uart_1_TX_pin LOC = AG20  |  IOSTANDARD=LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPA_pin<0> LOC=G5  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPA_pin<1> LOC=N7  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPA_pin<2> LOC=N5  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPA_pin<3> LOC=P5  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPA_pin<4> LOC=R6  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPA_pin<5> LOC=M6  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPA_pin<6> LOC=L6  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_CLK_pin LOC=AH17  |  IOSTANDARD = LVCMOS33  |  PERIOD = 30000 ps;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPIRQ_pin LOC=M7  |  IOSTANDARD = LVCMOS33  |  TIG;
+Net fpga_0_SysACE_CompactFlash_SysACE_CEN_pin LOC=M5  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_OEN_pin LOC=N8  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_WEN_pin LOC=R9  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<0> LOC=P9  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<1> LOC=T8  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<2> LOC=J7  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<3> LOC=H7  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<4> LOC=R7  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<5> LOC=U7  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<6> LOC=P7  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<7> LOC=P6  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<8> LOC=R8  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<9> LOC=L5  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<10> LOC=L4  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<11> LOC=K6  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<12> LOC=J5  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<13> LOC=T6  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<14> LOC=K7  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_SysACE_CompactFlash_SysACE_MPD_pin<15> LOC=J6  |  IOSTANDARD = LVCMOS33;
 Net fpga_0_Hard_Ethernet_MAC_TemacPhy_RST_n_pin LOC=J14  |  IOSTANDARD = LVCMOS25  |  TIG;
 Net fpga_0_Hard_Ethernet_MAC_MII_TX_CLK_0_pin LOC = K17  |  IOSTANDARD = LVCMOS25;
 Net fpga_0_Hard_Ethernet_MAC_GMII_TXD_0_pin<0> LOC=AF11  |  IOSTANDARD =LVDCI_33;
@@ -424,9 +454,6 @@ INST "*gmii0*ideler"     IDELAY_VALUE = 35;
 
 INST "*gmii_rxc0_delay"  IDELAY_VALUE = 0;
 
-INST "Hard_Ethernet_MAC/*gen_instantiate_idelayctrls[0].idelayctrl0"   LOC = "IDELAYCTRL_X0Y4";
-INST "Hard_Ethernet_MAC/*gen_instantiate_idelayctrls[1].idelayctrl0"   LOC = "IDELAYCTRL_X1Y5";
-
 # PHY spec: 2.5ns setup time, 0.5ns hold time
 # Assumes equal length board traces
 
@@ -465,3 +492,5 @@ TIMESPEC "TS_RX_CLIENT_CLK0_2_REF_CLK"  = FROM clk_client_rx0 TO REFCLK 5000 ps 
 
 net "*/hrst*" TIG;
 net "*/V5HARD_SYS.I_TEMAC/speed_vector_0_i*" TIG;
+
+

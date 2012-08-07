@@ -17,14 +17,6 @@ Net fpga_0_Push_Buttons_5Bit_GPIO_IO_pin<1> LOC = AJ7  |  IOSTANDARD=LVCMOS33  |
 Net fpga_0_Push_Buttons_5Bit_GPIO_IO_pin<2> LOC = V8  |  IOSTANDARD=LVCMOS33  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
 Net fpga_0_Push_Buttons_5Bit_GPIO_IO_pin<3> LOC = AK7  |  IOSTANDARD=LVCMOS33  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
 Net fpga_0_Push_Buttons_5Bit_GPIO_IO_pin<4> LOC = U8  |  IOSTANDARD=LVCMOS33  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
-Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<0> LOC=U25  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
-Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<1> LOC=AG27  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
-Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<2> LOC=AF25  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
-Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<3> LOC=AF26  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
-Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<4> LOC=AE27  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
-Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<5> LOC=AE26  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
-Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<6> LOC=AC25  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
-Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<7> LOC=AC24  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
 Net fpga_0_IIC_EEPROM_Sda_pin LOC=F8  |  SLEW = SLOW  |  DRIVE = 6  |  IOSTANDARD=LVCMOS33;
 Net fpga_0_IIC_EEPROM_Scl_pin LOC=F9  |  SLEW = SLOW  |  DRIVE = 6  |  IOSTANDARD=LVCMOS33;
 Net fpga_0_DDR2_SDRAM_DDR2_Clk_pin<0> LOC=AK29  |  IOSTANDARD = DIFF_SSTL18_II;
@@ -143,8 +135,8 @@ Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<4> LOC=Y29  |  IOSTANDARD = DIFF_SSTL18_II;
 Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<5> LOC=E27  |  IOSTANDARD = DIFF_SSTL18_II;
 Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<6> LOC=G28  |  IOSTANDARD = DIFF_SSTL18_II;
 Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<7> LOC=H27  |  IOSTANDARD = DIFF_SSTL18_II;
-Net RS232_Uart_1_RX_pin LOC = AG15  |  IOSTANDARD=LVCMOS33;
-Net RS232_Uart_1_TX_pin LOC = AG20  |  IOSTANDARD=LVCMOS33;
+Net fpga_0_RS232_Uart_1_sin_pin LOC = AG15  |  IOSTANDARD=LVCMOS33;
+Net fpga_0_RS232_Uart_1_sout_pin LOC = AG20  |  IOSTANDARD=LVCMOS33;
 Net fpga_0_Hard_Ethernet_MAC_TemacPhy_RST_n_pin LOC=J14  |  IOSTANDARD = LVCMOS25  |  TIG;
 Net fpga_0_Hard_Ethernet_MAC_MII_TX_CLK_0_pin LOC = K17  |  IOSTANDARD = LVCMOS25;
 Net fpga_0_Hard_Ethernet_MAC_GMII_TXD_0_pin<0> LOC=AF11  |  IOSTANDARD =LVDCI_33;
@@ -172,6 +164,8 @@ Net fpga_0_Hard_Ethernet_MAC_GMII_RX_CLK_0_pin LOC=H17  |  IOSTANDARD = LVCMOS25
 Net fpga_0_Hard_Ethernet_MAC_MDC_0_pin LOC=H19  |  IOSTANDARD = LVCMOS25;
 Net fpga_0_Hard_Ethernet_MAC_MDIO_0_pin LOC=H13  |  IOSTANDARD = LVCMOS25;
 Net fpga_0_Hard_Ethernet_MAC_PHY_MII_INT_pin LOC=H20  |  IOSTANDARD = LVCMOS25  |  TIG;
+Net fpga_0_RS232_Uart_2_RX_pin LOC=G10  |  IOSTANDARD = LVCMOS33;
+Net fpga_0_RS232_Uart_2_TX_pin LOC=F10  |  IOSTANDARD = LVCMOS33;
 Net fpga_0_clk_1_sys_clk_pin TNM_NET = sys_clk_pin;
 TIMESPEC TS_sys_clk_pin = PERIOD sys_clk_pin 100000 kHz;
 Net fpga_0_clk_1_sys_clk_pin LOC = AH15  |  IOSTANDARD=LVCMOS33;
@@ -221,26 +215,22 @@ TIMESPEC "TS_MC_CAL_RDEN_DLY" = FROM "TNM_CAL_RDEN_DLY" TO FFS
 #  3. Any output-only site
 ###############################################################################
 
-INST "*/gen_dqs[0].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y96";
-INST "*/gen_dqs[0].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y96";
-INST "*/gen_dqs[1].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y58";
-INST "*/gen_dqs[1].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y58";
-INST "*/gen_dqs[2].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y62";
-INST "*/gen_dqs[2].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y62";
-INST "*/gen_dqs[3].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y100";
-INST "*/gen_dqs[3].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y100";
-INST "*/gen_dqs[4].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y102";
-INST "*/gen_dqs[4].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y102";
-INST "*/gen_dqs[5].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y256";
-INST "*/gen_dqs[5].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y256";
-INST "*/gen_dqs[6].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y260";
-INST "*/gen_dqs[6].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y260";
-INST "*/gen_dqs[7].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y262";
-INST "*/gen_dqs[7].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y262";
-
-INST "DDR2_SDRAM/DDR2_SDRAM/gen_no_iodelay_grp.gen_instantiate_idelayctrls[1].idelayctrl0" LOC = IDELAYCTRL_X0Y2;
-INST "DDR2_SDRAM/DDR2_SDRAM/gen_no_iodelay_grp.gen_instantiate_idelayctrls[0].idelayctrl0" LOC = IDELAYCTRL_X0Y6;
-INST "DDR2_SDRAM/DDR2_SDRAM/gen_no_iodelay_grp.gen_instantiate_idelayctrls[2].idelayctrl0" LOC = IDELAYCTRL_X0Y1;
+INST "*/gen_dqs[0].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y56";
+INST "*/gen_dqs[0].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y56";
+INST "*/gen_dqs[1].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y18";
+INST "*/gen_dqs[1].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y18";
+INST "*/gen_dqs[2].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y22";
+INST "*/gen_dqs[2].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y22";
+INST "*/gen_dqs[3].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y60";
+INST "*/gen_dqs[3].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y60";
+INST "*/gen_dqs[4].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y62";
+INST "*/gen_dqs[4].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y62";
+INST "*/gen_dqs[5].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y216";
+INST "*/gen_dqs[5].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y216";
+INST "*/gen_dqs[6].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y220";
+INST "*/gen_dqs[6].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y220";
+INST "*/gen_dqs[7].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y222";
+INST "*/gen_dqs[7].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y222";
 
 ###############################################################################
 # LOC and timing constraints for flop driving DQS CE enable signal
@@ -251,14 +241,14 @@ INST "DDR2_SDRAM/DDR2_SDRAM/gen_no_iodelay_grp.gen_instantiate_idelayctrls[2].id
 # absolute delay of the path
 ###############################################################################
 
-INST "*/u_phy_calib_0/gen_gate[0].u_en_dqs_ff"  LOC = SLICE_X0Y48;
-INST "*/u_phy_calib_0/gen_gate[1].u_en_dqs_ff"  LOC = SLICE_X0Y29;
-INST "*/u_phy_calib_0/gen_gate[2].u_en_dqs_ff"  LOC = SLICE_X0Y31;
-INST "*/u_phy_calib_0/gen_gate[3].u_en_dqs_ff"  LOC = SLICE_X0Y50;
-INST "*/u_phy_calib_0/gen_gate[4].u_en_dqs_ff"  LOC = SLICE_X0Y51;
-INST "*/u_phy_calib_0/gen_gate[5].u_en_dqs_ff"  LOC = SLICE_X0Y128;
-INST "*/u_phy_calib_0/gen_gate[6].u_en_dqs_ff"  LOC = SLICE_X0Y130;
-INST "*/u_phy_calib_0/gen_gate[7].u_en_dqs_ff"  LOC = SLICE_X0Y131;
+INST "*/u_phy_calib_0/gen_gate[0].u_en_dqs_ff"  LOC = SLICE_X0Y28;
+INST "*/u_phy_calib_0/gen_gate[1].u_en_dqs_ff"  LOC = SLICE_X0Y9;
+INST "*/u_phy_calib_0/gen_gate[2].u_en_dqs_ff"  LOC = SLICE_X0Y11;
+INST "*/u_phy_calib_0/gen_gate[3].u_en_dqs_ff"  LOC = SLICE_X0Y30;
+INST "*/u_phy_calib_0/gen_gate[4].u_en_dqs_ff"  LOC = SLICE_X0Y31;
+INST "*/u_phy_calib_0/gen_gate[5].u_en_dqs_ff"  LOC = SLICE_X0Y108;
+INST "*/u_phy_calib_0/gen_gate[6].u_en_dqs_ff"  LOC = SLICE_X0Y110;
+INST "*/u_phy_calib_0/gen_gate[7].u_en_dqs_ff"  LOC = SLICE_X0Y111;
 
 # Control for DQS gate - from fabric flop. Prevent "runaway" delay -
 # two parts to this path: (1) from fabric flop to IDELAY, (2) from
@@ -424,9 +414,6 @@ INST "*gmii0*ideler"     IDELAY_VALUE = 35;
 
 INST "*gmii_rxc0_delay"  IDELAY_VALUE = 0;
 
-INST "Hard_Ethernet_MAC/*gen_instantiate_idelayctrls[0].idelayctrl0"   LOC = "IDELAYCTRL_X0Y4";
-INST "Hard_Ethernet_MAC/*gen_instantiate_idelayctrls[1].idelayctrl0"   LOC = "IDELAYCTRL_X1Y5";
-
 # PHY spec: 2.5ns setup time, 0.5ns hold time
 # Assumes equal length board traces
 
@@ -465,3 +452,5 @@ TIMESPEC "TS_RX_CLIENT_CLK0_2_REF_CLK"  = FROM clk_client_rx0 TO REFCLK 5000 ps 
 
 net "*/hrst*" TIG;
 net "*/V5HARD_SYS.I_TEMAC/speed_vector_0_i*" TIG;
+
+
