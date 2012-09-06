@@ -1,21 +1,19 @@
 \chapter{Introduction}
 
-Context of this project seminar is ongoing research for high performance network interface cards at the Integrated Electronics Systems Labs by my supervisor Boris Traskov. 
-The ability to provide network interfaces at low cost, becomes especially relevant in the future "`internet of things"' when all devices are connected amongst each other.
+Context of this project is ongoing research for high performance network interface cards at the Integrated Electronics Systems Labs by Boris Traskov, also supervisor of this project. 
+The ability to provide network interfaces at low cost, becomes especially relevant in the future "`internet of things"' when all devices are connected among each other.
 
-Das Projektseminar steht im Kontext der Forschung an High-Performance Netzwerkkarten zur Übertragung von Daten mit bis zu 40 GB/s. TCP Offload Engine
-
-\section{Objective}
-
-Objective of this project seminar was to setup a hardware system on a \gls{fpga} utilizing IP cores, configure and compile Linux for the previous specified hardware, install a nginx Web server on top of Linux and do some benchmarks, to prove that the setup system is capable to utilize the full Gigabit Ethernet interface without breaking down on attempted \gls{dos} attacks.
+The objectives were to setup a hardware system on a \gls{fpga} utilizing \gls{ip} cores and run an event-based web server (nginx) on top of a cross-compiled Linux kernel. Furthermore benchmarks have to be taken, to prove that the setup system is capable to utilize the full Gigabit Ethernet interface without breaking down on attempted \gls{dos} attacks.
 
 \section{Environment}
 
 All development, measurements and tests were done on the XILINX XUPV5-LX110T evaluation board.
 
-The XILINX XUP5-LX110T evaluation board is a modified version of the ML505 board for universities. Only difference between the two boards is a larger \gls{fpga} chip on the XUP5-LX110T, containing the Virtex-5 XC5VLX110T with 17,280 slices and four in hardware implemented Ethernet MACs\footnote{MAC: Medium Access Control}, where as the ML505 boards contains only the XC5VLX50 with 7,200 slices and no in hardware implemented Ethernet MACs.
+The XILINX XUPV5-LX110T evaluation board is a modified version of the ML505 board for universities\cite{xupv5manual}. The difference between the two boards is a larger \gls{fpga} chip on the XUPV5-LX110T, containing the Virtex-5 XC5VLX110T with 17,280 slices\footnote{Basic logic unit of an FPGA\cite{fpga_ni}} and four in hardware implemented Ethernet \gls{mac} cores, where as the ML505 board contains the XC5VLX50 with only 7,200 slices and no Ethernet \gls{mac} cores implemented in hardware.
 
-The initial hardware design for the \gls{fpga} was build using the \textit{\gls{xps}}. Further modifications to the hardware system were done modifying the respective configurations files.
+The initial hardware design for the \gls{fpga} was build using the \textit{\gls{xps}}. From their on synthesis and further modifications were done using \textit{XILINX ISE Project Navigator}.
+
+The used tools version was 14.1. Because they allow parallel synthesis speeding up the development process heavily.
 
 Software development was done using the \textit{Xilinx SDK}, which provides mechanisms for generating device drivers and header files from the \textit{\gls{mhs}} file, created by the \textit{\gls{xps}}.
 
@@ -23,29 +21,203 @@ Software development was done using the \textit{Xilinx SDK}, which provides mech
 
 Before going into detail of the implementation and evaluation of measurements were going to take a look at the broader context of the project.
 
-In our environment an increasing amount of data is created by any and every device. Furthermore, the amount of transferred data over networks (i.e. the internet) increases dramatically). This generates a demand for high speed network interfaces, on the one hand and high performance, low cost full stack network implementations on the other hand. 
+In our environment an increasing amount of data is created by every kind of device. Furthermore, the amount of transferred data over networks (i.e. the internet) increases dramatically). This generates a demand for high speed network interfaces, on the one hand and high performance, low cost full stack network implementations on the other hand. 
 
 Service providers and back-end nodes need to be able to transfer large amounts of data to multiple receivers concurrently, requiring high speed network interfaces. To circumvent - potentially unnecessary - \gls{cpu} utilization, much of the work can be "`offloaded"' to a network interface, providing a higher level of abstraction to the transfer of data, than current state of the art.
 
-In the future scenario with all and every device being connected to each other, often described as the "`internet of things"', an increasing demand for simple to implement network interfaces, not requiring the present of an operating system or high performance processors, is created. 
+In a future scenario with all devices being connected to each other, often described as the "`internet of things"', an increasing demand for simple to implement network interfaces, not requiring the present of an operating system or high performance processors, will be created.
+
+\chapter{System Requirements}
+
+Requirements for the designed system must be collected with two key points in mind: the desired outcome of the project and the chosen/available hardware system and tool chain.
+
+Objective of the project is to run \textit{nginx}, an event-based web server. \textit{nginx} can not be executed directly on the processor, because it requires the presence of an an \gls{os} providing a file system and taking responsibility of process and thread management. 
+
+\textit{nginx} supports a number of free (FreeBSD, Solaris, Linux) and proprietary (AIX, HP-UX) unix-based operating systems and Microstf Windows\footnote{see \url{http://nginx.org/en/\#tested_os_and_platforms}}.
+
+Microsoft Windows is currently only available for Intel's x86 and AMD's AMD64 (also known as x86-64) architectures. The constraint on the Xilinx  \textit{XC5VLX110T} \gls{fpga} demands 
+
+
+
+
+
+
+with \gls{mmu} and 
+
+nginx requires a full-fledged operation system, with memory management, process/thread management and file system support and can not run directly on the hardware, i.e. processor. To satisfy this needs Linux was choosen as operation system. 
 
 \chapter{Implementation}
 
+\subsection{Linux}
+
+Running Linux on a \textit{MicroBlaze} processor is unfortunately rarely documented and not wide spread. Mainly two projects exist on this topic: \textit{PetaLinux} (formerly known as \textit{uLinux}) and \textit{BlueCat Linux}. Unfortunately both were turned into commercial solutions and although the modified Linux source code is publicly available, it is hardly usable without the proprietary tool chain, sold by the companies driving these projects.
+
+Some efforts were made by Xilinx to and since ... the Microblaze architecture is supported by the Linux mainline kernel.
+
+For this project the 
+
+
 \section{The Hardware System}
 
-A \gls{fpga} consists of a large number of slices. In the Xilinx Virtex-5 \gls{fpga} family every slices contains four \gls{lut} and two flip-flops. The \gls{lut}s define how the flip-flops and slices are connected to each other and can be programmed with a so called bitstream. Therefore a \gls{fpga} can be programmed with any  hardware layout, containing logical gates and flip-flops, with-out the expensive and time-consuming process of producing electronic chips from silicon wafers.
+\subsection{FPGAs}
 
-Additionally to these slices a \gls{fpga} often comes with already implemented hardware cores, which can be used by a system implemented using the slices of the \gls{fpga}. This hardware cores can not be "`overriden"' and might contain any kind of system or device, like access controllers for external hardware or full processors.
+A \gls{fpga} consists of a large number of slices. In the Xilinx Virtex-5 \gls{fpga} family every slices contains four \gls{lut} and two flip-flops. The \gls{lut}s define how the flip-flops and slices are connected to each other and can be programmed with a so called \textit{bitstream}. Therefore a \gls{fpga} can be programmed with any hardware layout, containing logical gates and flip-flops, without the expensive and time-consuming process of producing electronic chips out of silicon wafers.
 
-In this project seminar a \gls{soc} was build using predefined IP cores for the cpu and additional devices.
+Additionally to these slices a \gls{fpga} often contains already implemented hardware cores, which can be used by a system implemented using the slices of the \gls{fpga}. This hardware cores can not be "`overridden"' and might contain any kind of system or device, like access controllers for external hardware or full processors.
 
-The used XC5VLX110T does not have a build-in processor like the XC5VFX series. Therefore a single core \textit{Microblaze} processor was implemented. The \textit{Microblaze} processor is a proprietary processor, developed by Xilinx for their \gls{fpga} families, follwing the Harvard architecture with seperate data and instruction memory. A \textit{Microblaze} processor was choosen before the popular \textit{ARM} processors, because it is part of the Xilinx development kits and can be used without any additional costs. Besides for the planned system no signifcant drawbacks of the \textit{Microblaze} processor compared to the \textit{ARM} processor family are known.
+\subsection{Configuration}
 
-The connection between the \textit{Microblaze} processor and other devices on the chip is realized using the \gls{plb} invented by IBM as part of the \textit{CoreConnect} bus system.
+An initial \gls{soc} design can be created using the \gls{xps}. \gls{xps} contains a wizard for creating new designs, by selecting the target board and to be utilized  \gls{ip} cores. 
 
-The XUP5-LX110T board comes with a large 256 MB DDR2 memory which was used as main memory for the system. For non-volatile storage of the \gls{fpga} configuration a 32 Megabyte flash memory chip was used, which is also part of the evaluation board.
+By default this wizard does not provide an option for the Xilinx XUPV5 board. For adding this board to the wizard the respective \gls{bsp} needs to be downloaded from the Xilinx website (\url{http://www.xilinx.com/univ/xupv5-lx110t-bsb.htm}). After extracting the downloaded zip file the directory named "Xilinx\_XUPV5\_LX110T" needs to be copied to the respective directory ("ISE\_DS/EDK/board/Xilinx/boards") inside of the Xilinx tools installation.
+
+If no modifications can be made to the Xilinx tools installation to install the Xilinx XUPV5 board \gls{bsp}, the ML505 board can be selected in the wizard instead. After the project is created, the target device needs to be set to "\textit{virtex5, xc5vlx100t, ff1136, -1}" in the project options.
+
+All properties chosen in the setup wizard or later on in \gls{xps} are stored in the \textit{\gls{mhs}} file in the root directory of the \gls{xps} project. All pin associations and other (timing) constraints are located in the \gls{ucf}. These should be replaced by the constraints specified in the report appendix.
+
+\subsection{Architecture}
+
+In this project a \gls{soc} was build using predefined \gls{ip} cores for the CPU and additional system components.
+
+\subsubsection{Processor}
+
+The used \textit{XC5VLX110T} does not have a build-in processor like the \textit{Xilinx XC5VFX} series. Therefore a so called soft-core microprocessor needs to be implemented on the \gls{fpga}. There exists a wide-range of soft microprocessor cores\footnote{see \url{http://en.wikipedia.org/wiki/Soft_microprocessor}}. To avoid additional licensing fees and because of the tight time schedule of the project, a single core \textit{MicroBlaze} processor was chosen. The \textit{Microblaze} processor is a proprietary processor, developed by Xilinx for their \gls{fpga} families and supported by the Xilinx hard- and software development kits. Its design follows the Harvard architecture with separate data and instruction memory.
+
+Running a mainline Linux Kernel requires the presence of a \gls{mmu}. This can be activated by the following settings in the project's \gls{mhs} file for the MicroBlaze core. For using a \gls{mmu} it is also required to have optimization for area disabled (default value):
+
+\begin{verbatim}
+ PARAMETER C_USE_MMU = 3
+ PARAMETER C_MMU_ZONES = 2
+ 
+ PARAMETER C_AREA_OPTIMIZED = 0
+\end{verbatim}
+
+To improve the system performance it is recommended to enable instruction and data cache (16 KB), barrel shifter, multiplier (64 bit) and the hardware division module.
+
+To enable the  and improve the system performance settings  in the  should be adjusted to meet the following values:
+
+\begin{verbatim}
+ PARAMETER C_USE_BARREL = 1
+ PARAMETER C_USE_HW_MUL = 2
+ PARAMETER C_USE_DIV = 1
+
+ PARAMETER C_USE_ICACHE = 1
+ PARAMETER C_USE_DCACHE = 1
+
+ PARAMETER C_CACHE_BYTE_SIZE = 16384
+ PARAMETER C_ICACHE_ALWAYS_USED = 1
+ PARAMETER C_ICACHE_LINE_LEN = 8
+ PARAMETER C_ICACHE_STREAMS = 1
+ PARAMETER C_ICACHE_VICTIMS = 8
+ PARAMETER C_DCACHE_BYTE_SIZE = 16384
+ PARAMETER C_DCACHE_ALWAYS_USED = 1
+\end{verbatim}
+
+Automatic processor version recognition by the Linux Kernel (facultative) can be activated by enabling the \gls{pvr}:
+
+\begin{verbatim}
+ PARAMETER C_PVR = 2
+\end{verbatim}
+
+\subsubsection{Bus System}
+
+For the connection between the \textit{MicroBlaze} processor and other peripherals on the chip a bus system needs to be selected. The \gls{xps} wizard provides an option for choosing between two interconnect types: \gls{axi} and \gls{plb}.
+
+\gls{axi} is part of the \textit{Advanced Microcontroller Bus Architecture (AMBA)}, designed by \textit{ARM} and introduced for \gls{fpga}s by \textit{Xilinx} starting with the \textit{Virtex-6} \gls{fpga} family generation.
+
+Prior to the \textit{Virtex-6} \gls{fpga} family, only \gls{plb} invented by \textit{IBM} as part of the \textit{CoreConnect} bus system was available. \textit{Virtex-6} \gls{fpga}s support both bus systems, but the used \textit{Xilinx XC5VLX110T} \gls{fpga} is part of the \textit{Virtex-5} family, therefore \gls{plb} needs to be selected as interconnect type. \cite{axi_interconnect}[p. 1, facts table]
+
+\subsubsection{Memory}
+
+The XUP5-LX110T board contains a 9 MB ZBT synchronous SRAM, a single-rank unregistered 256 MB DDR2 SODIMM and multiple flash memory chips. The DDR2 memory fits the requirements for the desired systems best. Both regarding read and write speed and the provided amount of memory.
+
+To connect the memory to the processor a memory controller needs to be added to the system.  \textit{Xilinx} provides the \textit{Multi-Port Memory Controller (MPMC)} \gls{ip} core -- select-able in the \gls{xps} project wizard -- for this purpose.
+
+The \textit{MPMC} IP core can be connected to \gls{plb} and supports \textit{Xilinx CacheLink (XCL)} structures and \textit{Soft Direct Memory Access (SDMA)} for LocalLink interfaces, required for fast processing of the network interface block. \cite{mpmc}
+
+\subsubsection{Network Interface}
+
+The \textit{Xilinx XC5VLX110T} \gls{fpga} has four \textit{Tri-Mode Ethernet Media Access Controllers}, designed to the IEEE 802.3-2002 specification, operating at 10, 100, and 1,000 Mb/s. \cite{virtex5}[p. 4, table 1] To use these hard core controllers an \texttt{xps\_ll\_temac} soft IP core can be added to the \gls{soc}, acting as a wrapper for the hard core to integrate it into the system.
+
+For a simple and easy-to-implement interconnection between the \gls{phy} and the various \gls{mac} sub-layers, \gls{mii} was invented. \gls{mii} was designed originally for \gls{phy}s with data rates of 10 Mb/s and 100 Mb/s. \gls{gmii} is an backwards compatible extension to \gls{mii} supporting data rate of up to 1,000 Mb/s. \textit{RMII/RGMII} is an interface with reduced data path width (by half). This is accomplished by clocking data on rising and falling edges of the clock.
+
+For the project \gls{gmii} was selected as physical interface type, because support for Gigabit Ethernet was desired, but there was no need for a reduced data path width. Therefore the \texttt{C\_PHY\_TYPE} needs to be set to \texttt{1}.
+
+Depending on the (temporarily) selected \gls{fpga} during the \gls{xps} project wizard, it might be required to change the location of \textit{IDELAYCTRL elements} set in the \texttt{C\_IDELAYCTRL\_LOC} parameter to \texttt{IDELAYCTRL\_X0Y4-IDELAYCTRL\_X1Y5}.
+
+Through the parameters \texttt{C\_TEMAC0\_TXCSUM} and \texttt{C\_TEMAC0\_RXCSUM} offloading checksum calculation to hardware circuits cam be enabled, to improve performance.
+
+\subsection{Clocks}
+
+\subsubsection{Clock Generation}
+
+Clocks for the system can be generated using a \textit{clock\_generator} \gls{ip} core. This \gls{ip} core can generate up to 16 different clocks from one input clock signal. On the Xilinx XUPV5 board an external oscillator providing a 100 MHz clock can be connected to this clock generator.\cite{ug347}[p. 20]
+
+\subsubsection{Timing Considerations}
+
+After synthesis the minimum clock period is reported as \textit{7.566 ns} (i.e. a maximum clock frequency of \textit{132.170 MHz}). Therefore it could be assumed that a 125.00 MHz system clock frequency as select-able in the \gls{xps} wizard should work well, but the Xilinx place and route tool (\textit{par}) is not able to meet all timing constraints for this frequency with enabled \gls{mmu} and instruction cache. The reason for unmet constraints are high delays on data paths in the decode pipeline stage, demanding a clock period of about \textit{9.12 ns}.
+
+Considering these constraints on the clock period, the system clock was set to 100 MHz. This clock is used by the processor and the local bus.
+
+\subsubsection{Clock Signals for Peripherals}
+
+The memory controller (MPMC) demands atleast three different clocks: a base clock, a clock with half the frequency of the base clock and clock signal with the same frequency as the base clock, but shifted by 90°. If the frequency of the base clock is not 200 MHz a fourth clock with this frequency is required. All clocks need to be controller by the same \gls{pll}.
+
+Therefore the clock pins of the memory controller were connected to the following signals:
+
+\begin{verbatim}
+ PORT MPMC_Clk0 = clk_200_0000MHzPLL0
+ PORT MPMC_Clk0_DIV2 = clk_100_0000MHzPLL0
+ PORT MPMC_Clk90 = clk_200_0000MHz90PLL0
+ PORT MPMC_Clk_200MHz = clk_200_0000MHzPLL0
+\end{verbatim}
+
+The Ethernet \gls{mac} \gls{ip} core requires a clock signal with exactly 125 MHz at the \texttt{GTX\_CLK} port for operating the GMII. This is defined in the specifications of GMII \cite{ieee802_3}[sec. 35.2.2.1]. For \gls{dma} a clock signal with a frequency identical to the local bus clock is required. The \texttt{REFCLK} needs to be connected to a 200 MHz clock, according to the respective manual of the \gls{ip} core \cite{xps_ll_temac}[p. 11, table 3].
+
+\begin{verbatim}
+ PORT GTX_CLK_0 = clk_125_0000MHz
+ PORT REFCLK = clk_200_0000MHzPLL0
+ PORT LlinkTemac0_CLK = clk_100_0000MHzPLL0
+\end{verbatim}
+
+The ratio between the MPMC base clock and the clock signal for LocalLink \gls{dma} access of the Ethernet \gls{mac} IP core ($200:100 = 2$) needs to be set to the parameter \texttt{C\_SDMA2\_PI2LL\_CLK\_RATIO} of the MPMC core.
+
+The clock generator is configured to generate a buffered 200 MHz clock on \texttt{CLKOUT3} and a buffered 200 MHz clock with a phase shift of 90° on \texttt{CLKOUT2}. All utilizing the same \gls{pll} unit (PLL0).
+
+\texttt{CLKOUT1} is configured to provide a buffered 125 MHz. The buffered 100 MHz system clock is set to port \texttt{CLKOUT0}:
+
+\begin{verbatim}
+ PORT CLKOUT0 = clk_100_0000MHzPLL0
+ PORT CLKOUT1 = clk_125_0000MHz
+ PORT CLKOUT2 = clk_200_0000MHz90PLL0
+ PORT CLKOUT3 = clk_200_0000MHzPLL0
+\end{verbatim}
+
+
+\subsection{Endianness}
+
+\begin{quote}
+ "Endianness describes how multi-byte data is represented by a computer system and is dictated by the CPU architecture of the system." \cite{intel_endiannness}[p. 5]
+\end{quote}
+
+Architectures utilizing the little endian concept store the least significant byte (LSB) at the lowest address, in big endian architectures the most significant byte (MSB) is stored at the highest address. \cite{intel_endiannness}[p. 6]
+
+Linux can be build for little, as well as for big endian systems. Only confinement is that the used toolchain (compiler, etc. - see TOOODDOOO) needs to support the endianness of the architecture.
+
+The \textit{MicroBlaze} processor has the parameter \texttt{C\_ENDIANNESS} to specify the endianness of the processor. But although the \textit{MicroBlaze Processor Reference Guide} states that "the \texttt{C\_ENDIANNESS} parameter is automatically set to little endian when using AXI4, and to big endian when using PLB, but can be overridden by the user" \cite{mb_ref}[p. 52], this parameter must not be changed for \textit{Virtex-5} \gls{fpga}s. This is reasoned in the disability of the peripheral cores connected via \gls{plb}, to handle data other than in big endian byte order. The \gls{axi} bus circumvents this problem by swapping bytes.\footnote{see \url{http://forums.xilinx.com/t5/EDK-and-Platform-Studio/Memory-Test-fails-for-8-and-16-bit/m-p/253922/highlight/true\#M23973} (in official)}
 
 \section{Firmware}
+
+\subsection{EDK}
+
+The \gls{bsp} is not available whitin \gls{xps} by default, but can be installed from the Xilinx website (http://www.xilinx.com/univ/xupv5-lx110t/design\_files/EDK-XUPV5-LX110T-Pack.zip).
+
+\section{Eckpunkte}
+
+\begin{lstlisting}[caption=Microblaze parameters]{mbparams}
+	// GNU-init
+	export PATH=/home/peschuster/project/microblazeel-unknown-linux-gnu/bin:$PATH && export CROSS_COMPILE=microblazeel-unknown-linux-gnu-
+\end{lstlisting}
 
 
 
