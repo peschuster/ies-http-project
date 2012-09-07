@@ -42,6 +42,11 @@
 \usepackage{textcomp} % verschiedene Symbole
 \usepackage{hyperref}
 \renewcommand\plparsep{1ex}
+
+% Don't stretch spaces
+\raggedbottom
+
+
 \usepackage{enumerate}
 
 \usepackage[toc]{glossaries}
@@ -73,10 +78,10 @@
 
 \tableofcontents
 
-\newpage
-\phantomsection %notwendig, damit Link nicht unterhalb der Überschrift zeigt
-\addcontentsline{toc}{chapter}{List of figures}
-\listoffigures
+%\newpage
+%\phantomsection %notwendig, damit Link nicht unterhalb der Überschrift zeigt
+%\addcontentsline{toc}{chapter}{List of figures}
+%\listoffigures
 
 
 % include glossary
@@ -93,15 +98,18 @@
 \appendix
 
 \clearpage
+\glossarystyle{list}
+\renewcommand*{\glsgroupskip}{}
 \printglossaries
 
 \clearpage
 % \nocite{*}
 %\newpage %neue Seite, damit Link auf Seitenanfang zeigt
-%\phantomsection %notwendig, damit Link nicht unterhalb der Überschrift zeigt
-\addcontentsline{toc}{chapter}{Literature} %Eintrag im Inhaltsverzeichnis
+\phantomsection %notwendig, damit Link nicht unterhalb der Überschrift zeigt
+\addcontentsline{toc}{chapter}{Bibliography} %Eintrag im Inhaltsverzeichnis
 \bibliographystyle{plain}
 \bibliography{literaturverzeichnis}
 
+\include{appendix}
 
 \end{document}

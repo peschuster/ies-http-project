@@ -1,9 +1,20 @@
 \chapter{Introduction}
 
-Context of this project is ongoing research for high performance network interface cards at the Integrated Electronics Systems Labs by Boris Traskov, also supervisor of this project. 
-The ability to provide network interfaces at low cost, becomes especially relevant in the future "`internet of things"' when all devices are connected among each other.
+\section{Project Context and Objectives}
 
-The objectives were to setup a hardware system on a \gls{fpga} utilizing \gls{ip} cores and run an event-based web server (nginx) on top of a cross-compiled Linux kernel. Furthermore benchmarks have to be taken, to prove that the setup system is capable to utilize the full Gigabit Ethernet interface without breaking down on attempted \gls{dos} attacks.
+Context of this project is ongoing research for high performance network interface cards at the Integrated Electronics Systems Labs by Boris Traskov, also supervisor of this project.
+
+In our environment an increasing amount of data is created by every kind of device. Furthermore, the amount of transferred data over networks (i.e. the internet) increases dramatically. This generates a demand for high speed network interfaces, on the one hand and high performance, low cost full stack network implementations on the other hand. 
+
+Service providers and back-end nodes need to be able to transfer large amounts of data to multiple receivers concurrently, requiring high speed network interfaces. To circumvent - potentially unnecessary - \gls{cpu} utilization, much of the work can be "offloaded" to a network interface, providing a higher level of abstraction to the transfer of data, than current state of the art.
+
+In a future scenario with all devices being connected to each other, often described as the "internet of things", an increasing demand for simple to implement network interfaces, not requiring the presence of an operating system or high performance processors, will be created.
+
+%The ability to provide network interfaces at low cost, becomes especially relevant in the future "`internet of things"', describing a connection of almost all devices among each other.
+
+Objectives for the whole project entitled "Design of an Accelerated Event-based Server" is to setup a hardware system on a \textit{Xilinx} \gls{fpga} utilizing \gls{ip} cores, running \textit{nginx} (an event-based web server) on top. Furthermore benchmarks have to be conducted, to prove the strength of such a system. Ideally proving that the system is capable of utilizing the full Gigabit Ethernet interface without breaking down on attempted \gls{dos} attacks.
+
+Desired goal for this project seminar was to lay the necessary foundations, so that outstanding implementation work and extensive measurements can be completed in a subsequent bachelor thesis.
 
 \section{Environment}
 
@@ -17,45 +28,22 @@ The used tools version was 14.1. Because they allow parallel synthesis speeding 
 
 Software development was done using the \textit{Xilinx SDK}, which provides mechanisms for generating device drivers and header files from the \textit{\gls{mhs}} file, created by the \textit{\gls{xps}}.
 
-\section{Context}
-
-Before going into detail of the implementation and evaluation of measurements were going to take a look at the broader context of the project.
-
-In our environment an increasing amount of data is created by every kind of device. Furthermore, the amount of transferred data over networks (i.e. the internet) increases dramatically). This generates a demand for high speed network interfaces, on the one hand and high performance, low cost full stack network implementations on the other hand. 
-
-Service providers and back-end nodes need to be able to transfer large amounts of data to multiple receivers concurrently, requiring high speed network interfaces. To circumvent - potentially unnecessary - \gls{cpu} utilization, much of the work can be "`offloaded"' to a network interface, providing a higher level of abstraction to the transfer of data, than current state of the art.
-
-In a future scenario with all devices being connected to each other, often described as the "`internet of things"', an increasing demand for simple to implement network interfaces, not requiring the present of an operating system or high performance processors, will be created.
-
 \chapter{System Requirements}
 
 Requirements for the designed system must be collected with two key points in mind: the desired outcome of the project and the chosen/available hardware system and tool chain.
 
 Objective of the project is to run \textit{nginx}, an event-based web server. \textit{nginx} can not be executed directly on the processor, because it requires the presence of an an \gls{os} providing a file system and taking responsibility of process and thread management. 
 
-\textit{nginx} supports a number of free (FreeBSD, Solaris, Linux) and proprietary (AIX, HP-UX) unix-based operating systems and Microstf Windows\footnote{see \url{http://nginx.org/en/\#tested_os_and_platforms}}.
+\textit{nginx} supports a number of free (FreeBSD, Solaris, Linux) and proprietary (AIX, HP-UX) unix-based operating systems and Microsoft Windows.\footnote{see \url{http://nginx.org/en/\#tested_os_and_platforms}}
 
-Microsoft Windows is currently only available for Intel's x86 and AMD's AMD64 (also known as x86-64) architectures. The constraint on the Xilinx  \textit{XC5VLX110T} \gls{fpga} demands 
+Microsoft Windows is currently only available for Intel's \textit{x86} and AMD's \textit{AMD64} (also known as \textit{x86-64}) architectures. The constraint on the available \textit{Xilinx XC5VLX110T} \gls{fpga} demands an easy-to-implement, low cost microprocessor system. The mentioned processor architectures do not count towards these categories. Therefore the choices are limited to free unix-based operating systems.
 
+Due to the by far largest number of supported processor architectures and wide distribution, the choice was made to go with the Linux as operating system for the project.
 
+Linux demands\footnote{Linux Kernel can be configured for processors without MMU, but this is not recommended.} an \gls{mmu} in virtual mode and 2 memory protection zones. Furthermore the presence of two timer and an interrupt controller is required.\footnote{see \url{http://wiki.xilinx.com/microblaze-linux\#toc4}, as of 09/07/2012}
 
-
-
-
-with \gls{mmu} and 
-
-nginx requires a full-fledged operation system, with memory management, process/thread management and file system support and can not run directly on the hardware, i.e. processor. To satisfy this needs Linux was choosen as operation system. 
 
 \chapter{Implementation}
-
-\subsection{Linux}
-
-Running Linux on a \textit{MicroBlaze} processor is unfortunately rarely documented and not wide spread. Mainly two projects exist on this topic: \textit{PetaLinux} (formerly known as \textit{uLinux}) and \textit{BlueCat Linux}. Unfortunately both were turned into commercial solutions and although the modified Linux source code is publicly available, it is hardly usable without the proprietary tool chain, sold by the companies driving these projects.
-
-Some efforts were made by Xilinx to and since ... the Microblaze architecture is supported by the Linux mainline kernel.
-
-For this project the 
-
 
 \section{The Hardware System}
 
@@ -135,6 +123,8 @@ To connect the memory to the processor a memory controller needs to be added to 
 
 The \textit{MPMC} IP core can be connected to \gls{plb} and supports \textit{Xilinx CacheLink (XCL)} structures and \textit{Soft Direct Memory Access (SDMA)} for LocalLink interfaces, required for fast processing of the network interface block. \cite{mpmc}
 
+The designed hardware system uses \texttt{0x50000000} as memory base address in this project. The address can be changed arbitrarily, but needs to be corrected in the Linux Kernel configuration, as well.
+
 \subsubsection{Network Interface}
 
 The \textit{Xilinx XC5VLX110T} \gls{fpga} has four \textit{Tri-Mode Ethernet Media Access Controllers}, designed to the IEEE 802.3-2002 specification, operating at 10, 100, and 1,000 Mb/s. \cite{virtex5}[p. 4, table 1] To use these hard core controllers an \texttt{xps\_ll\_temac} soft IP core can be added to the \gls{soc}, acting as a wrapper for the hard core to integrate it into the system.
@@ -143,11 +133,37 @@ For a simple and easy-to-implement interconnection between the \gls{phy} and the
 
 For the project \gls{gmii} was selected as physical interface type, because support for Gigabit Ethernet was desired, but there was no need for a reduced data path width. Therefore the \texttt{C\_PHY\_TYPE} needs to be set to \texttt{1}.
 
+Despite setting the \texttt{C\_PHY\_TYPE} parameter on the IP core configuration, the jumpers \texttt{J22} and \texttt{J23} on the \textit{Xilinx XUPV5} board need to be set to positions \texttt{1-2} to enable \gls{gmii} as physical interface type.
+
 Depending on the (temporarily) selected \gls{fpga} during the \gls{xps} project wizard, it might be required to change the location of \textit{IDELAYCTRL elements} set in the \texttt{C\_IDELAYCTRL\_LOC} parameter to \texttt{IDELAYCTRL\_X0Y4-IDELAYCTRL\_X1Y5}.
 
-Through the parameters \texttt{C\_TEMAC0\_TXCSUM} and \texttt{C\_TEMAC0\_RXCSUM} offloading checksum calculation to hardware circuits cam be enabled, to improve performance.
+Through the parameters \texttt{C\_TEMAC0\_TXCSUM} and \texttt{C\_TEMAC0\_RXCSUM} offloading checksum calculation to hardware circuits cam be enabled, to improve performance. Though there were no measurements done to prove any improvement in performance during the course of this project, due to lack of time.
+
+\subsubsection{Other Peripherals}
+
+Besides the previously discussed \gls{ip} cores, the following additional standard \gls{ip} cores were used in the system, not requiring any special configuration or explanation.
+
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{2pt}
+  \setlength{\parsep}{0pt}
+\item 2x \texttt{lmb\_v10} -- Local Memory Bus for instruction and data memory.
+\item \texttt{bram\_block} -- Internal Random Access Memory block on the \gls{fpga}.
+\item 2x \texttt{lmb\_bram\_if\_cntlr} -- Local Memory Bus (LMB) Block RAM (BRAM) Interface Controller for instruction and data memory.
+\item \texttt{mdm} -- MicroBlaze Debug Module providing register access and execution control for debugging.
+\item \texttt{xps\_intc} -- Interrupt controller.
+\item 4x \texttt{xps\_gpio} -- General Purpose I/O controllers for DIP switches, LEDs and push buttons.
+\item \texttt{xps\_iic} -- Inter-Integrated Circuit (IIC) controller for access to external EEPROM chip.
+\item \texttt{xps\_timer} -- Timer block providing to independent timers.
+\item \texttt{xps\_uartlite} -- Universal Asynchronous Receiver Transmitter (UART) controller.
+\item \texttt{clock\_generator} -- Generator for system clock (configuration discussed in \ref{sec:clocks}).
+\item \texttt{proc\_sys\_reset} -- Processor System Reset Module integrating an external reset pin into the system.
+\end{itemize}
+
+The configuration settings and constraints for all \gls{ip} cores are provided in the appendix of this report.
 
 \subsection{Clocks}
+\label{sec:clocks}
 
 \subsubsection{Clock Generation}
 
@@ -172,7 +188,7 @@ Therefore the clock pins of the memory controller were connected to the followin
  PORT MPMC_Clk_200MHz = clk_200_0000MHzPLL0
 \end{verbatim}
 
-The Ethernet \gls{mac} \gls{ip} core requires a clock signal with exactly 125 MHz at the \texttt{GTX\_CLK} port for operating the GMII. This is defined in the specifications of GMII \cite{ieee802_3}[sec. 35.2.2.1]. For \gls{dma} a clock signal with a frequency identical to the local bus clock is required. The \texttt{REFCLK} needs to be connected to a 200 MHz clock, according to the respective manual of the \gls{ip} core \cite{xps_ll_temac}[p. 11, table 3].
+The Ethernet \gls{mac} \gls{ip} core requires a clock signal with exactly 125 MHz at the \texttt{GTX\_CLK} port for operating GMII. This is defined in the specifications of GMII \cite{ieee802_3}[sec. 35.2.2.1]. For \gls{dma} a clock signal with a frequency identical to the local bus clock is required. The \texttt{REFCLK} needs to be connected to a 200 MHz clock, according to the respective manual of the \gls{ip} core \cite{xps_ll_temac}[p. 11, table 3].
 
 \begin{verbatim}
  PORT GTX_CLK_0 = clk_125_0000MHz
@@ -184,7 +200,7 @@ The ratio between the MPMC base clock and the clock signal for LocalLink \gls{dm
 
 The clock generator is configured to generate a buffered 200 MHz clock on \texttt{CLKOUT3} and a buffered 200 MHz clock with a phase shift of 90° on \texttt{CLKOUT2}. All utilizing the same \gls{pll} unit (PLL0).
 
-\texttt{CLKOUT1} is configured to provide a buffered 125 MHz. The buffered 100 MHz system clock is set to port \texttt{CLKOUT0}:
+\texttt{CLKOUT1} is configured to provide a buffered 125 MHz clock. The buffered 100 MHz system clock is set to port \texttt{CLKOUT0}:
 
 \begin{verbatim}
  PORT CLKOUT0 = clk_100_0000MHzPLL0
@@ -206,21 +222,61 @@ Linux can be build for little, as well as for big endian systems. Only confineme
 
 The \textit{MicroBlaze} processor has the parameter \texttt{C\_ENDIANNESS} to specify the endianness of the processor. But although the \textit{MicroBlaze Processor Reference Guide} states that "the \texttt{C\_ENDIANNESS} parameter is automatically set to little endian when using AXI4, and to big endian when using PLB, but can be overridden by the user" \cite{mb_ref}[p. 52], this parameter must not be changed for \textit{Virtex-5} \gls{fpga}s. This is reasoned in the disability of the peripheral cores connected via \gls{plb}, to handle data other than in big endian byte order. The \gls{axi} bus circumvents this problem by swapping bytes.\footnote{see \url{http://forums.xilinx.com/t5/EDK-and-Platform-Studio/Memory-Test-fails-for-8-and-16-bit/m-p/253922/highlight/true\#M23973} (in official)}
 
-\section{Firmware}
 
-\subsection{EDK}
+\section{The Software}
 
-The \gls{bsp} is not available whitin \gls{xps} by default, but can be installed from the Xilinx website (http://www.xilinx.com/univ/xupv5-lx110t/design\_files/EDK-XUPV5-LX110T-Pack.zip).
+\subsection{Development Environment and Toolchain}
 
-\section{Eckpunkte}
+\subsection{Cross compilation}
 
-\begin{lstlisting}[caption=Microblaze parameters]{mbparams}
-	// GNU-init
-	export PATH=/home/peschuster/project/microblazeel-unknown-linux-gnu/bin:$PATH && export CROSS_COMPILE=microblazeel-unknown-linux-gnu-
-\end{lstlisting}
+\subsection{Linux Kernel}
+
+Running Linux on a \textit{MicroBlaze} processor is unfortunately rarely documented and not wide spread. Mainly two projects exist on this topic: \textit{PetaLinux} (formerly known as \textit{uLinux}) and \textit{BlueCat Linux}. Unfortunately both were turned into commercial solutions and although the modified Linux source code is publicly available, it is hardly usable without the proprietary tool chain, sold by the companies driving these projects.
+
+Some efforts were made by Xilinx to and since ... the Microblaze architecture is supported by the Linux mainline kernel.
+
+For this project the 
+
+\subsubsection{Configuration}
+
+Tools, process
+
+required settings
+
+\subsubsection{Device Tree}
+
+bsp
 
 
 
-\chapter{Evaluation}
+\subsection{The File System}
 
-\chapter{Outlook}
+initramfs, compression
+
+cpio
+
+\subsection{User space}
+
+cross compilation
+
+sysroot
+
+\subsection{\textit{nginx} Preparation}
+
+architecture
+
+build system
+
+\chapter{Conclusion}
+
+\section{Evaluation}
+
+made experiences
+
+progress, difficulties
+
+\section{Outlook}
+
+improvements
+
+what's next
