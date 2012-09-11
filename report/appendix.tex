@@ -4,12 +4,875 @@
 
 \section{Microprocessor Hardware Specification}
 
+\begin{verbatim}
+# ##############################################################################
+# Created by Base System Builder Wizard for Xilinx EDK 14.1 Build EDK_P.15xf
+# Tue Aug 07 16:08:53 2012
+# Target Board:  Xilinx XUPV5-LX110T Evaluation Platform Rev A
+# Family:    virtex5
+# Device:    xc5vlx110t
+# Package:   ff1136
+# Speed Grade:  -1
+# Processor number: 1
+# Processor 1: microblaze_0
+# System clock frequency: 100.0
+# Debug Interface: On-Chip HW Debug Module
+# ##############################################################################
+ PARAMETER VERSION = 2.1.0
+
+
+ PORT fpga_0_RS232_Uart_1_RX_pin = fpga_0_RS232_Uart_1_RX_pin, DIR = I
+ PORT fpga_0_RS232_Uart_1_TX_pin = fpga_0_RS232_Uart_1_TX_pin, DIR = O
+ PORT fpga_0_LEDs_8Bit_GPIO_IO_pin = fpga_0_LEDs_8Bit_GPIO_IO_pin, DIR = IO, VEC = [0:7]
+ PORT fpga_0_LEDs_Positions_GPIO_IO_pin = fpga_0_LEDs_Positions_GPIO_IO_pin, DIR = IO, VEC = [0:4]
+ PORT fpga_0_Push_Buttons_5Bit_GPIO_IO_pin = fpga_0_Push_Buttons_5Bit_GPIO_IO_pin, DIR = IO, VEC = [0:4]
+ PORT fpga_0_DIP_Switches_8Bit_GPIO_IO_pin = fpga_0_DIP_Switches_8Bit_GPIO_IO_pin, DIR = IO, VEC = [0:7]
+ PORT fpga_0_IIC_EEPROM_Sda_pin = fpga_0_IIC_EEPROM_Sda_pin, DIR = IO
+ PORT fpga_0_IIC_EEPROM_Scl_pin = fpga_0_IIC_EEPROM_Scl_pin, DIR = IO
+ PORT fpga_0_DDR2_SDRAM_DDR2_Clk_pin = fpga_0_DDR2_SDRAM_DDR2_Clk_pin, DIR = O, VEC = [1:0]
+ PORT fpga_0_DDR2_SDRAM_DDR2_Clk_n_pin = fpga_0_DDR2_SDRAM_DDR2_Clk_n_pin, DIR = O, VEC = [1:0]
+ PORT fpga_0_DDR2_SDRAM_DDR2_CE_pin = fpga_0_DDR2_SDRAM_DDR2_CE_pin, DIR = O, VEC = [1:0]
+ PORT fpga_0_DDR2_SDRAM_DDR2_CS_n_pin = fpga_0_DDR2_SDRAM_DDR2_CS_n_pin, DIR = O, VEC = [1:0]
+ PORT fpga_0_DDR2_SDRAM_DDR2_ODT_pin = fpga_0_DDR2_SDRAM_DDR2_ODT_pin, DIR = O, VEC = [1:0]
+ PORT fpga_0_DDR2_SDRAM_DDR2_RAS_n_pin = fpga_0_DDR2_SDRAM_DDR2_RAS_n_pin, DIR = O
+ PORT fpga_0_DDR2_SDRAM_DDR2_CAS_n_pin = fpga_0_DDR2_SDRAM_DDR2_CAS_n_pin, DIR = O
+ PORT fpga_0_DDR2_SDRAM_DDR2_WE_n_pin = fpga_0_DDR2_SDRAM_DDR2_WE_n_pin, DIR = O
+ PORT fpga_0_DDR2_SDRAM_DDR2_BankAddr_pin = fpga_0_DDR2_SDRAM_DDR2_BankAddr_pin, DIR = O, VEC = [1:0]
+ PORT fpga_0_DDR2_SDRAM_DDR2_Addr_pin = fpga_0_DDR2_SDRAM_DDR2_Addr_pin, DIR = O, VEC = [12:0]
+ PORT fpga_0_DDR2_SDRAM_DDR2_DQ_pin = fpga_0_DDR2_SDRAM_DDR2_DQ_pin, DIR = IO, VEC = [63:0]
+ PORT fpga_0_DDR2_SDRAM_DDR2_DM_pin = fpga_0_DDR2_SDRAM_DDR2_DM_pin, DIR = O, VEC = [7:0]
+ PORT fpga_0_DDR2_SDRAM_DDR2_DQS_pin = fpga_0_DDR2_SDRAM_DDR2_DQS_pin, DIR = IO, VEC = [7:0]
+ PORT fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin = fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin, DIR = IO, VEC = [7:0]
+ PORT fpga_0_Hard_Ethernet_MAC_TemacPhy_RST_n_pin = fpga_0_Hard_Ethernet_MAC_TemacPhy_RST_n_pin, DIR = O
+ PORT fpga_0_Hard_Ethernet_MAC_MII_TX_CLK_0_pin = fpga_0_Hard_Ethernet_MAC_MII_TX_CLK_0_pin, DIR = I
+ PORT fpga_0_Hard_Ethernet_MAC_GMII_TXD_0_pin = fpga_0_Hard_Ethernet_MAC_GMII_TXD_0_pin, DIR = O, VEC = [7:0]
+ PORT fpga_0_Hard_Ethernet_MAC_GMII_TX_EN_0_pin = fpga_0_Hard_Ethernet_MAC_GMII_TX_EN_0_pin, DIR = O
+ PORT fpga_0_Hard_Ethernet_MAC_GMII_TX_ER_0_pin = fpga_0_Hard_Ethernet_MAC_GMII_TX_ER_0_pin, DIR = O
+ PORT fpga_0_Hard_Ethernet_MAC_GMII_TX_CLK_0_pin = fpga_0_Hard_Ethernet_MAC_GMII_TX_CLK_0_pin, DIR = O
+ PORT fpga_0_Hard_Ethernet_MAC_GMII_RXD_0_pin = fpga_0_Hard_Ethernet_MAC_GMII_RXD_0_pin, DIR = I, VEC = [7:0]
+ PORT fpga_0_Hard_Ethernet_MAC_GMII_RX_DV_0_pin = fpga_0_Hard_Ethernet_MAC_GMII_RX_DV_0_pin, DIR = I
+ PORT fpga_0_Hard_Ethernet_MAC_GMII_RX_ER_0_pin = fpga_0_Hard_Ethernet_MAC_GMII_RX_ER_0_pin, DIR = I
+ PORT fpga_0_Hard_Ethernet_MAC_GMII_RX_CLK_0_pin = fpga_0_Hard_Ethernet_MAC_GMII_RX_CLK_0_pin, DIR = I
+ PORT fpga_0_Hard_Ethernet_MAC_MDC_0_pin = fpga_0_Hard_Ethernet_MAC_MDC_0_pin, DIR = O
+ PORT fpga_0_Hard_Ethernet_MAC_MDIO_0_pin = fpga_0_Hard_Ethernet_MAC_MDIO_0_pin, DIR = IO
+ PORT fpga_0_Hard_Ethernet_MAC_PHY_MII_INT_pin = fpga_0_Hard_Ethernet_MAC_PHY_MII_INT_pin, DIR = I, SIGIS = INTERRUPT, SENSITIVITY = LEVEL_LOW, INTERRUPT_PRIORITY = MEDIUM
+ PORT fpga_0_clk_1_sys_clk_pin = CLK_S, DIR = I, SIGIS = CLK, CLK_FREQ = 100000000
+ PORT fpga_0_rst_1_sys_rst_pin = sys_rst_s, DIR = I, SIGIS = RST, RST_POLARITY = 0
+
+
+BEGIN microblaze
+ PARAMETER INSTANCE = microblaze_0
+ PARAMETER C_USE_BARREL = 1
+ PARAMETER C_DEBUG_ENABLED = 1
+ PARAMETER C_ICACHE_BASEADDR = 0x50000000
+ PARAMETER C_ICACHE_HIGHADDR = 0x5fffffff
+ PARAMETER C_CACHE_BYTE_SIZE = 16384
+ PARAMETER C_ICACHE_ALWAYS_USED = 1
+ PARAMETER C_ICACHE_LINE_LEN = 8
+ PARAMETER C_ICACHE_STREAMS = 1
+ PARAMETER C_ICACHE_VICTIMS = 8
+ PARAMETER C_DCACHE_BASEADDR = 0x50000000
+ PARAMETER C_DCACHE_HIGHADDR = 0x5fffffff
+ PARAMETER C_DCACHE_BYTE_SIZE = 16384
+ PARAMETER C_DCACHE_ALWAYS_USED = 1
+ PARAMETER HW_VER = 8.30.a
+ PARAMETER C_USE_ICACHE = 1
+ PARAMETER C_USE_DCACHE = 1
+ PARAMETER C_PVR = 2
+ PARAMETER C_USE_MMU = 3
+ PARAMETER C_MMU_ZONES = 2
+ PARAMETER C_USE_HW_MUL = 2
+ PARAMETER C_USE_DIV = 1
+ BUS_INTERFACE DLMB = dlmb
+ BUS_INTERFACE ILMB = ilmb
+ BUS_INTERFACE DPLB = mb_plb
+ BUS_INTERFACE IPLB = mb_plb
+ BUS_INTERFACE DXCL = microblaze_0_DXCL
+ BUS_INTERFACE IXCL = microblaze_0_IXCL
+ BUS_INTERFACE DEBUG = microblaze_0_mdm_bus
+ PORT MB_RESET = mb_reset
+ PORT INTERRUPT = microblaze_0_Interrupt
+END
+
+BEGIN plb_v46
+ PARAMETER INSTANCE = mb_plb
+ PARAMETER HW_VER = 1.05.a
+ PORT PLB_Clk = clk_100_0000MHzPLL0
+ PORT SYS_Rst = sys_bus_reset
+END
+
+BEGIN lmb_v10
+ PARAMETER INSTANCE = ilmb
+ PARAMETER HW_VER = 2.00.b
+ PORT LMB_Clk = clk_100_0000MHzPLL0
+ PORT SYS_Rst = sys_bus_reset
+END
+
+BEGIN lmb_v10
+ PARAMETER INSTANCE = dlmb
+ PARAMETER HW_VER = 2.00.b
+ PORT LMB_Clk = clk_100_0000MHzPLL0
+ PORT SYS_Rst = sys_bus_reset
+END
+
+BEGIN lmb_bram_if_cntlr
+ PARAMETER INSTANCE = dlmb_cntlr
+ PARAMETER HW_VER = 3.00.b
+ PARAMETER C_BASEADDR = 0x00000000
+ PARAMETER C_HIGHADDR = 0x0000ffff
+ BUS_INTERFACE SLMB = dlmb
+ BUS_INTERFACE BRAM_PORT = dlmb_port
+END
+
+BEGIN lmb_bram_if_cntlr
+ PARAMETER INSTANCE = ilmb_cntlr
+ PARAMETER HW_VER = 3.00.b
+ PARAMETER C_BASEADDR = 0x00000000
+ PARAMETER C_HIGHADDR = 0x0000ffff
+ BUS_INTERFACE SLMB = ilmb
+ BUS_INTERFACE BRAM_PORT = ilmb_port
+END
+
+BEGIN bram_block
+ PARAMETER INSTANCE = lmb_bram
+ PARAMETER HW_VER = 1.00.a
+ BUS_INTERFACE PORTA = ilmb_port
+ BUS_INTERFACE PORTB = dlmb_port
+END
+
+BEGIN xps_uartlite
+ PARAMETER INSTANCE = RS232_Uart_1
+ PARAMETER C_BAUDRATE = 9600
+ PARAMETER C_DATA_BITS = 8
+ PARAMETER C_USE_PARITY = 0
+ PARAMETER C_ODD_PARITY = 0
+ PARAMETER HW_VER = 1.02.a
+ PARAMETER C_BASEADDR = 0x84020000
+ PARAMETER C_HIGHADDR = 0x8402ffff
+ BUS_INTERFACE SPLB = mb_plb
+ PORT RX = fpga_0_RS232_Uart_1_RX_pin
+ PORT TX = fpga_0_RS232_Uart_1_TX_pin
+ PORT Interrupt = RS232_Uart_1_Interrupt
+END
+
+BEGIN xps_gpio
+ PARAMETER INSTANCE = LEDs_8Bit
+ PARAMETER C_ALL_INPUTS = 0
+ PARAMETER C_GPIO_WIDTH = 8
+ PARAMETER C_INTERRUPT_PRESENT = 0
+ PARAMETER C_IS_DUAL = 0
+ PARAMETER HW_VER = 2.00.a
+ PARAMETER C_BASEADDR = 0x81440000
+ PARAMETER C_HIGHADDR = 0x8144ffff
+ BUS_INTERFACE SPLB = mb_plb
+ PORT GPIO_IO = fpga_0_LEDs_8Bit_GPIO_IO_pin
+END
+
+BEGIN xps_gpio
+ PARAMETER INSTANCE = LEDs_Positions
+ PARAMETER C_ALL_INPUTS = 0
+ PARAMETER C_GPIO_WIDTH = 5
+ PARAMETER C_INTERRUPT_PRESENT = 0
+ PARAMETER C_IS_DUAL = 0
+ PARAMETER HW_VER = 2.00.a
+ PARAMETER C_BASEADDR = 0x81420000
+ PARAMETER C_HIGHADDR = 0x8142ffff
+ BUS_INTERFACE SPLB = mb_plb
+ PORT GPIO_IO = fpga_0_LEDs_Positions_GPIO_IO_pin
+END
+
+BEGIN xps_gpio
+ PARAMETER INSTANCE = Push_Buttons_5Bit
+ PARAMETER C_ALL_INPUTS = 1
+ PARAMETER C_GPIO_WIDTH = 5
+ PARAMETER C_INTERRUPT_PRESENT = 0
+ PARAMETER C_IS_DUAL = 0
+ PARAMETER HW_VER = 2.00.a
+ PARAMETER C_BASEADDR = 0x81400000
+ PARAMETER C_HIGHADDR = 0x8140ffff
+ BUS_INTERFACE SPLB = mb_plb
+ PORT GPIO_IO = fpga_0_Push_Buttons_5Bit_GPIO_IO_pin
+END
+
+BEGIN xps_gpio
+ PARAMETER INSTANCE = DIP_Switches_8Bit
+ PARAMETER C_ALL_INPUTS = 1
+ PARAMETER C_GPIO_WIDTH = 8
+ PARAMETER C_INTERRUPT_PRESENT = 0
+ PARAMETER C_IS_DUAL = 0
+ PARAMETER HW_VER = 2.00.a
+ PARAMETER C_BASEADDR = 0x81460000
+ PARAMETER C_HIGHADDR = 0x8146ffff
+ BUS_INTERFACE SPLB = mb_plb
+ PORT GPIO_IO = fpga_0_DIP_Switches_8Bit_GPIO_IO_pin
+END
+
+BEGIN xps_iic
+ PARAMETER INSTANCE = IIC_EEPROM
+ PARAMETER C_IIC_FREQ = 100000
+ PARAMETER C_TEN_BIT_ADR = 0
+ PARAMETER HW_VER = 2.03.a
+ PARAMETER C_BASEADDR = 0x81600000
+ PARAMETER C_HIGHADDR = 0x8160ffff
+ BUS_INTERFACE SPLB = mb_plb
+ PORT IIC2INTC_Irpt = IIC_EEPROM_IIC2INTC_Irpt
+ PORT Sda = fpga_0_IIC_EEPROM_Sda_pin
+ PORT Scl = fpga_0_IIC_EEPROM_Scl_pin
+END
+
+BEGIN mpmc
+ PARAMETER INSTANCE = DDR2_SDRAM
+ PARAMETER C_NUM_PORTS = 3
+ PARAMETER C_NUM_IDELAYCTRL = 3
+ PARAMETER C_IDELAYCTRL_LOC = IDELAYCTRL_X0Y5-IDELAYCTRL_X0Y1-IDELAYCTRL_X0Y0
+ PARAMETER C_MEM_PARTNO = MT4HTF3264H-667
+ PARAMETER C_MEM_ODT_TYPE = 1
+ PARAMETER C_MEM_CLK_WIDTH = 2
+ PARAMETER C_MEM_ODT_WIDTH = 2
+ PARAMETER C_MEM_CE_WIDTH = 2
+ PARAMETER C_MEM_CS_N_WIDTH = 2
+ PARAMETER C_DDR2_DQSN_ENABLE = 1
+ PARAMETER C_PIM0_BASETYPE = 1
+ PARAMETER C_PIM1_BASETYPE = 1
+ PARAMETER C_PIM2_BASETYPE = 3
+ PARAMETER C_SDMA2_PI2LL_CLK_RATIO = 2
+ PARAMETER HW_VER = 6.05.a
+ PARAMETER C_MPMC_BASEADDR = 0x50000000
+ PARAMETER C_MPMC_HIGHADDR = 0x5FFFFFFF
+ PARAMETER C_SDMA_CTRL_BASEADDR = 0x84600000
+ PARAMETER C_SDMA_CTRL_HIGHADDR = 0x8460FFFF
+ BUS_INTERFACE XCL0 = microblaze_0_IXCL
+ BUS_INTERFACE XCL1 = microblaze_0_DXCL
+ BUS_INTERFACE SDMA_CTRL2 = mb_plb
+ BUS_INTERFACE SDMA_LL2 = Hard_Ethernet_MAC_LLINK0
+ PORT SDMA2_Clk = clk_100_0000MHzPLL0
+ PORT SDMA2_Rx_IntOut = DDR2_SDRAM_SDMA2_Rx_IntOut
+ PORT SDMA2_Tx_IntOut = DDR2_SDRAM_SDMA2_Tx_IntOut
+ PORT MPMC_Clk0 = clk_200_0000MHzPLL0
+ PORT MPMC_Clk0_DIV2 = clk_100_0000MHzPLL0
+ PORT MPMC_Clk90 = clk_200_0000MHz90PLL0
+ PORT MPMC_Clk_200MHz = clk_200_0000MHzPLL0
+ PORT MPMC_Rst = sys_periph_reset
+ PORT DDR2_Clk = fpga_0_DDR2_SDRAM_DDR2_Clk_pin
+ PORT DDR2_Clk_n = fpga_0_DDR2_SDRAM_DDR2_Clk_n_pin
+ PORT DDR2_CE = fpga_0_DDR2_SDRAM_DDR2_CE_pin
+ PORT DDR2_CS_n = fpga_0_DDR2_SDRAM_DDR2_CS_n_pin
+ PORT DDR2_ODT = fpga_0_DDR2_SDRAM_DDR2_ODT_pin
+ PORT DDR2_RAS_n = fpga_0_DDR2_SDRAM_DDR2_RAS_n_pin
+ PORT DDR2_CAS_n = fpga_0_DDR2_SDRAM_DDR2_CAS_n_pin
+ PORT DDR2_WE_n = fpga_0_DDR2_SDRAM_DDR2_WE_n_pin
+ PORT DDR2_BankAddr = fpga_0_DDR2_SDRAM_DDR2_BankAddr_pin
+ PORT DDR2_Addr = fpga_0_DDR2_SDRAM_DDR2_Addr_pin
+ PORT DDR2_DQ = fpga_0_DDR2_SDRAM_DDR2_DQ_pin
+ PORT DDR2_DM = fpga_0_DDR2_SDRAM_DDR2_DM_pin
+ PORT DDR2_DQS = fpga_0_DDR2_SDRAM_DDR2_DQS_pin
+ PORT DDR2_DQS_n = fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin
+END
+
+BEGIN xps_ll_temac
+ PARAMETER INSTANCE = Hard_Ethernet_MAC
+ PARAMETER C_NUM_IDELAYCTRL = 2
+ PARAMETER C_IDELAYCTRL_LOC = IDELAYCTRL_X0Y4-IDELAYCTRL_X1Y5
+ PARAMETER C_FAMILY = virtex5
+ PARAMETER C_PHY_TYPE = 1
+ PARAMETER C_TEMAC1_ENABLED = 0
+ PARAMETER C_BUS2CORE_CLK_RATIO = 1
+ PARAMETER C_TEMAC_TYPE = 0
+ PARAMETER C_TEMAC0_PHYADDR = 0b00001
+ PARAMETER HW_VER = 2.03.a
+ PARAMETER C_BASEADDR = 0x87000000
+ PARAMETER C_HIGHADDR = 0x8707ffff
+ PARAMETER C_TEMAC0_TXCSUM = 1
+ PARAMETER C_TEMAC0_RXCSUM = 1
+ BUS_INTERFACE SPLB = mb_plb
+ BUS_INTERFACE LLINK0 = Hard_Ethernet_MAC_LLINK0
+ PORT TemacIntc0_Irpt = Hard_Ethernet_MAC_TemacIntc0_Irpt
+ PORT TemacPhy_RST_n = fpga_0_Hard_Ethernet_MAC_TemacPhy_RST_n_pin
+ PORT GTX_CLK_0 = clk_125_0000MHz
+ PORT REFCLK = clk_200_0000MHzPLL0
+ PORT LlinkTemac0_CLK = clk_100_0000MHzPLL0
+ PORT MII_TX_CLK_0 = fpga_0_Hard_Ethernet_MAC_MII_TX_CLK_0_pin
+ PORT GMII_TXD_0 = fpga_0_Hard_Ethernet_MAC_GMII_TXD_0_pin
+ PORT GMII_TX_EN_0 = fpga_0_Hard_Ethernet_MAC_GMII_TX_EN_0_pin
+ PORT GMII_TX_ER_0 = fpga_0_Hard_Ethernet_MAC_GMII_TX_ER_0_pin
+ PORT GMII_TX_CLK_0 = fpga_0_Hard_Ethernet_MAC_GMII_TX_CLK_0_pin
+ PORT GMII_RXD_0 = fpga_0_Hard_Ethernet_MAC_GMII_RXD_0_pin
+ PORT GMII_RX_DV_0 = fpga_0_Hard_Ethernet_MAC_GMII_RX_DV_0_pin
+ PORT GMII_RX_ER_0 = fpga_0_Hard_Ethernet_MAC_GMII_RX_ER_0_pin
+ PORT GMII_RX_CLK_0 = fpga_0_Hard_Ethernet_MAC_GMII_RX_CLK_0_pin
+ PORT MDC_0 = fpga_0_Hard_Ethernet_MAC_MDC_0_pin
+ PORT MDIO_0 = fpga_0_Hard_Ethernet_MAC_MDIO_0_pin
+END
+
+BEGIN xps_timer
+ PARAMETER INSTANCE = xps_timer_0
+ PARAMETER C_COUNT_WIDTH = 32
+ PARAMETER C_ONE_TIMER_ONLY = 0
+ PARAMETER HW_VER = 1.02.a
+ PARAMETER C_BASEADDR = 0x83c00000
+ PARAMETER C_HIGHADDR = 0x83c0ffff
+ BUS_INTERFACE SPLB = mb_plb
+ PORT Interrupt = xps_timer_0_Interrupt
+END
+
+BEGIN clock_generator
+ PARAMETER INSTANCE = clock_generator_0
+ PARAMETER C_CLKIN_FREQ = 100000000
+ PARAMETER C_CLKOUT0_FREQ = 100000000
+ PARAMETER C_CLKOUT0_PHASE = 0
+ PARAMETER C_CLKOUT0_GROUP = PLL0
+ PARAMETER C_CLKOUT0_BUF = TRUE
+ PARAMETER C_CLKOUT1_FREQ = 125000000
+ PARAMETER C_CLKOUT1_PHASE = 0
+ PARAMETER C_CLKOUT1_GROUP = NONE
+ PARAMETER C_CLKOUT1_BUF = TRUE
+ PARAMETER C_CLKOUT2_FREQ = 200000000
+ PARAMETER C_CLKOUT2_PHASE = 90
+ PARAMETER C_CLKOUT2_GROUP = PLL0
+ PARAMETER C_CLKOUT2_BUF = TRUE
+ PARAMETER C_CLKOUT3_FREQ = 200000000
+ PARAMETER C_CLKOUT3_PHASE = 0
+ PARAMETER C_CLKOUT3_GROUP = PLL0
+ PARAMETER C_CLKOUT3_BUF = TRUE
+ PARAMETER C_EXT_RESET_HIGH = 0
+ PARAMETER HW_VER = 4.03.a
+ PORT CLKIN = CLK_S
+ PORT CLKOUT0 = clk_100_0000MHzPLL0
+ PORT CLKOUT1 = clk_125_0000MHz
+ PORT CLKOUT2 = clk_200_0000MHz90PLL0
+ PORT CLKOUT3 = clk_200_0000MHzPLL0
+ PORT RST = sys_rst_s
+ PORT LOCKED = Dcm_all_locked
+END
+
+BEGIN mdm
+ PARAMETER INSTANCE = mdm_0
+ PARAMETER C_MB_DBG_PORTS = 1
+ PARAMETER C_USE_UART = 1
+ PARAMETER HW_VER = 2.00.b
+ PARAMETER C_BASEADDR = 0x84400000
+ PARAMETER C_HIGHADDR = 0x8440ffff
+ BUS_INTERFACE SPLB = mb_plb
+ BUS_INTERFACE MBDEBUG_0 = microblaze_0_mdm_bus
+ PORT Debug_SYS_Rst = Debug_SYS_Rst
+END
+
+BEGIN proc_sys_reset
+ PARAMETER INSTANCE = proc_sys_reset_0
+ PARAMETER C_EXT_RESET_HIGH = 0
+ PARAMETER HW_VER = 3.00.a
+ PORT Slowest_sync_clk = clk_100_0000MHzPLL0
+ PORT Ext_Reset_In = sys_rst_s
+ PORT MB_Debug_Sys_Rst = Debug_SYS_Rst
+ PORT Dcm_locked = Dcm_all_locked
+ PORT MB_Reset = mb_reset
+ PORT Bus_Struct_Reset = sys_bus_reset
+ PORT Peripheral_Reset = sys_periph_reset
+END
+
+BEGIN xps_intc
+ PARAMETER INSTANCE = xps_intc_0
+ PARAMETER HW_VER = 2.01.a
+ PARAMETER C_BASEADDR = 0x81800000
+ PARAMETER C_HIGHADDR = 0x8180ffff
+ BUS_INTERFACE SPLB = mb_plb
+ PORT Intr = RS232_Uart_1_Interrupt & IIC_EEPROM_IIC2INTC_Irpt & Hard_Ethernet_MAC_TemacIntc0_Irpt & xps_timer_0_Interrupt & DDR2_SDRAM_SDMA2_Rx_IntOut & DDR2_SDRAM_SDMA2_Tx_IntOut & fpga_0_Hard_Ethernet_MAC_PHY_MII_INT_pin
+ PORT Irq = microblaze_0_Interrupt
+END
+\end{verbatim}
+
 \section{User Constraint File}
 
+\begin{verbatim}
+#  XUPV5-LX110T Evaluation Platform
+Net fpga_0_RS232_Uart_1_RX_pin LOC = AG15  |  IOSTANDARD=LVCMOS33;
+Net fpga_0_RS232_Uart_1_TX_pin LOC = AG20  |  IOSTANDARD=LVCMOS33;
+Net fpga_0_LEDs_8Bit_GPIO_IO_pin<0> LOC = AE24  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_LEDs_8Bit_GPIO_IO_pin<1> LOC = AD24  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_LEDs_8Bit_GPIO_IO_pin<2> LOC = AD25  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_LEDs_8Bit_GPIO_IO_pin<3> LOC = G16  |  IOSTANDARD=LVCMOS25  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_LEDs_8Bit_GPIO_IO_pin<4> LOC = AD26  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_LEDs_8Bit_GPIO_IO_pin<5> LOC = G15  |  IOSTANDARD=LVCMOS25  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_LEDs_8Bit_GPIO_IO_pin<6> LOC = L18  |  IOSTANDARD=LVCMOS25  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_LEDs_8Bit_GPIO_IO_pin<7> LOC = H18  |  IOSTANDARD=LVCMOS25  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_LEDs_Positions_GPIO_IO_pin<0> LOC=E8  |  IOSTANDARD=LVCMOS33  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_LEDs_Positions_GPIO_IO_pin<1> LOC=AF23  |  IOSTANDARD=LVCMOS33  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_LEDs_Positions_GPIO_IO_pin<2> LOC=AG12  |  IOSTANDARD=LVCMOS33  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_LEDs_Positions_GPIO_IO_pin<3> LOC=AG23  |  IOSTANDARD=LVCMOS33  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_LEDs_Positions_GPIO_IO_pin<4> LOC=AF13  |  IOSTANDARD=LVCMOS33  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_Push_Buttons_5Bit_GPIO_IO_pin<0> LOC = AJ6  |  IOSTANDARD=LVCMOS33  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_Push_Buttons_5Bit_GPIO_IO_pin<1> LOC = AJ7  |  IOSTANDARD=LVCMOS33  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_Push_Buttons_5Bit_GPIO_IO_pin<2> LOC = V8  |  IOSTANDARD=LVCMOS33  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_Push_Buttons_5Bit_GPIO_IO_pin<3> LOC = AK7  |  IOSTANDARD=LVCMOS33  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_Push_Buttons_5Bit_GPIO_IO_pin<4> LOC = U8  |  IOSTANDARD=LVCMOS33  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<0> LOC=U25  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<1> LOC=AG27  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<2> LOC=AF25  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<3> LOC=AF26  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<4> LOC=AE27  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<5> LOC=AE26  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<6> LOC=AC25  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_DIP_Switches_8Bit_GPIO_IO_pin<7> LOC=AC24  |  IOSTANDARD=LVCMOS18  |  PULLDOWN  |  SLEW=SLOW  |  DRIVE=2;
+Net fpga_0_IIC_EEPROM_Sda_pin LOC=F8  |  SLEW = SLOW  |  DRIVE = 6  |  IOSTANDARD=LVCMOS33;
+Net fpga_0_IIC_EEPROM_Scl_pin LOC=F9  |  SLEW = SLOW  |  DRIVE = 6  |  IOSTANDARD=LVCMOS33;
+Net fpga_0_DDR2_SDRAM_DDR2_Clk_pin<0> LOC=AK29  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Clk_pin<1> LOC=E28  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Clk_n_pin<0> LOC=AJ29  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Clk_n_pin<1> LOC=F28  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_CE_pin<0> LOC=T28  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_CE_pin<1> LOC=U30  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_CS_n_pin<0> LOC=L29  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_CS_n_pin<1> LOC=J29  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_ODT_pin<0> LOC=F31  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_ODT_pin<1> LOC=F30  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_RAS_n_pin LOC=H30  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_CAS_n_pin LOC=E31  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_WE_n_pin LOC=K29  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_BankAddr_pin<0> LOC=G31  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_BankAddr_pin<1> LOC=J30  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Addr_pin<0> LOC=L30  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Addr_pin<1> LOC=M30  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Addr_pin<2> LOC=N29  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Addr_pin<3> LOC=P29  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Addr_pin<4> LOC=K31  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Addr_pin<5> LOC=L31  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Addr_pin<6> LOC=P31  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Addr_pin<7> LOC=P30  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Addr_pin<8> LOC=M31  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Addr_pin<9> LOC=R28  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Addr_pin<10> LOC=J31  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Addr_pin<11> LOC=R29  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_Addr_pin<12> LOC=T31  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<0> LOC=AF30  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<1> LOC=AK31  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<2> LOC=AF31  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<3> LOC=AD30  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<4> LOC=AJ30  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<5> LOC=AF29  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<6> LOC=AD29  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<7> LOC=AE29  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<8> LOC=AH27  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<9> LOC=AF28  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<10> LOC=AH28  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<11> LOC=AA28  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<12> LOC=AG25  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<13> LOC=AJ26  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<14> LOC=AG28  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<15> LOC=AB28  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<16> LOC=AC28  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<17> LOC=AB25  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<18> LOC=AC27  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<19> LOC=AA26  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<20> LOC=AB26  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<21> LOC=AA24  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<22> LOC=AB27  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<23> LOC=AA25  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<24> LOC=AC29  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<25> LOC=AB30  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<26> LOC=W31  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<27> LOC=V30  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<28> LOC=AC30  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<29> LOC=W29  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<30> LOC=V27  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<31> LOC=W27  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<32> LOC=V29  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<33> LOC=Y27  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<34> LOC=Y26  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<35> LOC=W24  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<36> LOC=V28  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<37> LOC=W25  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<38> LOC=W26  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<39> LOC=V24  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<40> LOC=R24  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<41> LOC=P25  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<42> LOC=N24  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<43> LOC=P26  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<44> LOC=T24  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<45> LOC=N25  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<46> LOC=P27  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<47> LOC=N28  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<48> LOC=M28  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<49> LOC=L28  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<50> LOC=F25  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<51> LOC=H25  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<52> LOC=K27  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<53> LOC=K28  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<54> LOC=H24  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<55> LOC=G26  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<56> LOC=G25  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<57> LOC=M26  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<58> LOC=J24  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<59> LOC=L26  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<60> LOC=J27  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<61> LOC=M25  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<62> LOC=L25  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQ_pin<63> LOC=L24  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DM_pin<0> LOC=AJ31  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DM_pin<1> LOC=AE28  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DM_pin<2> LOC=Y24  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DM_pin<3> LOC=Y31  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DM_pin<4> LOC=V25  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DM_pin<5> LOC=P24  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DM_pin<6> LOC=F26  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DM_pin<7> LOC=J25  |  IOSTANDARD = SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_pin<0> LOC=AA29  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_pin<1> LOC=AK28  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_pin<2> LOC=AK26  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_pin<3> LOC=AB31  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_pin<4> LOC=Y28  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_pin<5> LOC=E26  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_pin<6> LOC=H28  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_pin<7> LOC=G27  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<0> LOC=AA30  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<1> LOC=AK27  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<2> LOC=AJ27  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<3> LOC=AA31  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<4> LOC=Y29  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<5> LOC=E27  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<6> LOC=G28  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_DDR2_SDRAM_DDR2_DQS_n_pin<7> LOC=H27  |  IOSTANDARD = DIFF_SSTL18_II;
+Net fpga_0_Hard_Ethernet_MAC_TemacPhy_RST_n_pin LOC=J14  |  IOSTANDARD = LVCMOS25  |  TIG;
+Net fpga_0_Hard_Ethernet_MAC_MII_TX_CLK_0_pin LOC = K17  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_GMII_TXD_0_pin<0> LOC=AF11  |  IOSTANDARD =LVDCI_33;
+Net fpga_0_Hard_Ethernet_MAC_GMII_TXD_0_pin<1> LOC=AE11  |  IOSTANDARD = LVDCI_33;
+Net fpga_0_Hard_Ethernet_MAC_GMII_TXD_0_pin<2> LOC=AH9  |  IOSTANDARD = LVDCI_33;
+Net fpga_0_Hard_Ethernet_MAC_GMII_TXD_0_pin<3> LOC=AH10  |  IOSTANDARD = LVDCI_33;
+Net fpga_0_Hard_Ethernet_MAC_GMII_TXD_0_pin<4> LOC=AG8  |  IOSTANDARD = LVDCI_33;
+Net fpga_0_Hard_Ethernet_MAC_GMII_TXD_0_pin<5> LOC=AH8  |  IOSTANDARD = LVDCI_33;
+Net fpga_0_Hard_Ethernet_MAC_GMII_TXD_0_pin<6> LOC=AG10  |  IOSTANDARD = LVDCI_33;
+Net fpga_0_Hard_Ethernet_MAC_GMII_TXD_0_pin<7> LOC=AG11  |  IOSTANDARD = LVDCI_33;
+Net fpga_0_Hard_Ethernet_MAC_GMII_TX_EN_0_pin LOC=AJ10  |  IOSTANDARD = LVDCI_33;
+Net fpga_0_Hard_Ethernet_MAC_GMII_TX_ER_0_pin LOC=AJ9  |  IOSTANDARD =LVDCI_33;
+Net fpga_0_Hard_Ethernet_MAC_GMII_TX_CLK_0_pin LOC=J16  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_GMII_RXD_0_pin<0> LOC=A33  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_GMII_RXD_0_pin<1> LOC=B33  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_GMII_RXD_0_pin<2> LOC=C33  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_GMII_RXD_0_pin<3> LOC=C32  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_GMII_RXD_0_pin<4> LOC=D32  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_GMII_RXD_0_pin<5> LOC=C34  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_GMII_RXD_0_pin<6> LOC=D34  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_GMII_RXD_0_pin<7> LOC=F33  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_GMII_RX_DV_0_pin LOC=E32  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_GMII_RX_ER_0_pin LOC=E33  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_GMII_RX_CLK_0_pin LOC=H17  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_MDC_0_pin LOC=H19  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_MDIO_0_pin LOC=H13  |  IOSTANDARD = LVCMOS25;
+Net fpga_0_Hard_Ethernet_MAC_PHY_MII_INT_pin LOC=H20  |  IOSTANDARD = LVCMOS25  |  TIG;
+Net fpga_0_clk_1_sys_clk_pin TNM_NET = sys_clk_pin;
+TIMESPEC TS_sys_clk_pin = PERIOD sys_clk_pin 100000 kHz;
+Net fpga_0_clk_1_sys_clk_pin LOC = AH15  |  IOSTANDARD=LVCMOS33;
+Net fpga_0_rst_1_sys_rst_pin TIG;
+Net fpga_0_rst_1_sys_rst_pin LOC = E9  |  IOSTANDARD=LVCMOS33  |  PULLUP;
 
+
+###### DDR2_SDRAM
+###############################################################################
+# Define multicycle paths - these paths may take longer because additional
+# time allowed for logic to settle in calibration/initialization FSM
+###############################################################################
+
+
+# MUX Select for either rising/falling CLK0 for 2nd stage read capture
+INST "*/u_phy_calib_0/gen_rd_data_sel*.u_ff_rd_data_sel" TNM = "TNM_RD_DATA_SEL";
+TIMESPEC "TS_MC_RD_DATA_SEL" = FROM "TNM_RD_DATA_SEL" TO FFS
+  "TS_sys_clk_pin" * 2;
+# MUX select for read data - optional delay on data to account for byte skews
+#INST "*/u_usr_rd_0/gen_rden_sel_mux*.u_ff_rden_sel_mux" TNM = "TNM_RDEN_SEL_MUX";
+#TIMESPEC "TS_MC_RDEN_SEL_MUX" = FROM "TNM_RDEN_SEL_MUX" TO FFS   "TS_sys_clk_pin" * 2;
+# Calibration/Initialization complete status flag (for PHY logic only)
+INST "*/u_phy_init_0/u_ff_phy_init_data_sel" TNM = "TNM_PHY_INIT_DATA_SEL";
+TIMESPEC "TS_MC_PHY_INIT_DATA_SEL_0" = FROM "TNM_PHY_INIT_DATA_SEL" TO
+ FFS "TS_sys_clk_pin" * 2;
+TIMESPEC "TS_MC_PHY_INIT_DATA_SEL_90" = FROM "TNM_PHY_INIT_DATA_SEL" TO
+  FFS "TS_sys_clk_pin" * 2;
+# Select (address) bits for SRL32 shift registers used in stage3/stage4
+# calibration
+INST "*/u_phy_calib_0/gen_gate_dly*.u_ff_gate_dly" TNM = "TNM_GATE_DLY";
+TIMESPEC "TS_MC_GATE_DLY" = FROM "TNM_GATE_DLY" TO FFS "TS_sys_clk_pin" * 2;
+INST "*/u_phy_calib_0/gen_rden_dly*.u_ff_rden_dly" TNM = "TNM_RDEN_DLY";
+TIMESPEC "TS_MC_RDEN_DLY" = FROM "TNM_RDEN_DLY" TO FFS "TS_sys_clk_pin" * 2;
+INST "*/u_phy_calib_0/gen_cal_rden_dly*.u_ff_cal_rden_dly"
+  TNM = "TNM_CAL_RDEN_DLY";
+TIMESPEC "TS_MC_CAL_RDEN_DLY" = FROM "TNM_CAL_RDEN_DLY" TO FFS
+  "TS_sys_clk_pin" * 2;
+
+###############################################################################
+# DQS Read Postamble Glitch Squelch circuit related constraints
+###############################################################################
+
+###############################################################################
+# LOC placement of DQS-squelch related IDDR and IDELAY elements
+# Each circuit can be located at any of the following locations:
+#  1. Ununsed "N"-side of DQS diff pair I/O
+#  2. DM data mask (output only, input side is free for use)
+#  3. Any output-only site
+###############################################################################
+
+INST "*/gen_dqs[0].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y96";
+INST "*/gen_dqs[0].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y96";
+INST "*/gen_dqs[1].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y58";
+INST "*/gen_dqs[1].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y58";
+INST "*/gen_dqs[2].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y62";
+INST "*/gen_dqs[2].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y62";
+INST "*/gen_dqs[3].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y100";
+INST "*/gen_dqs[3].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y100";
+INST "*/gen_dqs[4].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y102";
+INST "*/gen_dqs[4].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y102";
+INST "*/gen_dqs[5].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y256";
+INST "*/gen_dqs[5].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y256";
+INST "*/gen_dqs[6].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y260";
+INST "*/gen_dqs[6].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y260";
+INST "*/gen_dqs[7].u_iob_dqs/u_iddr_dq_ce"  LOC = "ILOGIC_X0Y262";
+INST "*/gen_dqs[7].u_iob_dqs/u_iodelay_dq_ce"  LOC = "IODELAY_X0Y262";
+
+INST "DDR2_SDRAM/DDR2_SDRAM/gen_no_iodelay_grp.gen_instantiate_idelayctrls[1].idelayctrl0" LOC = IDELAYCTRL_X0Y2;
+INST "DDR2_SDRAM/DDR2_SDRAM/gen_no_iodelay_grp.gen_instantiate_idelayctrls[0].idelayctrl0" LOC = IDELAYCTRL_X0Y6;
+INST "DDR2_SDRAM/DDR2_SDRAM/gen_no_iodelay_grp.gen_instantiate_idelayctrls[2].idelayctrl0" LOC = IDELAYCTRL_X0Y1;
+
+###############################################################################
+# LOC and timing constraints for flop driving DQS CE enable signal
+# from fabric logic. Even though the absolute delay on this path is
+# calibrated out (when synchronizing this output to DQS), the delay
+# should still be kept as low as possible to reduce post-calibration
+# voltage/temp variations - these are roughly proportional to the
+# absolute delay of the path
+###############################################################################
+
+INST "*/u_phy_calib_0/gen_gate[0].u_en_dqs_ff"  LOC = SLICE_X0Y48;
+INST "*/u_phy_calib_0/gen_gate[1].u_en_dqs_ff"  LOC = SLICE_X0Y29;
+INST "*/u_phy_calib_0/gen_gate[2].u_en_dqs_ff"  LOC = SLICE_X0Y31;
+INST "*/u_phy_calib_0/gen_gate[3].u_en_dqs_ff"  LOC = SLICE_X0Y50;
+INST "*/u_phy_calib_0/gen_gate[4].u_en_dqs_ff"  LOC = SLICE_X0Y51;
+INST "*/u_phy_calib_0/gen_gate[5].u_en_dqs_ff"  LOC = SLICE_X0Y128;
+INST "*/u_phy_calib_0/gen_gate[6].u_en_dqs_ff"  LOC = SLICE_X0Y130;
+INST "*/u_phy_calib_0/gen_gate[7].u_en_dqs_ff"  LOC = SLICE_X0Y131;
+
+# Control for DQS gate - from fabric flop. Prevent "runaway" delay -
+# two parts to this path: (1) from fabric flop to IDELAY, (2) from
+# IDELAY to asynchronous reset of IDDR that drives the DQ CE's
+# A single number is used for all speed grades - value based on 333MHz.
+# This can be relaxed for lower frequencies.
+NET "*/u_phy_io_0/en_dqs*" MAXDELAY = 600 ps;
+NET "*/u_phy_io_0/gen_dqs*.u_iob_dqs/en_dqs_sync" MAXDELAY = 850 ps;
+
+###############################################################################
+# "Half-cycle" path constraint from IDDR to CE pin for all DQ IDDR's
+# for DQS Read Postamble Glitch Squelch circuit
+###############################################################################
+
+# Max delay from output of IDDR to CE input of DQ IDDRs = tRPST + some slack
+#  where slack account for rise-time of DQS on board. For now assume slack = 
+#  0.400ns (based on initial SPICE simulations, assumes use of ODT), so 
+#  time = 0.4*Tcyc + 0.40ns = 1.6ns @333MHz
+INST "*/gen_dqs[*].u_iob_dqs/u_iddr_dq_ce" TNM = "TNM_DQ_CE_IDDR";
+INST "*/gen_dq[*].u_iob_dq/gen_stg2_*.u_iddr_dq" TNM = "TNM_DQS_FLOPS";
+TIMESPEC "TS_DQ_CE" = FROM "TNM_DQ_CE_IDDR" TO "TNM_DQS_FLOPS" 1.9 ns;
+
+###############################################################################
+# MIG 2.2: Prevent unrelated logic from being packed into any slices used
+#          by read data capture RPM's - if unrelated logic gets packed into
+#          these slices, it could cause the DIRT strings that define the
+#          IDDR -> fabric flop routing to become unroutable during PAR stage
+#          (unrelated logic may require routing resources required by the
+#          DIRT strings - MAP does not currently take into account DIRT
+#          strings when placing logic
+###############################################################################
+ 
+# AREA_GROUP "DDR_CAPTURE_FFS" GROUP = CLOSED;
+
+################################################################################
+
+#INST "*/gen_dq[0].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y22;            #  AF30      X0Y22    *
+#INST "*/gen_dq[1].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y23;            #  AK31      X0Y23    
+#INST "*/gen_dq[2].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y25;            #  AF31      X0Y25    
+#INST "*/gen_dq[3].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y26;            #  AD30      X0Y26    
+#INST "*/gen_dq[4].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y21;            #  AJ30      X0Y21    
+#INST "*/gen_dq[5].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y22;            #  AF29      X0Y22    ***
+#INST "*/gen_dq[6].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y24;            #  AD29      X0Y24    
+#INST "*/gen_dq[7].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y24;            #  AE29      X0Y24    
+#INST "*/gen_dq[8].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y8;             #  AH27      X0Y8     ***
+#INST "*/gen_dq[9].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y12;            #  AF28      X0Y12    
+#INST "*/gen_dq[10].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y13;           #  AH28      X0Y13    
+#INST "*/gen_dq[11].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y14;           #  AA28      X0Y14    
+#INST "*/gen_dq[12].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y6;            #  AG25      X0Y6     
+#INST "*/gen_dq[13].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y8;            #  AJ26      X0Y8     *
+#INST "*/gen_dq[14].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y13;           #  AG28      X0Y13    
+#INST "*/gen_dq[15].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y14;           #  AB28      X0Y14    
+#INST "*/gen_dq[16].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y15;           #  AC28      X0Y15    
+#INST "*/gen_dq[17].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y16;           #  AB25      X0Y16    ***
+#INST "*/gen_dq[18].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y18;           #  AC27      X0Y18    
+#INST "*/gen_dq[19].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y19;           #  AA26      X0Y19    
+#INST "*/gen_dq[20].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y16;           #  AB26      X0Y16    *
+#INST "*/gen_dq[21].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y17;           #  AA24      X0Y17    
+#INST "*/gen_dq[22].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y18;           #  AB27      X0Y18    
+#INST "*/gen_dq[23].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y19;           #  AA25      X0Y19    
+#INST "*/gen_dq[24].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y26;           #  AC29      X0Y26    
+#INST "*/gen_dq[25].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y29;           #  AB30      X0Y29    ***
+#INST "*/gen_dq[26].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y33;           #  W31       X0Y33    
+#INST "*/gen_dq[27].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y35;           #  V30       X0Y35    
+#INST "*/gen_dq[28].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y29;           #  AC30      X0Y29    *
+#INST "*/gen_dq[29].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y32;           #  W29       X0Y32    
+#INST "*/gen_dq[30].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y34;           #  V27       X0Y34    ***
+#INST "*/gen_dq[31].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y36;           #  W27       X0Y36    
+#INST "*/gen_dq[32].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y32;           #  V29       X0Y32    
+#INST "*/gen_dq[33].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y36;           #  Y27       X0Y36    
+#INST "*/gen_dq[34].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y38;           #  Y26       X0Y38    
+#INST "*/gen_dq[35].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y39;           #  W24       X0Y39    
+#INST "*/gen_dq[36].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y34;           #  V28       X0Y34   * 
+#INST "*/gen_dq[37].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y37;           #  W25       X0Y37    
+#INST "*/gen_dq[38].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y38;           #  W26       X0Y38    
+#INST "*/gen_dq[39].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y39;           #  V24       X0Y39    
+#INST "*/gen_dq[40].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y100;          #  R24       X0Y100   
+#INST "*/gen_dq[41].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y101;          #  P25       X0Y101   
+#INST "*/gen_dq[42].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y102;          #  N24       X0Y102   
+#INST "*/gen_dq[43].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y103;          #  P26       X0Y103   
+#INST "*/gen_dq[44].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y100;          #  T24       X0Y100   
+#INST "*/gen_dq[45].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y101;          #  N25       X0Y101   
+#INST "*/gen_dq[46].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y103;          #  P27       X0Y103   
+#INST "*/gen_dq[47].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y104;          #  N28       X0Y104   
+#INST "*/gen_dq[48].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y104;          #  M28       X0Y104   
+#INST "*/gen_dq[49].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y106;          #  L28       X0Y106   
+#INST "*/gen_dq[50].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y112;          #  F25       X0Y112   
+#INST "*/gen_dq[51].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y113;          #  H25       X0Y113   
+#INST "*/gen_dq[52].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y105;          #  K27       X0Y105   
+#INST "*/gen_dq[53].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y106;          #  K28       X0Y106   
+#INST "*/gen_dq[54].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y113;          #  H24       X0Y113   
+#INST "*/gen_dq[55].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y114;          #  G26       X0Y114   
+#INST "*/gen_dq[56].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y114;          #  G25       X0Y114   
+#INST "*/gen_dq[57].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y116;          #  M26       X0Y116   
+#INST "*/gen_dq[58].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y117;          #  J24       X0Y117   
+#INST "*/gen_dq[59].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y118;          #  L26       X0Y118   
+#INST "*/gen_dq[60].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y115;          #  J27       X0Y115   
+#INST "*/gen_dq[61].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y116;          #  M25       X0Y116   
+#INST "*/gen_dq[62].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y118;          #  L25       X0Y118   
+#INST "*/gen_dq[63].u_iob_dq/gen_stg2_*.u_ff_stg2a_rise"  RLOC_ORIGIN = X0Y119;          #  L24       X0Y119   
+
+
+
+###### Hard_Ethernet_MAC
+#### Hard_Ethernet_MAC constraints
+
+net "*Hard_Ethernet_MAC*/REFCLK"   TNM_NET = "REFCLK"; #name of signal connected to TEMAC REFCLK input
+TIMEGRP  "delayctrl_clk_200"       = "REFCLK";
+TIMESPEC "TS_delayctrl_clk_200"    = PERIOD "delayctrl_clk_200" 5000 ps HIGH 50 %; #constant value based on constant 200 MHZ ref clock
+
+net "Hard_Ethernet_MAC*/GTX_CLK_0"   TNM_NET = "clk_125"; #name of signal connected to TEMAC GTX_CLK_0 input
+TIMEGRP  "ethernet_gtx_clk_125"    = "clk_125";
+TIMESPEC "TS_ethernet_gtx_clk_125" = PERIOD "ethernet_gtx_clk_125" 8000 ps HIGH 50 %; #constant value based on constant 125 MHZ GTX clock
+
+NET "*Hard_Ethernet_MAC*/LlinkTemac0_CLK"   TNM_NET = "LLCLK0"; #name of signal connected to TEMAC LlinkTemac0_CLK input
+NET "*Hard_Ethernet_MAC*/SPLB_Clk"   TNM_NET = "PLBCLK"; #name of signal connected to TEMAC SPLB_Clk input
+
+# EMAC0 TX Client Clock
+NET "*/TxClientClk_0"              TNM_NET = "clk_client_tx0";
+TIMEGRP  "gmii_client_clk_tx0"     = "clk_client_tx0";
+TIMESPEC "TS_gmii_client_clk_tx0"  = PERIOD "gmii_client_clk_tx0" 7500 ps HIGH 50 %;
+
+# EMAC0 RX Client Clock
+NET "*/RxClientClk_0"              TNM_NET = "clk_client_rx0";
+TIMEGRP  "gmii_client_clk_rx0"     = "clk_client_rx0";
+TIMESPEC "TS_gmii_client_clk_rx0"  = PERIOD "gmii_client_clk_rx0" 7500 ps HIGH 50 %;
+
+# EMAC0 TX PHY Clock
+NET "*/GMII_TX_CLK_0*"             TNM_NET = "clk_phy_tx0";
+TIMEGRP  "gmii_phy_clk_tx0"        = "clk_phy_tx0";
+TIMESPEC "TS_gmii_phy_clk_tx0"     = PERIOD "gmii_phy_clk_tx0" 7500 ps HIGH 50 %;
+
+# EMAC0 RX PHY Clock
+NET "*/GMII_RX_CLK_0*"             TNM_NET = "phy_clk_rx0";
+TIMEGRP  "gmii_clk_phy_rx0"        = "phy_clk_rx0";
+TIMESPEC "TS_gmii_clk_phy_rx0"     = PERIOD "gmii_clk_phy_rx0" 7500 ps HIGH 50 %;
+
+# EMAC0 TX MII 10/100 PHY Clock
+NET "*MII_TX_CLK_0*" TNM_NET       = "clk_mii_tx_clk0";
+TIMESPEC "TS_mii_tx_clk0"          = PERIOD "clk_mii_tx_clk0" 40000 ps HIGH 50 %;
+
+# Set the IDELAY values on the data inputs.
+# Please modify to suit your design.
+INST "*gmii0*ideld*"     IOBDELAY_TYPE = FIXED;
+INST "*gmii0*ideldv"     IOBDELAY_TYPE = FIXED;
+INST "*gmii0*ideler"     IOBDELAY_TYPE = FIXED;
+
+INST "*gmii_rxc0_delay"  IOBDELAY_TYPE = FIXED;
+
+INST "*gmii0*ideldv"     IDELAY_VALUE = 35;
+INST "*gmii0*ideld0"     IDELAY_VALUE = 35;
+INST "*gmii0*ideld1"     IDELAY_VALUE = 35;
+INST "*gmii0*ideld2"     IDELAY_VALUE = 35;
+INST "*gmii0*ideld3"     IDELAY_VALUE = 35;
+INST "*gmii0*ideld4"     IDELAY_VALUE = 35;
+INST "*gmii0*ideld5"     IDELAY_VALUE = 35;
+INST "*gmii0*ideld6"     IDELAY_VALUE = 35;
+INST "*gmii0*ideld7"     IDELAY_VALUE = 35;
+INST "*gmii0*ideler"     IDELAY_VALUE = 35;
+
+INST "*gmii_rxc0_delay"  IDELAY_VALUE = 0;
+
+# PHY spec: 2.5ns setup time, 0.5ns hold time
+# Assumes equal length board traces
+
+NET "fpga_0_Hard_Ethernet_MAC_GMII_RXD_0_pin(?)"  TNM = "gmii_rx_0";
+NET "fpga_0_Hard_Ethernet_MAC_GMII_RX_DV_0_pin"   TNM = "gmii_rx_0";
+NET "fpga_0_Hard_Ethernet_MAC_GMII_RX_ER_0_pin"   TNM = "gmii_rx_0";
+
+TIMEGRP "gmii_rx_0" OFFSET = IN 2.5 ns VALID 3 ns BEFORE "fpga_0_Hard_Ethernet_MAC_GMII_RX_CLK_0_pin";
+
+# GMII Receiver Constraints:  place flip-flops in IOB
+INST "*gmii0*RXD_TO_MAC*"    IOB = TRUE;
+INST "*gmii0*RX_DV_TO_MAC"   IOB = TRUE;
+INST "*gmii0*RX_ER_TO_MAC"   IOB = TRUE;
+
+INST "*gmii0*GMII_TXD_?"     IOB = TRUE;
+INST "*gmii0*GMII_TX_EN"     IOB = TRUE;
+INST "*gmii0*GMII_TX_ER"     IOB = TRUE;
+
+TIMESPEC TS_PLB_2_TXPHY0 = FROM PLBCLK      TO clk_phy_tx0 8000 ps DATAPATHONLY; #constant value based on Ethernet clock
+TIMESPEC TS_RXPHY0_2_PLB = FROM phy_clk_rx0 TO PLBCLK      8000 ps DATAPATHONLY; #varies based on period of PLB clock
+
+TIMESPEC "TS_LL_CLK0_2_RX_CLIENT_CLK0"  = FROM LLCLK0 TO clk_client_rx0 8000 ps DATAPATHONLY; #constant value based on Ethernet clock
+TIMESPEC "TS_LL_CLK0_2_TX_CLIENT_CLK0"  = FROM LLCLK0 TO clk_client_tx0 8000 ps DATAPATHONLY; #constant value based on Ethernet clock
+TIMESPEC "TS_RX_CLIENT_CLK0_2_LL_CLK0"  = FROM clk_client_rx0 TO LLCLK0 8000 ps DATAPATHONLY; #varies based on period of LocalLink clock
+TIMESPEC "TS_TX_CLIENT_CLK0_2_LL_CLK0"  = FROM clk_client_tx0 TO LLCLK0 8000 ps DATAPATHONLY; #varies based on period of LocalLink clock
+
+TIMESPEC "TS_REF_CLK_2_PLB_CLIENT_CLK"  = FROM REFCLK TO PLBCLK 8000 ps DATAPATHONLY; #varies based on period of PLB clock
+TIMESPEC "TS_PLB_CLIENT_CLK_2_REF_CLK"  = FROM PLBCLK TO REFCLK 5000 ps DATAPATHONLY; #constant value based on constant 200 MHZ ref clock
+
+TIMESPEC "TS_REF_CLK_2_TX_CLIENT_CLK0"  = FROM REFCLK TO clk_client_tx0 8000 ps DATAPATHONLY; #constant value based on Ethernet clock
+TIMESPEC "TS_TX_CLIENT_CLK0_2_REF_CLK"  = FROM clk_client_tx0 TO REFCLK 5000 ps DATAPATHONLY; #constant value based on constant 200 MHZ ref clock
+
+TIMESPEC "TS_REF_CLK_2_RX_CLIENT_CLK0"  = FROM REFCLK TO clk_client_rx0 8000 ps DATAPATHONLY; #constant value based on Ethernet clock
+TIMESPEC "TS_RX_CLIENT_CLK0_2_REF_CLK"  = FROM clk_client_rx0 TO REFCLK 5000 ps DATAPATHONLY; #constant value based on constant 200 MHZ ref clock
+
+
+net "*/hrst*" TIG;
+net "*/V5HARD_SYS.I_TEMAC/speed_vector_0_i*" TIG;
+\end{verbatim}
 
 \chapter{Linux Kernel Assets}
 
 \section{Configuration}
 
 \section{Patches}
+
+\begin{verbatim}
+commit 9be0160c855d1740f392d74a90197421c1380946
+Author: Peter Schuster <schuster.pe@gmail.com>
+Date:   Sat Sep 8 19:48:56 2012 +0200
+
+    Added new MicroBlaze versions.
+    
+    Signed-off-by: Peter Schuster <schuster.pe@gmail.com>
+
+diff --git a/arch/microblaze/kernel/cpu/cpuinfo.c b/arch/microblaze/kernel/cpu/cpuinfo.c
+index 54194b2..783c7087 100644
+--- a/arch/microblaze/kernel/cpu/cpuinfo.c
++++ b/arch/microblaze/kernel/cpu/cpuinfo.c
+@@ -35,6 +35,8 @@ const struct cpu_ver_key cpu_ver_lookup[] = {
+ 	{"8.00.b", 0x13},
+ 	{"8.10.a", 0x14},
+ 	{"8.20.a", 0x15},
++        {"8.20.b", 0x16},
++        {"8.30.a", 0x17},
+ 	{NULL, 0},
+ };
+\end{verbatim}

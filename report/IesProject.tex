@@ -33,15 +33,21 @@
 \usepackage{icomma}
 
 %% Code
-\usepackage{listings} 
+%\usepackage{listings} 
 	%\lstset{numbers=left, numberstyle=\tiny}  %, numbersep=2pt
 	%\lstset{language=Perl}
+
+\usepackage{etoolbox}
+\makeatletter
+\preto{\@verbatim}{\topsep=0pt \partopsep=0pt }
+\makeatother
+
 
 %% sonstige Einstellungen
 \usepackage{paralist}% erweiterte Listenumgebung (z.B. compactitem)
 \usepackage{textcomp} % verschiedene Symbole
 \usepackage{hyperref}
-\renewcommand\plparsep{1ex}
+%\renewcommand\plparsep{1ex}
 
 % Don't stretch spaces
 \raggedbottom
@@ -50,6 +56,8 @@
 \usepackage{enumerate}
 
 \usepackage[toc]{glossaries}
+%\renewcommand{\glsnamefont}[1]{\textbf{#1}}
+
 \usepackage{makeidx}
 \makeindex
 

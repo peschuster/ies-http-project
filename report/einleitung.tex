@@ -18,11 +18,11 @@ Desired goal for this project seminar was to lay the necessary foundations, so t
 
 \section{Environment}
 
-All development, measurements and tests were done on the XILINX XUPV5-LX110T evaluation board.
+All development, measurements and tests were done on the \textit{Xilinx XUPV5-LX110T} evaluation board.
 
-The XILINX XUPV5-LX110T evaluation board is a modified version of the ML505 board for universities\cite{xupv5manual}. The difference between the two boards is a larger \gls{fpga} chip on the XUPV5-LX110T, containing the Virtex-5 XC5VLX110T with 17,280 slices\footnote{Basic logic unit of an FPGA\cite{fpga_ni}} and four in hardware implemented Ethernet \gls{mac} cores, where as the ML505 board contains the XC5VLX50 with only 7,200 slices and no Ethernet \gls{mac} cores implemented in hardware.
+The \textit{Xilinx XUPV5-LX110T} evaluation board is a modified version of the ML505 board for universities\cite{xupv5manual}. The difference between the two boards is a larger \gls{fpga} chip on the \textit{XUPV5-LX110T}, containing the \textit{Virtex-5 XC5VLX110T} with 17,280 slices\footnote{Basic logic unit of an \gls{fpga}\cite{fpga_ni}} and four in hardware implemented Ethernet \gls{mac} cores, where as the \textit{ML505} board contains the \textit{XC5VLX50} with only 7,200 slices and no Ethernet \gls{mac} cores implemented in hardware.
 
-The initial hardware design for the \gls{fpga} was build using the \textit{\gls{xps}}. From their on synthesis and further modifications were done using \textit{XILINX ISE Project Navigator}.
+The initial hardware design for the \gls{fpga} was build using the \textit{\gls{xps}}. From their on synthesis and further modifications were done using \textit{Xilinx ISE Project Navigator}.
 
 The used tools version was 14.1. Because they allow parallel synthesis speeding up the development process heavily.
 
@@ -40,7 +40,7 @@ Microsoft Windows is currently only available for Intel's \textit{x86} and AMD's
 
 Due to the by far largest number of supported processor architectures and wide distribution, the choice was made to go with the Linux as operating system for the project.
 
-Linux demands\footnote{Linux Kernel can be configured for processors without MMU, but this is not recommended.} an \gls{mmu} in virtual mode and 2 memory protection zones. Furthermore the presence of two timer and an interrupt controller is required.\footnote{see \url{http://wiki.xilinx.com/microblaze-linux\#toc4}, as of 09/07/2012}
+Linux demands an \gls{mmu} in virtual mode and two memory protection zones.\footnote{Linux Kernel can be configured for processors without \gls{mmu}, but this is not recommended.} Furthermore the presence of two timers and an interrupt controller is required.\footnote{see \url{http://wiki.xilinx.com/microblaze-linux\#toc4}, as of 09/07/2012}
 
 
 \chapter{Implementation}
@@ -111,7 +111,7 @@ Automatic processor version recognition by the Linux Kernel (facultative) can be
 
 For the connection between the \textit{MicroBlaze} processor and other peripherals on the chip a bus system needs to be selected. The \gls{xps} wizard provides an option for choosing between two interconnect types: \gls{axi} and \gls{plb}.
 
-\gls{axi} is part of the \textit{Advanced Microcontroller Bus Architecture (AMBA)}, designed by \textit{ARM} and introduced for \gls{fpga}s by \textit{Xilinx} starting with the \textit{Virtex-6} \gls{fpga} family generation.
+\gls{axi} is part of the \gls{amba}, designed by \textit{ARM} and introduced for \gls{fpga}s by \textit{Xilinx} starting with the \textit{Virtex-6} \gls{fpga} family generation.
 
 Prior to the \textit{Virtex-6} \gls{fpga} family, only \gls{plb} invented by \textit{IBM} as part of the \textit{CoreConnect} bus system was available. \textit{Virtex-6} \gls{fpga}s support both bus systems, but the used \textit{Xilinx XC5VLX110T} \gls{fpga} is part of the \textit{Virtex-5} family, therefore \gls{plb} needs to be selected as interconnect type. \cite{axi_interconnect}[p. 1, facts table]
 
@@ -123,19 +123,19 @@ To connect the memory to the processor a memory controller needs to be added to 
 
 The \textit{MPMC} IP core can be connected to \gls{plb} and supports \textit{Xilinx CacheLink (XCL)} structures and \textit{Soft Direct Memory Access (SDMA)} for LocalLink interfaces, required for fast processing of the network interface block. \cite{mpmc}
 
-The designed hardware system uses \texttt{0x50000000} as memory base address in this project. The address can be changed arbitrarily, but needs to be corrected in the Linux Kernel configuration, as well.
+The designed hardware system uses \texttt{0x50000000} as memory base address in this project. The address can be changed arbitrarily, but needs to be adjusted accordingly in the Linux Kernel configuration, as well.
 
 \subsubsection{Network Interface}
 
 The \textit{Xilinx XC5VLX110T} \gls{fpga} has four \textit{Tri-Mode Ethernet Media Access Controllers}, designed to the IEEE 802.3-2002 specification, operating at 10, 100, and 1,000 Mb/s. \cite{virtex5}[p. 4, table 1] To use these hard core controllers an \texttt{xps\_ll\_temac} soft IP core can be added to the \gls{soc}, acting as a wrapper for the hard core to integrate it into the system.
 
-For a simple and easy-to-implement interconnection between the \gls{phy} and the various \gls{mac} sub-layers, \gls{mii} was invented. \gls{mii} was designed originally for \gls{phy}s with data rates of 10 Mb/s and 100 Mb/s. \gls{gmii} is an backwards compatible extension to \gls{mii} supporting data rate of up to 1,000 Mb/s. \textit{RMII/RGMII} is an interface with reduced data path width (by half). This is accomplished by clocking data on rising and falling edges of the clock.
+For a simple and easy-to-implement interconnection between the \gls{phy} and the various \gls{mac} sub-layers, \gls{mii} was invented. \gls{mii} was designed originally for \gls{phy}s with data rates of 10 Mb/s and 100 Mb/s. \gls{gmii} is an backwards compatible extension to \gls{mii} supporting a data rate of up to 1,000 Mb/s. \textit{RMII/RGMII} is an interface with reduced data path width (by half). This is accomplished by clocking data on rising and falling edges of the clock.
 
-For the project \gls{gmii} was selected as physical interface type, because support for Gigabit Ethernet was desired, but there was no need for a reduced data path width. Therefore the \texttt{C\_PHY\_TYPE} needs to be set to \texttt{1}.
+For the project \gls{gmii} was selected as physical interface type, because support for Gigabit Ethernet was desired, but there was no need for a reduced data path width. Therefore the parameter \texttt{C\_PHY\_TYPE} needs to be set to \texttt{1}.
 
 Despite setting the \texttt{C\_PHY\_TYPE} parameter on the IP core configuration, the jumpers \texttt{J22} and \texttt{J23} on the \textit{Xilinx XUPV5} board need to be set to positions \texttt{1-2} to enable \gls{gmii} as physical interface type.
 
-Depending on the (temporarily) selected \gls{fpga} during the \gls{xps} project wizard, it might be required to change the location of \textit{IDELAYCTRL elements} set in the \texttt{C\_IDELAYCTRL\_LOC} parameter to \texttt{IDELAYCTRL\_X0Y4-IDELAYCTRL\_X1Y5}.
+Depending on the (temporarily) selected \gls{fpga} during the \gls{xps} project wizard, it might be required to change the location of \textit{IDELAYCTRL elements} (set by the \texttt{C\_IDELAYCTRL\_LOC} parameter) to "\texttt{IDELAYCTRL\_X0Y4-IDELAYCTRL\_X1Y5}".
 
 Through the parameters \texttt{C\_TEMAC0\_TXCSUM} and \texttt{C\_TEMAC0\_RXCSUM} offloading checksum calculation to hardware circuits cam be enabled, to improve performance. Though there were no measurements done to prove any improvement in performance during the course of this project, due to lack of time.
 
@@ -154,7 +154,7 @@ Besides the previously discussed \gls{ip} cores, the following additional standa
 \item \texttt{xps\_intc} -- Interrupt controller.
 \item 4x \texttt{xps\_gpio} -- General Purpose I/O controllers for DIP switches, LEDs and push buttons.
 \item \texttt{xps\_iic} -- Inter-Integrated Circuit (IIC) controller for access to external EEPROM chip.
-\item \texttt{xps\_timer} -- Timer block providing to independent timers.
+\item \texttt{xps\_timer} -- Timer block providing two independent timers.
 \item \texttt{xps\_uartlite} -- Universal Asynchronous Receiver Transmitter (UART) controller.
 \item \texttt{clock\_generator} -- Generator for system clock (configuration discussed in \ref{sec:clocks}).
 \item \texttt{proc\_sys\_reset} -- Processor System Reset Module integrating an external reset pin into the system.
@@ -220,22 +220,36 @@ Architectures utilizing the little endian concept store the least significant by
 
 Linux can be build for little, as well as for big endian systems. Only confinement is that the used toolchain (compiler, etc. - see TOOODDOOO) needs to support the endianness of the architecture.
 
-The \textit{MicroBlaze} processor has the parameter \texttt{C\_ENDIANNESS} to specify the endianness of the processor. But although the \textit{MicroBlaze Processor Reference Guide} states that "the \texttt{C\_ENDIANNESS} parameter is automatically set to little endian when using AXI4, and to big endian when using PLB, but can be overridden by the user" \cite{mb_ref}[p. 52], this parameter must not be changed for \textit{Virtex-5} \gls{fpga}s. This is reasoned in the disability of the peripheral cores connected via \gls{plb}, to handle data other than in big endian byte order. The \gls{axi} bus circumvents this problem by swapping bytes.\footnote{see \url{http://forums.xilinx.com/t5/EDK-and-Platform-Studio/Memory-Test-fails-for-8-and-16-bit/m-p/253922/highlight/true\#M23973} (in official)}
+The \textit{MicroBlaze} processor has the parameter \texttt{C\_ENDIANNESS} to specify the endianness of the processor. But although the \textit{MicroBlaze Processor Reference Guide} states that "the \texttt{C\_ENDIANNESS} parameter is automatically set to little endian when using AXI4, and to big endian when using PLB, but can be overridden by the user" \cite{mb_ref}[p. 52], this parameter must not be changed for \textit{Virtex-5} \gls{fpga}s. This is reasoned in the disability of the peripheral cores connected via \gls{plb}, to handle data other than in big endian byte order. The \gls{axi} bus circumvents this problem by swapping bytes.\footnote{see \url{http://forums.xilinx.com/t5/EDK-and-Platform-Studio/Memory-Test-fails-for-8-and-16-bit/m-p/253922/highlight/true\#M23973} (inofficial)}
 
 
 \section{The Software}
 
-\subsection{Development Environment and Toolchain}
+\subsection{Development Environment and Cross Compilation}
 
-\subsection{Cross compilation}
+\begin{verbatim}
+export PATH=/home/peschuster/project/microblaze-unknown-linux-gnu/bin:$PATH
+export CROSS_COMPILE=microblaze-unknown-linux-gnu-
+\end{verbatim}
 
 \subsection{Linux Kernel}
 
-Running Linux on a \textit{MicroBlaze} processor is unfortunately rarely documented and not wide spread. Mainly two projects exist on this topic: \textit{PetaLinux} (formerly known as \textit{uLinux}) and \textit{BlueCat Linux}. Unfortunately both were turned into commercial solutions and although the modified Linux source code is publicly available, it is hardly usable without the proprietary tool chain, sold by the companies driving these projects.
+Running Linux on a \textit{MicroBlaze} processor is unfortunately rarely documented and not wide spread. Mainly two projects exist on this topic: \textit{PetaLinux} (formerly known as \textit{uLinux}) and \textit{BlueCat Linux}. Unfortunately both were turned into commercial solutions and although the patched Linux source code is publicly available, it is hardly usable without the proprietary toolchain, sold by the companies driving these projects.
 
 Some efforts were made by Xilinx to and since ... the Microblaze architecture is supported by the Linux mainline kernel.
 
 For this project the 
+
+\texttt{3.3.0-14.2-build1 Kernel Configuration}
+
+\url{http://git.xilinx.com/?p=linux-2.6-xlnx.git;a=summary}
+
+\begin{tabbing}
+\hspace*{1.5cm}\= \kill
+Date: \>06/18/2012\\
+SHA: \>\texttt{ed63a4d76efadcb68f5776e4244766ffea226cc4}\\
+Url: \>\url{http://git.xilinx.com/?p=linux-2.6-xlnx.git;a=commit;h=ed63a4d76efadcb68f5776e4244766ffea226cc4}
+\end{tabbing}
 
 \subsubsection{Configuration}
 
