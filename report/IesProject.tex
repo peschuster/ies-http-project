@@ -55,8 +55,9 @@
 
 \usepackage{enumerate}
 
-\usepackage[toc]{glossaries}
+\usepackage[acronym,toc]{glossaries}
 %\renewcommand{\glsnamefont}[1]{\textbf{#1}}
+\renewcommand{\glossaryname}{Acronyms}
 
 \usepackage{makeidx}
 \makeindex
@@ -96,6 +97,13 @@
 \include{glossary}
 \makeglossaries
 
+\clearpage
+\glossarystyle{list}
+\renewcommand{\glsgroupskip}{}
+%\renewcommand*{\glsgroupheading}{}
+%\printglossaries
+\printglossary[type=\acronymtype ,title={Acronyms}]
+
 %% Hauptteil %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagestyle{headings}
 
@@ -104,11 +112,6 @@
 
 %% Anhang %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
-
-\clearpage
-\glossarystyle{list}
-\renewcommand*{\glsgroupskip}{}
-\printglossaries
 
 \clearpage
 % \nocite{*}
