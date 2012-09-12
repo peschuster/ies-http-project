@@ -6,7 +6,7 @@ Context of this project is ongoing research for high performance network interfa
 
 In our environment an increasing amount of data is created by every kind of device. Furthermore, the amount of transferred data over networks (i.e. the internet) increases dramatically. This generates a demand for high speed network interfaces, on the one hand and high performance, low cost full stack network implementations on the other hand. 
 
-Service providers and back-end nodes need to be able to transfer large amounts of data to multiple receivers concurrently, requiring high speed network interfaces. To circumvent - potentially unnecessary - \gls{cpu} utilization, much of the work can be "offloaded" to a network interface, providing a higher level of abstraction to the transfer of data, than current state of the art.
+Service providers and back-end nodes need to be able to transfer large amounts of data to multiple receivers concurrently, requiring high speed network interfaces. To circumvent - potentially unnecessary - \gls{cpu} utilization, much of the work can be "offloaded" to a network interface, providing a higher level of abstraction to the transfer of data, than current state of the art systems provide.
 
 In a future scenario with all devices being connected to each other, often described as the "internet of things", an increasing demand for simple to implement network interfaces, not requiring the presence of an operating system or high performance processors, will be created.
 
@@ -20,25 +20,28 @@ Desired goal for this project seminar was to lay the necessary foundations, so t
 
 All development, measurements and tests were done on the \textit{Xilinx XUPV5-LX110T} evaluation board.
 
-The \textit{Xilinx XUPV5-LX110T} evaluation board is a modified version of the \textit{ML505} board for universities \cite{xupv5manual}. The difference between the two boards is a larger \gls{fpga} chip on the \textit{XUPV5-LX110T}, containing the \textit{Virtex-5 XC5VLX110T} with 17,280 slices\footnote{Basic logic unit of an \gls{fpga}\cite{fpga_ni}} and four in hardware implemented Ethernet \gls{mac} cores, whereas the \textit{ML505} board contains the \textit{XC5VLX50} with only 7,200 slices and no Ethernet \gls{mac} cores implemented in hardware.
+The \textit{Xilinx XUPV5-LX110T} evaluation board is a modified version of the \textit{ML505} board for universities \cite{xupv5manual}. The difference between the two boards is a larger \gls{fpga} chip on the \textit{XUPV5-LX110T}, containing the \textit{Virtex-5 XC5VLX110T} with 17,280 slices\footnote{Basic logic unit of an \gls{fpga} \cite{fpga_ni}} and four in hardware implemented Ethernet \gls{mac} cores, whereas the \textit{ML505} board contains the \textit{XC5VLX50} with only 7,200 slices and no Ethernet \gls{mac} cores implemented in hardware.
 
-Building the hardware design for the \gls{fpga} was started using the \textit{\gls{xps}} and continued with the \textit{Xilinx ISE Project Navigator}, for a finer control over the parameters of used tools and better logging and reporting capabilities. All used \textit{Xilinx} tools are part of the \textit{Xilinx ISE Design Suite} in version 14.1. The synthesis tool (xst) of this version of the tools features parallel synthesis speeding up the development process heavily.
+Building the hardware design for the \gls{fpga} was started using the \textit{\gls{xps}} and continued with the \textit{Xilinx ISE Project Navigator}, for a finer control over the parameters of used tools and better logging and reporting capabilities. All used \textit{Xilinx} tools are part of the \textit{Xilinx ISE Design Suite} in version 14.1. The synthesis tool (xst) of this version of the tool suite features parallel synthesis speeding up the development process heavily.
 
 Software development was done using the \textit{Xilinx SDK}.
 
 \chapter{System Requirements}
 
-Requirements for the designed system must be collected with two key points in mind: the desired outcome of the project and the chosen/available hardware system and tool chain.
+Requirements for the designed system must be collected with two key points in mind: the desired outcome of the project and the chosen/available hardware system and tool set.
 
 Objective of the project is to run \textit{nginx}, an event-based web server. \textit{nginx} can not be executed directly on the processor, because it requires the presence of an an \gls{os} providing a file system and taking responsibility of process and thread management. 
 
 \textit{nginx} supports a number of free (FreeBSD, Solaris, Linux) and proprietary (AIX, HP-UX) unix-based operating systems and Microsoft Windows.\footnote{see \url{http://nginx.org/en/\#tested_os_and_platforms}}
 
-Microsoft Windows is currently only available for Intel's \textit{x86} and AMD's \textit{AMD64} (also known as \textit{x86-64}) architectures. The constraint on the available \textit{Xilinx XC5VLX110T} \gls{fpga} demands an easy-to-implement, low cost microprocessor system. The mentioned processor architectures do not count towards these categories. Therefore the choices are limited to free unix-based operating systems.
+Microsoft Windows is currently only available for Intel's \textit{x86} and AMD's \textit{AMD64} (also known as \textit{x86-64}) architectures. The constraint on the available \textit{Xilinx XC5VLX110T} \gls{fpga} demands an easy-to-implement, low cost microprocessor system. But the mentioned processor architectures do not count towards these categories. Therefore the choices are limited to free unix-based operating systems.
 
-Due to the by far largest number of supported processor architectures and wide distribution, the choice was made to go with the Linux as operating system for the project.
+Due to the by far largest number of supported processor architectures and wide distribution, the choice was made to go with Linux as operating system for the project.
 
-Linux demands an \gls{mmu} in virtual mode and two memory protection zones.\footnote{Linux Kernel can be configured for processors without \gls{mmu}, but this is not recommended.} Furthermore the presence of two timers and an interrupt controller is required.\footnote{see \url{http://wiki.xilinx.com/microblaze-linux\#toc4}, as of 09/07/2012}
+Linux demands an \gls{mmu} in virtual mode and two memory protection zones.\footnote{Linux Kernel can be configured for processors without \gls{mmu}, but this is not recommended.} \gls{mmu}s enable an \gls{os} "to exercise a high degree of
+management and control over its address space and the address space it allocates to processes". \cite{linuxPrimer}[sec. 2.3.5]
+
+Furthermore the presence of two timers and an interrupt controller is required.\footnote{see \url{http://wiki.xilinx.com/microblaze-linux\#toc4}, as of 09/07/2012}
 
 
 \chapter{Implementation}
@@ -47,28 +50,28 @@ Linux demands an \gls{mmu} in virtual mode and two memory protection zones.\foot
 
 \subsection{FPGAs}
 
-A \gls{fpga} consists of a large number of slices. In the Xilinx Virtex-5 \gls{fpga} family every slices contains four \gls{lut} and two flip-flops. The \gls{lut}s define how the flip-flops and slices are connected to each other and can be programmed with a so called \textit{bitstream}. Therefore a \gls{fpga} can be programmed with any hardware layout, containing logical gates and flip-flops, without the expensive and time-consuming process of producing electronic chips out of silicon wafers.
+A \gls{fpga} consists of a large number of slices. In the \textit{Xilinx Virtex-5} \gls{fpga} family every slice contains four \gls{lut} and two flip-flops. The \gls{lut}s define how the flip-flops and slices are connected to each other and can be programmed with a so called \textit{bitstream}. Therefore a \gls{fpga} can be programmed with any hardware layout, containing logical gates and flip-flops, without the expensive and time-consuming process of producing electronic chips out of silicon wafers.
 
-Additionally to these slices a \gls{fpga} often contains already implemented hardware cores, which can be used by a system implemented using the slices of the \gls{fpga}. This hardware cores can not be "`overridden"' and might contain any kind of system or device, like access controllers for external hardware or full processors.
+Additionally to these slices a \gls{fpga} may contain already implemented hardware cores, which can be used by a system implemented using the slices of the \gls{fpga}. These hardware cores can not be "overridden" and might contain any kind of system or device, like access controllers for external hardware or full processors.
 
 \subsection{Configuration}
 
-An initial \gls{soc} design can be created using the \gls{xps}. \gls{xps} contains a wizard for creating new designs, by selecting the target board and to be utilized  \gls{ip} cores. 
+An initial \gls{soc} design can be created using \gls{xps}. This tool contains a wizard for creating new designs, by selecting the target board and favored \gls{ip} cores. 
 
-By default this wizard does not provide an option for the Xilinx XUPV5 board. For adding this board to the wizard the respective \gls{bsp} needs to be downloaded from the Xilinx website (\url{http://www.xilinx.com/univ/xupv5-lx110t-bsb.htm}). After extracting the downloaded zip file the directory named "Xilinx\_XUPV5\_LX110T" needs to be copied to the respective directory ("ISE\_DS/EDK/board/Xilinx/boards") inside the \textit{Xilinx} tools installation.
+By default this wizard does not provide an option for the \textit{Xilinx XUPV5} board. For adding this board to the wizard the respective \gls{bsp} needs to be downloaded from the \textit{Xilinx} website\footnote{\url{http://www.xilinx.com/univ/xupv5-lx110t-bsb.htm}}. After extracting the downloaded zip file the directory named "\texttt{Xilinx\_XUPV5\_LX110T}" needs to be copied to the respective directory ("\texttt{ISE\_DS/EDK/board/Xilinx/boards}") inside of the \textit{Xilinx} tools installation.
 
-If no modifications can be made to the \textit{Xilinx} tools installation to install the \textit{Xilinx XUPV5} board \gls{bsp}, the \textit{ML505} board can be selected in the wizard instead. After the project is created, the target device needs to be set to "\texttt{virtex5, xc5vlx100t, ff1136, -1}" in the project options.
+If no modifications can be made to the \textit{Xilinx} tools installation to add the \textit{Xilinx XUPV5} board \gls{bsp}, the \textit{ML505} board can be selected in the wizard instead. After the project is created, the target device needs to be set to "\texttt{virtex5, xc5vlx100t, ff1136, -1}" in the project options.
 
-All properties chosen in the setup wizard or later on in \gls{xps} are stored in the \textit{\gls{mhs}} file in the root directory of the \gls{xps} project. All pin associations and other (timing) constraints are located in the \gls{ucf}. These should be replaced by the constraints specified in the constraints file referenced in the report appendix.
+All properties chosen in the setup wizard or later on in \gls{xps} are stored in the \textit{\gls{mhs}} file in the root directory of the \gls{xps} project. All pin associations and other (timing) constraints are located in the \gls{ucf}. These should be replaced by the constraints specified in the \gls{ucf} file referenced in the report appendix.
 
 \subsection{Architecture}
 
-In this project a \gls{soc} was build using predefined \gls{ip} cores for the CPU and additional system components.
+In this project a \gls{soc} was build using predefined \gls{ip} cores for the processor and additional system components.
 
 \subsubsection{Processor}
 \label{subsubsec:microblaze}
 
-The used \textit{XC5VLX110T} does not have a build-in processor like the \textit{Xilinx XC5VFX} series. Therefore a so called soft-core microprocessor needs to be implemented on the \gls{fpga}. There exists a wide-range of soft microprocessor cores\footnote{see \url{http://en.wikipedia.org/wiki/Soft_microprocessor}}. To avoid additional licensing fees and because of the tight time schedule of the project, a single core \textit{MicroBlaze} processor was chosen. The \textit{MicroBlaze} processor is a proprietary processor, developed by \textit{Xilinx} for their \gls{fpga} families and supported by the Xilinx hard- and software development kits. Its design follows the Harvard architecture with separate data and instruction memory.
+The used \textit{XC5VLX110T} \gls{fpga} does not have a build-in hard core processor like available in the \textit{Xilinx XC5VFX} series. Therefore a so called soft-core microprocessor needs to be implemented on the \gls{fpga}. There exists a wide range of soft microprocessor cores.\footnote{see \url{http://en.wikipedia.org/wiki/Soft_microprocessor}} To avoid additional licensing fees and because of the tight time schedule of the project, a single core \textit{MicroBlaze} processor was chosen. The \textit{MicroBlaze} processor is a proprietary processor, developed by \textit{Xilinx} for their \gls{fpga} families and supported by the Xilinx hard- and software development kits. Its design follows the Harvard architecture with separate data and instruction memory.
 
 Running Linux kernel requires the presence of a \gls{mmu}. This can be activated by the following settings in the project's \gls{mhs} file for the \textit{MicroBlaze} core. For using a \gls{mmu} it is also required to have optimization for area disabled (default value):
 
@@ -79,7 +82,7 @@ Running Linux kernel requires the presence of a \gls{mmu}. This can be activated
  PARAMETER C_AREA_OPTIMIZED = 0
 \end{verbatim}
 
-To improve the system performance it is recommended to enable instruction and data cache (16 KB), barrel shifter, multiplier (64 bit) and the hardware division module. Therefore the \textit{MicroBlaze} \gls{ip} core settings in the \gls{mhs} file should be adjusted to meet the following values:
+To improve the system performance it is recommended to enable instruction and data caches (16 KB), barrel shifter, multiplier (64 bit) and the hardware division module. Therefore the \textit{MicroBlaze} \gls{ip} core settings in the \gls{mhs} file should be adjusted to meet the following values:
 
 \begin{verbatim}
  PARAMETER C_USE_BARREL = 1
@@ -98,7 +101,7 @@ To improve the system performance it is recommended to enable instruction and da
  PARAMETER C_DCACHE_ALWAYS_USED = 1
 \end{verbatim}
 
-Automatic processor version recognition by the Linux Kernel (facultative) can be activated by enabling the \gls{pvr}:
+Automatic processor version recognition by the Linux Kernel (optional) can be activated by enabling the \gls{pvr}:
 
 \begin{verbatim}
  PARAMETER C_PVR = 2
@@ -114,31 +117,31 @@ Prior to the \textit{Virtex-6} \gls{fpga} family, only \gls{plb} invented by \te
 
 \subsubsection{Memory}
 
-The XUP5-LX110T board contains a 9 MB ZBT synchronous SRAM, a single-rank unregistered 256 MB DDR2 SODIMM and multiple flash memory chips. The DDR2 memory fits the requirements for the desired systems best. Both regarding read and write speed and the provided amount of memory.
+The \textit{XUPV5-LX110T} board contains a 9 MB ZBT synchronous SRAM, a single-rank unregistered 256 MB DDR2 SODIMM and multiple flash memory chips. The DDR2 memory fits the requirements for the desired system best. Both regarding read and write speed, as well as the provided amount of memory.
 
-To connect the memory to the processor a memory controller needs to be added to the system.  \textit{Xilinx} provides the \textit{Multi-Port Memory Controller (MPMC)} \gls{ip} core -- select-able in the \gls{xps} project wizard -- for this purpose.
+To connect the memory to the processor a memory controller needs to be added to the system.  \textit{Xilinx} provides the \textit{Multi-Port Memory Controller} \gls{ip} core (MPMC) -- select-able in the \gls{xps} project wizard -- for this purpose.
 
-The \textit{MPMC} IP core can be connected to \gls{plb} and supports \textit{Xilinx CacheLink (XCL)} structures and \textit{Soft Direct Memory Access (SDMA)} for LocalLink interfaces, required for fast processing of the network interface block. \cite{mpmc}
+The \textit{MPMC} IP core can be connected to \gls{plb} and supports \textit{Xilinx CacheLink (XCL)} structures and \textit{Soft Direct Memory Access (SDMA)} for LocalLink interfaces, required for fast processing of the network interface core. \cite{mpmc}
 
-The designed hardware system uses \texttt{0x50000000} as memory base address in this project. The address can be changed arbitrarily, but needs to be adjusted accordingly in the Linux kernel configuration.
+The designed hardware system uses \texttt{0x50000000} as memory base address in this project. The address can be changed arbitrarily, but needs to be adjusted accordingly in the Linux kernel configuration (see "Required Configuration Settings",  \ref{subsubsec:req_config}).
 
 \subsubsection{Network Interface}
 
 The \textit{Xilinx XC5VLX110T} \gls{fpga} has four \textit{Tri-Mode Ethernet Media Access Controllers}, designed to the IEEE 802.3-2002 specification, operating at 10, 100, and 1,000 Mb/s. \cite{virtex5}[p. 4, table 1] To use these hard core controllers an \texttt{xps\_ll\_temac} soft IP core can be added to the \gls{soc}, acting as a wrapper for the hard core to integrate it into the system.
 
-For a simple and easy-to-implement interconnection between the \gls{phy} and the various \gls{mac} sub-layers, \gls{mii} was invented. \gls{mii} was designed originally for \gls{phy}s with data rates of 10 Mb/s and 100 Mb/s. \gls{gmii} is an backwards compatible extension to \gls{mii} supporting data rates of up to 1,000 Mb/s. \textit{RMII/RGMII} is an interface with reduced data path width (by half). This is accomplished by clocking data on rising and falling edges of the clock.
+For a simple and easy-to-implement interconnection between the \gls{phy} and the various \gls{mac} sub-layers, \gls{mii} was invented. \gls{mii} was designed originally for \gls{phy}s with data rates of 10 Mb/s and 100 Mb/s. \gls{gmii} is an backwards compatible extension to \gls{mii} supporting data rates of up to 1,000 Mb/s. \textit{RMII/RGMII} is an interface with reduced data path width (by half). This is accomplished by clocking data on rising and falling edges of the clock. \cite{rgmii}[p. 3]
 
-For the project \gls{gmii} was selected as physical interface type, because support for Gigabit Ethernet was desired, but there was no need for a reduced data path width. Therefore the parameter \texttt{C\_PHY\_TYPE} needs to be set to \texttt{1}.
+For the project \gls{gmii} was selected as physical interface type, because support for Gigabit Ethernet was desired, but there was no need for a reduced data path width. Therefore the parameter \texttt{C\_PHY\_TYPE} needs to be set to \texttt{1} on the \gls{ip} core configuration.
 
-Despite setting the \texttt{C\_PHY\_TYPE} parameter on the IP core configuration, the jumpers \texttt{J22} and \texttt{J23} on the \textit{Xilinx XUPV5} board need to be set to positions \texttt{1-2} to enable \gls{gmii} as physical interface type.
+Despite setting the \texttt{C\_PHY\_TYPE} parameter, the jumpers \texttt{J22} and \texttt{J23} on the \textit{Xilinx XUPV5} board need to be set to positions \texttt{1-2} to enable \gls{gmii} as physical interface type.
 
 Depending on the (temporarily) selected \gls{fpga} during the \gls{xps} project wizard, it might be required to change the location of \textit{IDELAYCTRL elements} (set by the \texttt{C\_IDELAYCTRL\_LOC} parameter) to "\texttt{IDELAYCTRL\_X0Y4-IDELAYCTRL\_X1Y5}".
 
-Through the parameters \texttt{C\_TEMAC0\_TXCSUM} and \texttt{C\_TEMAC0\_RXCSUM} offloading checksum calculation to hardware circuits cam be enabled, to improve performance. Though there were no measurements done to prove any improvement in performance during the course of this project, due to lack of time.
+Through the parameters \texttt{C\_TEMAC0\_TXCSUM} and \texttt{C\_TEMAC0\_RXCSUM} offloading checksum calculation to hardware circuits can be enabled, to improve performance. Though there were no measurements done to prove any performance boost during the course of this project, due to lack of time.
 
 \subsubsection{Other Peripherals}
 
-Besides the previously discussed \gls{ip} cores, the following additional standard \gls{ip} cores were used in the system, not requiring any special configuration or explanation.
+Besides the previously discussed \gls{ip} cores, the following additional standard \gls{ip} cores were used in the system, not requiring any special explanation or configuration.
 
 \begin{itemize}
   \setlength{\itemsep}{1pt}
@@ -157,14 +160,14 @@ Besides the previously discussed \gls{ip} cores, the following additional standa
 \item \texttt{proc\_sys\_reset} -- Processor System Reset Module integrating an external reset pin into the system.
 \end{itemize}
 
-The configuration settings and constraints for all \gls{ip} cores are provided in the appendix of this report.
+The configuration settings and constraints for all \gls{ip} cores as used in this project are provided in the appendix of this report.
 
 \subsection{Clocks}
 \label{sec:clocks}
 
 \subsubsection{Clock Generation}
 
-Clocks for the system can be generated using a \textit{clock\_generator} \gls{ip} core. This \gls{ip} core can generate up to 16 different clocks from one input clock signal. On the Xilinx XUPV5 board an external oscillator providing a 100 MHz clock can be connected to the clock generator. \cite{ug347}[p. 20]
+Clocks for the system can be generated using a \textit{clock\_generator} \gls{ip} core. This \gls{ip} core can generate up to 16 different clocks from one input clock signal. On the \textit{Xilinx XUPV5} board an external oscillator providing a 100 MHz clock can be connected to the clock generator. \cite{ug347}[p. 20]
 
 \subsubsection{Timing Considerations}
 
@@ -217,13 +220,15 @@ Architectures utilizing the little endian concept store the least significant by
 
 Linux can be build for little, as well as for big endian systems. Only confinement is that the used toolchain (compiler, etc. - see \ref{subsec:sdk}) needs to support the endianness of the architecture.
 
-The \textit{MicroBlaze} processor has the parameter \texttt{C\_ENDIANNESS} to specify the endianness of the processor. But although the \textit{MicroBlaze Processor Reference Guide} states that "the \texttt{C\_ENDIANNESS} parameter is automatically set to little endian when using AXI4, and to big endian when using PLB, but can be overridden by the user" \cite{mb_ref}[p. 52], this parameter must not be changed for \textit{Virtex-5} \gls{fpga}s. This is reasoned in the disability of the peripheral cores connected via \gls{plb}, to handle data other than in big endian byte order. The \gls{axi} bus circumvents this problem by swapping bytes.\footnote{\url{http://forums.xilinx.com/t5/EDK-and-Platform-Studio/Memory-Test-fails-for-8-and-16-bit/m-p/253922/highlight/true\#M23973} (in-official statement)}
+The \textit{MicroBlaze} processor has the parameter \texttt{C\_ENDIANNESS} to specify the endianness of the processor. But although the \textit{MicroBlaze Processor Reference Guide} states that "the \texttt{C\_ENDIANNESS} parameter is automatically set to little endian when using AXI4, and to big endian when using PLB, but can be overridden by the user" \cite{mb_ref}[p. 52], this parameter must not be changed for \textit{Virtex-5} \gls{fpga}s. This is reasoned in the disability of the peripheral cores connected via \gls{plb}, to handle data other than in big endian byte order. The \gls{axi} bus circumvents this problem by swapping bytes.\footnote{\url{http://forums.xilinx.com/t5/EDK-and-Platform-Studio/Memory-Test-fails-for-8-and-16-bit/m-p/253922/highlight/true\#M23973} (in-official statement by a Xilinx employee)}
+
+Therefore big endian must be selected for the system architecture of this project.
 
 \subsection{Generating the Hardware System}
 
 As discussed in the sub section about \gls{fpga}s, a \textit{bitstream} needs to be generated from the \gls{mhs} and constraint files.
 
-Therefore the hardware design must be implemented (by triggering the "Implement Design" process listed in the \textit{Xilinx ISE Project Navigator}). In a second step the \textit{bitstream} file (\texttt{<project-name>.bit}) can be generated from the generated design, by triggering the "Generate Programming File" process.
+Therefore the hardware design must be implemented by triggering the "Implement Design" process listed in the \textit{Xilinx ISE Project Navigator}. In a second step the \textit{bitstream} file (\texttt{<project-name>.bit}) can be generated from the implemented design, by triggering the "Generate Programming File" process.
 
 Additionally the hardware design can be exported to the \textit{Xilinx SDK}. This is required for generating small C projects for testing the hardware and single \gls{ip} cores and the generation of further, intermediate configuration files (see "\textit{Device Tree}", \ref{subsubsec:device_tree}).
 
@@ -234,20 +239,24 @@ Additionally the hardware design can be exported to the \textit{Xilinx SDK}. Thi
 
 Running Linux on a \textit{MicroBlaze} processor is unfortunately rarely documented and not wide spread. Mainly two projects exist on this topic: \textit{PetaLinux} and \textit{BlueCat Linux}. Unfortunately both were turned into commercial solutions and although the patched Linux source code is publicly available, it is hardly usable without the proprietary toolkit, documentation and support, sold by the companies driving these projects.
 
-When talking about Linux, it needs to be distinguished between the Linux kernel as the actual \gls{os} and Linux distributions (like Ubuntu, Debian, openSUSE, Fedora and many more), containing additional libraries, applications and configuration. The Linux kernel in itself is the heart of a Linux installation. There exists one major development line, called "mainline", being maintained by a group around the founder of Linux, Linus Torvalds. But it is also possible to make a copy of the source code (called "fork") and incorporate custom changes to it.
+When talking about Linux, it needs to be distinguished between the Linux kernel as the actual \gls{os} and Linux distributions (like \textit{Ubuntu}, \textit{Debian}, \textit{openSUSE}, \textit{Fedora} and many more), containing additional libraries, applications and configuration. The Linux kernel in itself is the heart of a Linux installation. There exists one major development line (called "mainline"), being maintained by a group around the founder of Linux, Linus Torvalds. But there exist also also copies of the source code (called "fork") with incorporated custom changes.
 
-Originally support for \textit{MicroBlaze} soft-core \gls{cpu}s in the Linux kernel was developed by \textit{Xilinx} and \textit{PetaLogix} in an own fork of the mainline Linux kernel, but with version 2.6.30, released on the 9th of June 2009, their additions were merged into the mainline Linux kernel and the \textit{MicroBlaze} architecture is officially supported by Linux since this date.\footnote{\url{http://www.petalogix.com/news/microblaze-architecture-merged-into-kernel.org}} The still maintained and actively used source code repositories of \textit{Xilinx}\footnote{\url{http://git.xilinx.com/?p=linux-xlnx.git}} and \textit{PetaLogix}\footnote{\url{http://developer.petalogix.com/git/gitweb.cgi?p=linux-2.6-microblaze.git}} contain some further additions to device drivers and unreleased changes.
+Originally support for \textit{MicroBlaze} soft-core processors in the Linux kernel was developed by \textit{Xilinx} and \textit{PetaLogix} in an own fork of Linux kernel, but with version 2.6.30, released on the 9th of June 2009, their additions were merged into the mainline Linux kernel and the \textit{MicroBlaze} architecture is officially supported by Linux since this date.\footnote{\url{http://www.petalogix.com/news/microblaze-architecture-merged-into-kernel.org}} The still maintained and actively used source code repositories of \textit{Xilinx}\footnote{\url{http://git.xilinx.com/?p=linux-xlnx.git}} and \textit{PetaLogix}\footnote{\url{http://developer.petalogix.com/git/gitweb.cgi?p=linux-2.6-microblaze.git}} contain some further additions to device drivers and unreleased changes.
 
 For this project the Linux kernel source code from the \textit{Xilinx} repository was taken. All development, additions and evaluation was done on top of commit \texttt{ed63a4d76efadcb68f5776e4244766ffea226cc4} (June, 18th 2012)\footnote{\url{http://git.xilinx.com/?p=linux-2.6-xlnx.git;a=commit;h=ed63a4d76efadcb68f5776e4244766ffea226cc4}} as part of version \texttt{3.3.0-14.2-build1}.
+
+To enable correct recognition of the latest \textit{MicroBlaze} processor versions with enabled \gls{pvr} a patch included in the appendix of this report (\ref{subsec:pvr_patch}) needs to be applied to the Linux kernel sources. The patch was extracted from the \textit{PetaLogix} Linux kernel fork.
 
 \subsection{Development Environment and Cross Compilation}
 \label{subsec:sdk}
 
-To build the Linux kernel a set of tools (called toolchain) compiling source code files and linking binary output in an executable file is required. This toolchain needs to meet two criteria: the architecture/\gls{os} it was build to run on top and the target architecture for which images are compiled and linked. Building an image with a difference between these two architectures is called \textit{cross compilation}. Because it is not practically possible to build the Linux kernel on a \textit{MicroBlaze} \gls{cpu}, without an existing and running \gls{os} on the \textit{MicroBlaze} system, we need a toolchain for cross compiling Linux kernel source from an existing, easily-usable system for a \textit{MicroBlaze} system. \textit{Xilinx} provides toolchains, based on the widely used \gls{gcc} and \textit{binutils}, for cross compiling from Linux x86 and x86-64 architectures to \textit{MicrobBlaze} systems as target architecture. For compiling the latest Linux kernel sources, version two of the toolchain containing \gls{gcc} in version 4.1.2 is required. This version of the toolchain itself requires a 64-bit Linux \gls{os} and can be downloaded from the \textit{Xilinx} source code repositories.\footnote{\url{http://git.xilinx.com/?p=xldk/microblaze_v2.0.git}}
+To build the Linux kernel a set of tools (called toolchain) compiling source code files and linking binary output in an executable file is required. This toolchain needs to meet two criteria: the architecture/\gls{os} it was build to run on top and the target architecture for which images are compiled and linked. Building an image with a different target architecture, than the architecture of the executing system, is called \textit{cross compilation}. Because it is not practically possible to build the Linux kernel on a \textit{MicroBlaze} processor, without an existing and running \gls{os} on the \textit{MicroBlaze} system, a toolchain for cross compiling Linux kernel source from an existing, easily-usable system for a \textit{MicroBlaze} system, is needed. \textit{Xilinx} provides toolchains, based on the widely used \gls{gcc} and \textit{binutils}, for cross compiling from Linux x86 and x86-64 architectures to \textit{MicrobBlaze} systems as target architecture. For compiling the latest Linux kernel sources, version two of the toolchain containing \gls{gcc} in version 4.1.2 is required. This version of the toolchain itself requires a 64-bit Linux \gls{os} and can be downloaded from the \textit{Xilinx} source code repositories.\footnote{\url{http://git.xilinx.com/?p=xldk/microblaze_v2.0.git}}
 
 During this project a virtual Linux machine with \textit{Ubuntu 12.04 64-bit} was used for all software development.
 
-To enable cross compilation of the Linux kernel, two environment variables need to be set. The \texttt{CROSS\_COMPILE} variable specifies a prefix for all build tools. This is required, because on cross compilation there is usually more than one compiler available on the execution system. Furthermore the path to the used build tools needs to be added to the \texttt{PATH} variable. The \texttt{ARCH} variable enables the inclusion of code specific to the target architecture. This code files reside in \texttt{/arch/[ARCH]/} inside the Linux kernel source folder. 
+To enable cross compilation of the Linux kernel, two environment variables need to be set. The \texttt{CROSS\_COMPILE} variable specifies a prefix for all build tools. This is required, because on cross compilation there is usually more than one compiler available on the executing system. Furthermore the path to the utilized build tools needs to be added to the \texttt{PATH} variable.
+
+The \texttt{ARCH} variable enables the inclusion of code specific to the target architecture. This code files reside in \texttt{/arch/<ARCH>/} inside the Linux kernel source folder. 
 
 The environment variables can be set as parameter on build execution or for the complete shell session with the following commands:
 
@@ -256,7 +265,7 @@ export PATH=/<path>/<to>/microblaze-unknown-linux-gnu/bin:$PATH
 export CROSS_COMPILE=microblaze-unknown-linux-gnu-
 \end{verbatim}
 
-A build process is triggered by calling the \texttt{make} executable inside the the Linux kernel source folder. Here an example for triggering a new build of the Linux kernel for the \textit{MicroBlaze} architecture, utilizing two processor cores:
+A build process is triggered by calling the \texttt{make} executable inside of the Linux kernel source folder. Here an example for triggering a new build of the Linux kernel for the \textit{MicroBlaze} architecture, utilizing two processor cores:
 
 \begin{verbatim}
 make -j 2 ARCH=microblaze simpleImage.xupv5
@@ -268,9 +277,9 @@ make -j 2 ARCH=microblaze simpleImage.xupv5
 
 Linux kernel consists of many optional sub-parts for target architectures, device drivers, special features, etc. Which of these parts are compiled and linked into the Linux kernel binary image needs to be configured in the \texttt{.config} file in the Linux kernel root directory. This file is "the configuration blueprint for building a Linux kernel image" \cite{linuxPrimer}[sec. 4.3.1] containing all (required) settings.
 
-Although possible, it is not recommended to edit the \texttt{.config} file manually, because of many non-trivial dependencies among different configuration settings. Instead one of the available editors (\textit{menuconfig}, \textit{xconfig} and \textit{gconfig}) should be used. Because of its search capabilities inside the configuration settings, \textit{xconfig} was used for this project as configuration editor.\footnote{\textit{xconfig} requires the \textit{QT} library which can be installed through the package \texttt{qt4-dev-tools} on Debian and Ubuntu distributions.}
+Although possible, it is not recommended to edit the \texttt{.config} file manually, because of many non-trivial dependencies among different configuration settings. Instead one of the available editors (\textit{menuconfig}, \textit{xconfig} and \textit{gconfig}) should be used. Because of its search capabilities inside the configuration settings, \textit{xconfig} was used as configuration editor during this project.\footnote{\textit{xconfig} requires the \textit{QT} library which can be installed through the package \texttt{qt4-dev-tools} on Debian and Ubuntu distributions.}
 
-Before starting a new project all existing configurations and temporary output files should be cleaned up using the commands \texttt{make ARCH=microblaze clean} and \texttt{make ARCH=microblaze mrproper}.
+Before starting a new project all existing configuration and temporary output files should be cleaned up using the commands "\texttt{make ARCH=microblaze clean}" and "\texttt{make ARCH=microblaze mrproper}".
 
 In the Linux kernel fork maintained by \textit{Xilinx} a base configuration for the \textit{ML507} board is included. It is recommended to use this configuration as base line instead of starting from scratch. The configuration can be loaded using the following command:
 
@@ -284,35 +293,36 @@ make ARCH=microblaze xconfig
 \end{verbatim}
 
 \subsubsection{Required Configuration Settings}
+\label{subsubsec:req_config}
 
-As discussed in \ref{subsubsec:microblaze}, the \textit{MicroBlaze} processor can be configured with different feature sets (multiplier, barrel shifter, etc.). Therefore the \gls{gcc} compiler needs to be parameterized for matching the provided features of the target system \cite{mb_linux}[sec. "Kernel Configuration Details"]. These need to be set in the \texttt{XILINX\_MICROBLAZE0\_*} settings.
+As discussed in \ref{subsubsec:microblaze}, the \textit{MicroBlaze} processor can be configured with different feature sets (multiplier, barrel shifter, etc.). Therefore the \gls{gcc} compiler needs to be parameterized for matching the provided features of the target system \cite{mb_linux}[sec. "Kernel Configuration Details"]. These need to be set in the \texttt{XILINX\_MICROBLAZE0\_*} settings inside of the \texttt{.config} file.
 
 It is important to check that the \texttt{KERNEL\_BASE\_ADDR} setting is in line with the configured base address of the main memory (\texttt{C\_MPMC\_BASEADDR}) in the \textit{\gls{mhs}} file.
 
-For inclusion of the driver for the \texttt{xps\_ll\_temac} \textit{\gls{ip} core}, the configuration setting \texttt{XILINX\_LL\_TEMAC} needs to be enabled. Support for \textit{UART} device drivers can be enabled by the settings \texttt{SERIAL\_UARTLITE}, \texttt{SERIAL\_UARTLITE\_CONSOLE}, \texttt{SERIAL\_CORE}, \texttt{SERIAL\_CORE\_CONSOLE}, but this is already included in the default \textit{ML507} configuration provided by \textit{Xilinx}.
+For inclusion of the driver for the \texttt{xps\_ll\_temac} \textit{\gls{ip} core}, the configuration option \texttt{XILINX\_LL\_TEMAC} needs to be enabled. Support for \textit{UART} device drivers can be enabled by the settings \texttt{SERIAL\_UARTLITE}, \texttt{SERIAL\_UARTLITE\_CONSOLE}, \texttt{SERIAL\_CORE} and \texttt{SERIAL\_CORE\_CONSOLE}, but this is already included in the default \textit{ML507} configuration settings provided by \textit{Xilinx}.
 
 When there is no \textit{boot loader} triggering Linux kernel start, command-line options for the boot process need to be compiled into the Linux kernel image. Therefore the configuration setting \texttt{CMDLINE} exists. The command-line options for this project were set as follows:
 
-%The setting \texttt{CMDLINE\_BOOL} indicates whether the specified command-line options, can be overridden by a \textit{boot loader} (\texttt{no}) or not (\texttt{yes}). 
+%The setting \texttt{CMDLINE\_FORCE} indicates whether the specified command-line options, can be overridden by a \textit{boot loader} (\texttt{no}) or not (\texttt{yes}). 
 
 \begin{verbatim}
 CONFIG_CMDLINE = "console=ttyUL0 root=/dev/ram rw"
 \end{verbatim}
 
-\texttt{ttyUL0} sets the first serial device (index 0) of type \textit{uart lite} (\texttt{UL}) as default console and loads the RAM image with read and write access (\texttt{rw}) as root file system (see "The File System" \ref{subsec:fs}).
+\texttt{ttyUL0} sets the first serial device (index 0) of type \textit{uartlite} (\texttt{UL}) as default console and loads the RAM image with read and write access (\texttt{rw}) as root file system (see "The File System" \ref{subsec:fs}).
 
 Additionally some features like \textit{IPv6} support and various security algorithms were enabled in the Linux kernel configuration. The complete \texttt{.config} file with all settings is referenced in the report appendix.
 
 \subsubsection{Device Tree}
 \label{subsubsec:device_tree}
 
-To avoid compiling all information about the target hardware system into assembler code, an abstraction called \textit{Device Tree} was invented. \textit{Device Tree} is the successor of \textit{IBM's} \textit{Open Firmware (OF)} and the flattened device tree, containing information about the hardware system like available feature sets and addresses. \cite{device_tree} It is accessed by the Linux kernel during the boot process for configuring itself and on lookup of hardware information. The \textit{Device Tree Source (dts)} file is compiled by the \textit{Device Tree Compiler (dtc)} during the Linux kernel build process to an \textit{Device Tree Blob (dtb)} and linked into the final Linux kernel image.
+To avoid compiling all information about the target hardware system into assembler code, an abstraction called \textit{Device Tree} was invented. \textit{Device Tree} is the successor of \textit{IBM's} \textit{Open Firmware (OF)} and the flattened device tree, containing information about the hardware system like available feature sets and bus addresses. \cite{device_tree} It is accessed by the Linux kernel during the boot process for configuring itself and on lookup of hardware information. The \textit{Device Tree Source (dts)} file is compiled by the \textit{Device Tree Compiler (dtc)} during the Linux kernel build process to an \textit{Device Tree Blob (dtb)} and linked into the final Linux kernel image.
 
 The \textit{dts} file must reside inside of the \texttt{arch/microblaze/boot/dts} directory (e.g. "\texttt{arch/microblaze/boot/dts/xupv.dts}" and can be specified on starting the Linux kernel build process (e.g. "\texttt{make ARCH=microblaze simpleImage.xupv5}").
 
-A \textit{dts} file can be generated using the \textit{Device Tree Generator}, a \gls{tcl} script reading a system specification generated by \gls{xps} (called "SDK Export"). The latest version (v 1.3) of the \textit{Device Tree Generator}, maintained by Michal Simek, is referenced in the appendix to this report (\ref{subsec:dts-generator}).
+A \textit{dts} file can be generated using the \textit{Device Tree Generator}, a \gls{tcl} script reading a system specification generated by \gls{xps} (see "SDK Export"). The latest version (1.3) of the \textit{Device Tree Generator}, maintained by Michal Simek, is referenced in the appendix of this report (\ref{subsec:dts-generator}).
 
-It can be setup as own \gls{bsp} inside of the \textit{Xilinx SDK}. A documentation with all required steps for setting up the \textit{Device Tree Generator} can be found on the respective site, hosted by Xilinx.\footnote{\url{http://wiki.xilinx.com/device-tree-generator}}
+It can be setup as own \gls{bsp} inside of the \textit{Xilinx SDK}. A documentation with all required steps for setting up the \textit{Device Tree Generator} can be found on the respective site hosted by Xilinx.\footnote{\url{http://wiki.xilinx.com/device-tree-generator}}
 
 
 \subsection{The File System}
@@ -320,7 +330,7 @@ It can be setup as own \gls{bsp} inside of the \textit{Xilinx SDK}. A documentat
 
 Although possible, it makes little sense to use the Linux kernel without a file system. Therefore one of the last steps in the boot process is the initialization of a \textit{root file system (rootfs)}. \cite{linuxPrimer}[sec. 6.1] On modern desktop and server systems this \textit{rootfs} is usually just a bare minimum file system, containing all necessary files to boot the Linux kernel, mounting a file system located on a hard drive or flash memory right after booting up. But the used system in this project has no hard drive attached, neither is one required for the purpose of the project, at the moment. Therefore we will stick with the initial \textit{rootfs} as the main file system.
 
-A simple way to provide an initial \textit{rootfs} is the \textit{Initial RAM Disk (initrd)}. This is a file system packed in an cpio archive and linked into the Linux kernel image. It is unpacked completely into the main memory during kernel boot process. \textit{Xilinx} provides two packed file system archives for a \textit{MicroBlaze} system within their Linux kernel repository: \texttt{initramfs\_minimal.cpio.gz} and \texttt{initramfs\_complete.cpio.gz}. These archives can be linked into the Linux kernel image by setting the configuration option \texttt{INITRAMFS\_SOURCE} two one of the file names, respectively.
+A simple way to provide an initial \textit{rootfs} is the \textit{Initial RAM Disk (initrd)}. This is a file system packed in an cpio archive and linked into the Linux kernel image. It is unpacked completely into the main memory during kernel boot process. \textit{Xilinx} provides two packed file system archives for a \textit{MicroBlaze} system within their Linux kernel repository: \texttt{initramfs\_minimal.cpio.gz} and \texttt{initramfs\_complete.cpio.gz}. Both contain all files and structures sufficient for this project. The archives can be linked into the Linux kernel image by setting the configuration option \texttt{INITRAMFS\_SOURCE} two one of the file names, respectively.
 
 The cpio archives can be unpacked using the following command. The command should be executed as privileged root user two allow the creation of node points, used in the file system.
 
@@ -352,6 +362,10 @@ After committing these steps the Linux kernel boot log should be written to the 
 Reading the \texttt{\_\_log\_buf} variable from memory and decoding the binary representation of the content can be accomplished using the \gls{tcl} script included in the report appendix (\textit{syslog.tcl}, \ref{subsec:syslog}). It is a ported version for \textit{MicroBlaze} processors of the script supplied with the \textit{Xilinx Application Note XAPP1137}\footnote{\url{http://www.xilinx.com/support/documentation/application\_notes/xapp1137.pdf}}. 
 
 One thing that needs to be adjusted according to the Linux kernel image is the start address of the \texttt{\_\_log\_buf} variable (at line 6, "\texttt{set bufaddr <addr>}"). This address can be determined by executing the command "\texttt{xmd> mrd\_var \_\_log\_buf}" inside of \gls{xmd}. The command returns the word stored at the first address of the variable and the address of the variable itself (starting with \texttt{0xc...}). After saving the \gls{tcl} script to a file it can be loaded into a \gls{xmd} session using the command "\texttt{xmd> source syslog.tcl}". The script writes all the content of the \texttt{\_\_log\_buf} variable to the file "\texttt{syslog\_1.txt}" and can be executed using the command "\texttt{xmd> syslog}".
+
+\subsection{Testing the System}
+
+The system can be tested
 
 \chapter{Conclusion}
 

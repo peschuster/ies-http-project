@@ -102,7 +102,11 @@
 \renewcommand{\glsgroupskip}{}
 %\renewcommand*{\glsgroupheading}{}
 %\printglossaries
-\printglossary[type=\acronymtype ,title={Acronyms}]
+\begin{normalsize}
+	\setlength{\parskip}{8pt}
+	
+	\printglossary[type=\acronymtype ,title={Acronyms}]
+\end{normalsize}
 
 %% Hauptteil %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagestyle{headings}
