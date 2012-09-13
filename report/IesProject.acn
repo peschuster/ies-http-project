@@ -121,6 +121,10 @@
 \glossaryentry{TCL?\glossaryentryfield{tcl}{\glsnamefont{TCL}}{Tool command language}{\relax }|setentrycounter[]{page}\glsnumberformat}{14}
 \glossaryentry{XMD?\glossaryentryfield{xmd}{\glsnamefont{XMD}}{Xilinx Microprocessor Debug Engine}{\relax }|setentrycounter[]{page}\glsnumberformat}{14}
 \glossaryentry{IP?\glossaryentryfield{ip}{\glsnamefont{IP}}{Intelectual Property}{\relax }|setentrycounter[]{page}\glsnumberformat}{15}
+\glossaryentry{SoC?\glossaryentryfield{soc}{\glsnamefont{SoC}}{System on chip}{\relax }|setentrycounter[]{page}\glsnumberformat}{15}
+\glossaryentry{FPGA?\glossaryentryfield{fpga}{\glsnamefont{FPGA}}{Field Programmable Gate Array}{\relax }|setentrycounter[]{page}\glsnumberformat}{15}
+\glossaryentry{IP?\glossaryentryfield{ip}{\glsnamefont{IP}}{Intelectual Property}{\relax }|setentrycounter[]{page}\glsnumberformat}{15}
+\glossaryentry{IP?\glossaryentryfield{ip}{\glsnamefont{IP}}{Intelectual Property}{\relax }|setentrycounter[]{page}\glsnumberformat}{15}
 \glossaryentry{FPGA?\glossaryentryfield{fpga}{\glsnamefont{FPGA}}{Field Programmable Gate Array}{\relax }|setentrycounter[]{page}\glsnumberformat}{15}
 \glossaryentry{CPU?\glossaryentryfield{cpu}{\glsnamefont{CPU}}{Central Processing Unit}{\relax }|setentrycounter[]{page}\glsnumberformat}{15}
 \glossaryentry{XPS?\glossaryentryfield{xps}{\glsnamefont{XPS}}{Xilinx Platform Studio}{\relax }|setentrycounter[]{page}\glsnumberformat}{18}

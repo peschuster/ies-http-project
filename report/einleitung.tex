@@ -398,15 +398,19 @@ The test site returning the content "\textit{Hello FPGA!}" can be accessed from 
 
 \chapter{Conclusion}
 
-\section{Evaluation}
+\section{Project Review and Evaluation}
 
-I chose this project, because it promised to cover many topics of personal interest, including network systems, performance oriented research and optimization, web technology and System on chip design.
+I chose this project, because it promised to cover many topics of personal interest, including network systems, performance oriented research and optimization, web technology and System on chip design. These expectations were fulfilled, but came with a steep learning curve.
 
-After some weeks with administrative problems concerning setup of the environment and required tools, the project could get started. 
+After some weeks with administrative problems concerning setup of the environment and required tools, the project could get started. The following two to three weeks were filled with learning the utilized tools and understanding the overall process of designing an \gls{ip} core based \gls{soc} on a \gls{fpga}. When being familiar with the general concepts and topics covered by this project, I started to focus on the actual project goal, assembled a time schedule and defined an, from my point of view at that time, doable intermediate goal for the project seminar. But as it turned out during the course of the project, it was hardly possible to stick to the schedule and the planned outcome of the project seminar. This was mainly reasoned in lots of problems occurring at points, which initially seemed to be straight forward implementation tasks, but in fact contained many non-trivial pitfalls. 
+
+The major difficulties solved during this project seminar were that there exists some documentation and reference projects (partly) covering this project, on the one hand, but these could not be ported easily to the tools and hardware family used in this project. This was especially a problem, because \textit{Xilinx} makes little effort to keep new versions of their tools and included \gls{ip} cores compatible with older hardware families. Discovering and keeping this circumstance in mind, was one of the key points in successfully implementing the described outcome of the project seminar.
+
+All in all working through this project seminar was a hard but valuable experience, especially learning about all the interfaces and dependencies between the different levels in the stack of a computer system.
 
 \section{Outlook}
 
-The project seminar covered only the first part of the project goal. So there is naturally some work to be done to finish the project. This covers a specially everything around incorporating custom user space applications (like \textit{nginx}) and an accurate measurement and evaluation of performance parameters of the designed system.
+The project seminar covered only the first part of the project goal. So there is naturally some work to be done to finish the project. This covers especially everything around incorporating custom user space applications (like \textit{nginx}) and an accurate measurement and evaluation of performance parameters of the designed system.
 
 Besides these outstanding topics, improvements to already implemented parts of the system could be made, too. To name a few, the baud rate of the serial \gls{ip} core could be increased to enable a more responsive console interface for accessing the system. An additional, non-volatile file system could be added to the system to circumvent the need for programming a complete image onto the \gls{fpga} on every persisted change to the file system. This could be the inclusion of a \textit{Network File System (NFS)} or a file system stored on a flash drive.
 
