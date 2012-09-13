@@ -2,9 +2,19 @@
 
 \chapter{Resources}
 
+\section{Hardware Architecture Overview}
+\label{sec:hw_arch}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{system_blkd.jpg}
+\end{figure}
+
+
 \section{Hardware Project Configurations}
 
 The configuration files contain more than 800 being too much to include them directly in the project report. Therefore the \textit{Microprocessor Hardware Specification (mhs)} and \textit{User Constraint File (ucf)} files can be downloaded as part of the projects for \textit{\gls{xps}} and the \textit{Xilinx ISE Project Navigator} from the following address: \url{http://www.peschuster.de/ies-project/IesHttpProject-Hardware.zip}.
+\\
 
 \section{Linux Kernel Assets}
 
@@ -15,9 +25,6 @@ The Linux kernel configuration file contains more than 1,200 lines and is theref
 Here are the configuration settings specific for the \textit{MicroBlaze} processor used in this project:
 
 \begin{verbatim}
-#
-# Definitions for MICROBLAZE0
-#
 CONFIG_KERNEL_BASE_ADDR=0x50000000
 CONFIG_XILINX_MICROBLAZE0_FAMILY="virtex5"
 CONFIG_XILINX_MICROBLAZE0_USE_MSR_INSTR=1
@@ -28,6 +35,8 @@ CONFIG_XILINX_MICROBLAZE0_USE_HW_MUL=2
 CONFIG_XILINX_MICROBLAZE0_USE_FPU=0
 CONFIG_XILINX_MICROBLAZE0_HW_VER="8.30.a"
 \end{verbatim}
+
+ 
 
 \subsection{Patches}
 \label{subsec:pvr_patch}
@@ -40,8 +49,6 @@ Author: Peter Schuster <schuster.pe@gmail.com>
 Date:   Sat Sep 8 19:48:56 2012 +0200
 
     Added new MicroBlaze versions.
-    
-    Signed-off-by: Peter Schuster <schuster.pe@gmail.com>
 
 diff --git a/arch/microblaze/kernel/cpu/cpuinfo.c b/arch/microblaze/kernel/cpu/cpuinfo.c
 index 54194b2..783c7087 100644
@@ -58,6 +65,7 @@ index 54194b2..783c7087 100644
 \end{verbatim}
 
 The patch file "\texttt{new-microblaze-versions.patch}" is also included in the zip archive available at \url{http://www.peschuster.de/ies-project/IesHttpProject-Software.zip}.
+\\
 
 \subsection{syslog.tcl}
 \label{subsec:syslog}
@@ -104,6 +112,7 @@ proc syslog { } {
 \end{verbatim}
 
 The file "\texttt{syslog.tcl}" is also included in the zip archive available at \url{http://www.peschuster.de/ies-project/IesHttpProject-Software.zip}.
+\\
 
 \subsection{pack-fs.sh}
 \label{subsec:pack-fs}
@@ -118,10 +127,18 @@ find . -print | cpio -H newc -o | gzip > "../complete_fs.cpio.gz"
 \end{verbatim}
 
 The file "\texttt{pack-fs.sh}" is also included in the zip archive available at \url{http://www.peschuster.de/ies-project/IesHttpProject-Software.zip}.
+\\
 
-\subsection{Device Tree Generator}
+\subsection{Device Tree Generator and Source}
 \label{subsec:dts-generator}
 
 The latest version of the \textit{Device Tree Generator} \gls{bsp} can be downloaded from the site of Michal Simek (\url{http://www.monstr.eu/wiki/lib/exe/fetch.php?media=fdt:fdt:logs:device-tree_latest.tar.gz}.
 
 It is also available in version 1.3 from the url \url{http://www.peschuster.de/ies-project/device-tree-1-3.zip}, as used in this project.
+
+The dts file (\texttt{xupv5.dts}) for the hardware system used in this project is part of the zip archive available at \url{http://www.peschuster.de/ies-project/IesHttpProject-Software.zip}.
+\\
+
+\section{Image files}
+
+The \textit{bitstream} (\texttt{system.bit}) and Linux kernel image (\texttt{simpleImage.xupv5}) files for the \textit{Xilinx XUPV5-LX110T} board and described hardware system are available for download at \url{http://www.peschuster.de/ies-project/IesHttpProject-Images.zip}.

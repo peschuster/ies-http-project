@@ -82,8 +82,10 @@
 
 %% Vorgeplnkel %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagestyle{empty}
-%\pagenumbering{none}
-\pagenumbering{arabic}
+\pagenumbering{none}
+
+
+\input{decls_en}
 
 \tableofcontents
 
@@ -92,6 +94,7 @@
 %\addcontentsline{toc}{chapter}{List of figures}
 %\listoffigures
 
+\pagenumbering{arabic}
 
 % include glossary
 \include{glossary}
@@ -100,8 +103,6 @@
 \clearpage
 \glossarystyle{list}
 \renewcommand{\glsgroupskip}{}
-%\renewcommand*{\glsgroupheading}{}
-%\printglossaries
 \begin{normalsize}
 	\setlength{\parskip}{8pt}
 	

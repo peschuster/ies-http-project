@@ -84,16 +84,16 @@
 \glossaryentry{IP?\glossaryentryfield{ip}{\glsnamefont{IP}}{Intelectual Property}{\relax }|setentrycounter[]{page}\glsnumberformat}{8}
 \glossaryentry{DMA?\glossaryentryfield{dma}{\glsnamefont{DMA}}{Direct Memory Access}{\relax }|setentrycounter[]{page}\glsnumberformat}{8}
 \glossaryentry{IP?\glossaryentryfield{ip}{\glsnamefont{IP}}{Intelectual Property}{\relax }|setentrycounter[]{page}\glsnumberformat}{8}
-\glossaryentry{DMA?\glossaryentryfield{dma}{\glsnamefont{DMA}}{Direct Memory Access}{\relax }|setentrycounter[]{page}\glsnumberformat}{8}
-\glossaryentry{MAC?\glossaryentryfield{mac}{\glsnamefont{MAC}}{Medium Access Control}{\relax }|setentrycounter[]{page}\glsnumberformat}{8}
-\glossaryentry{PLL?\glossaryentryfield{pll}{\glsnamefont{PLL}}{phase-locked loop}{\relax }|setentrycounter[]{page}\glsnumberformat}{8}
+\glossaryentry{DMA?\glossaryentryfield{dma}{\glsnamefont{DMA}}{Direct Memory Access}{\relax }|setentrycounter[]{page}\glsnumberformat}{9}
+\glossaryentry{MAC?\glossaryentryfield{mac}{\glsnamefont{MAC}}{Medium Access Control}{\relax }|setentrycounter[]{page}\glsnumberformat}{9}
+\glossaryentry{PLL?\glossaryentryfield{pll}{\glsnamefont{PLL}}{phase-locked loop}{\relax }|setentrycounter[]{page}\glsnumberformat}{9}
 \glossaryentry{FPGA?\glossaryentryfield{fpga}{\glsnamefont{FPGA}}{Field Programmable Gate Array}{\relax }|setentrycounter[]{page}\glsnumberformat}{9}
 \glossaryentry{PLB?\glossaryentryfield{plb}{\glsnamefont{PLB}}{Processor Local Bus}{\relax }|setentrycounter[]{page}\glsnumberformat}{9}
 \glossaryentry{AXI?\glossaryentryfield{axi}{\glsnamefont{AXI}}{Advanced eXtensible Interface}{\relax }|setentrycounter[]{page}\glsnumberformat}{9}
 \glossaryentry{FPGA?\glossaryentryfield{fpga}{\glsnamefont{FPGA}}{Field Programmable Gate Array}{\relax }|setentrycounter[]{page}\glsnumberformat}{9}
 \glossaryentry{MHS?\glossaryentryfield{mhs}{\glsnamefont{MHS}}{Microprocessor Hardware Specification}{\relax }|setentrycounter[]{page}\glsnumberformat}{9}
 \glossaryentry{IP?\glossaryentryfield{ip}{\glsnamefont{IP}}{Intelectual Property}{\relax }|setentrycounter[]{page}\glsnumberformat}{9}
-\glossaryentry{OS?\glossaryentryfield{os}{\glsnamefont{OS}}{Operating System}{\relax }|setentrycounter[]{page}\glsnumberformat}{9}
+\glossaryentry{OS?\glossaryentryfield{os}{\glsnamefont{OS}}{Operating System}{\relax }|setentrycounter[]{page}\glsnumberformat}{10}
 \glossaryentry{PVR?\glossaryentryfield{pvr}{\glsnamefont{PVR}}{Processor Version Register}{\relax }|setentrycounter[]{page}\glsnumberformat}{10}
 \glossaryentry{OS?\glossaryentryfield{os}{\glsnamefont{OS}}{Operating System}{\relax }|setentrycounter[]{page}\glsnumberformat}{10}
 \glossaryentry{OS?\glossaryentryfield{os}{\glsnamefont{OS}}{Operating System}{\relax }|setentrycounter[]{page}\glsnumberformat}{10}
@@ -102,7 +102,7 @@
 \glossaryentry{OS?\glossaryentryfield{os}{\glsnamefont{OS}}{Operating System}{\relax }|setentrycounter[]{page}\glsnumberformat}{10}
 \glossaryentry{GCC?\glossaryentryfield{gcc}{\glsnamefont{GCC}}{GNU Compiler Collection}{\relax }|setentrycounter[]{page}\glsnumberformat}{11}
 \glossaryentry{MHS?\glossaryentryfield{mhs}{\glsnamefont{MHS}}{Microprocessor Hardware Specification}{\relax }|setentrycounter[]{page}\glsnumberformat}{11}
-\glossaryentry{IP?\glossaryentryfield{ip}{\glsnamefont{IP}}{Intelectual Property}{\relax }|setentrycounter[]{page}\glsnumberformat}{11}
+\glossaryentry{IP?\glossaryentryfield{ip}{\glsnamefont{IP}}{Intelectual Property}{\relax }|setentrycounter[]{page}\glsnumberformat}{12}
 \glossaryentry{TCL?\glossaryentryfield{tcl}{\glsnamefont{TCL}}{Tool command language}{\relax }|setentrycounter[]{page}\glsnumberformat}{12}
 \glossaryentry{XPS?\glossaryentryfield{xps}{\glsnamefont{XPS}}{Xilinx Platform Studio}{\relax }|setentrycounter[]{page}\glsnumberformat}{12}
 \glossaryentry{BSP?\glossaryentryfield{bsp}{\glsnamefont{BSP}}{Board Support Package}{\relax }|setentrycounter[]{page}\glsnumberformat}{12}
@@ -116,10 +116,13 @@
 \glossaryentry{FPGA?\glossaryentryfield{fpga}{\glsnamefont{FPGA}}{Field Programmable Gate Array}{\relax }|setentrycounter[]{page}\glsnumberformat}{13}
 \glossaryentry{XMD?\glossaryentryfield{xmd}{\glsnamefont{XMD}}{Xilinx Microprocessor Debug Engine}{\relax }|setentrycounter[]{page}\glsnumberformat}{13}
 \glossaryentry{ELF?\glossaryentryfield{elf}{\glsnamefont{ELF}}{Executable and Linkable Format}{\relax }|setentrycounter[]{page}\glsnumberformat}{13}
-\glossaryentry{TCL?\glossaryentryfield{tcl}{\glsnamefont{TCL}}{Tool command language}{\relax }|setentrycounter[]{page}\glsnumberformat}{13}
-\glossaryentry{XMD?\glossaryentryfield{xmd}{\glsnamefont{XMD}}{Xilinx Microprocessor Debug Engine}{\relax }|setentrycounter[]{page}\glsnumberformat}{13}
-\glossaryentry{TCL?\glossaryentryfield{tcl}{\glsnamefont{TCL}}{Tool command language}{\relax }|setentrycounter[]{page}\glsnumberformat}{13}
-\glossaryentry{XMD?\glossaryentryfield{xmd}{\glsnamefont{XMD}}{Xilinx Microprocessor Debug Engine}{\relax }|setentrycounter[]{page}\glsnumberformat}{13}
-\glossaryentry{XPS?\glossaryentryfield{xps}{\glsnamefont{XPS}}{Xilinx Platform Studio}{\relax }|setentrycounter[]{page}\glsnumberformat}{16}
-\glossaryentry{PVR?\glossaryentryfield{pvr}{\glsnamefont{PVR}}{Processor Version Register}{\relax }|setentrycounter[]{page}\glsnumberformat}{16}
-\glossaryentry{BSP?\glossaryentryfield{bsp}{\glsnamefont{BSP}}{Board Support Package}{\relax }|setentrycounter[]{page}\glsnumberformat}{18}
+\glossaryentry{TCL?\glossaryentryfield{tcl}{\glsnamefont{TCL}}{Tool command language}{\relax }|setentrycounter[]{page}\glsnumberformat}{14}
+\glossaryentry{XMD?\glossaryentryfield{xmd}{\glsnamefont{XMD}}{Xilinx Microprocessor Debug Engine}{\relax }|setentrycounter[]{page}\glsnumberformat}{14}
+\glossaryentry{TCL?\glossaryentryfield{tcl}{\glsnamefont{TCL}}{Tool command language}{\relax }|setentrycounter[]{page}\glsnumberformat}{14}
+\glossaryentry{XMD?\glossaryentryfield{xmd}{\glsnamefont{XMD}}{Xilinx Microprocessor Debug Engine}{\relax }|setentrycounter[]{page}\glsnumberformat}{14}
+\glossaryentry{IP?\glossaryentryfield{ip}{\glsnamefont{IP}}{Intelectual Property}{\relax }|setentrycounter[]{page}\glsnumberformat}{15}
+\glossaryentry{FPGA?\glossaryentryfield{fpga}{\glsnamefont{FPGA}}{Field Programmable Gate Array}{\relax }|setentrycounter[]{page}\glsnumberformat}{15}
+\glossaryentry{CPU?\glossaryentryfield{cpu}{\glsnamefont{CPU}}{Central Processing Unit}{\relax }|setentrycounter[]{page}\glsnumberformat}{15}
+\glossaryentry{XPS?\glossaryentryfield{xps}{\glsnamefont{XPS}}{Xilinx Platform Studio}{\relax }|setentrycounter[]{page}\glsnumberformat}{18}
+\glossaryentry{PVR?\glossaryentryfield{pvr}{\glsnamefont{PVR}}{Processor Version Register}{\relax }|setentrycounter[]{page}\glsnumberformat}{18}
+\glossaryentry{BSP?\glossaryentryfield{bsp}{\glsnamefont{BSP}}{Board Support Package}{\relax }|setentrycounter[]{page}\glsnumberformat}{20}
