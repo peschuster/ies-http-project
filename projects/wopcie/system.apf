@@ -1,8 +1,0 @@
-# Project file saved by ADEPT 0.47.0 with ISE 14.1
-# The file is case-sensitive, so hand-edit it with care.
-# Tue Jun 12 20:06:04 CEST 2012
-
-set family Virtex5
-set device 5vlx110t
-set package ff1136
-set UCF "C:/developuni/ies_project/projects/wopcie/data/system.ucf"
