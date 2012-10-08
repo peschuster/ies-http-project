@@ -1,4 +1,4 @@
-// File: C:\developuni\ies_project\projects\xupv5_final\implementation\system.bmm
+// File: H:\studium\ies-project\projects\xupv5_final\implementation\system.bmm
 
 ADDRESS_MAP microblaze_0 MICROBLAZE 100
 	ADDRESS_SPACE lmb_bram_combined COMBINED [0x00000000:0x0000ffff]

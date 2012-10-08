@@ -1,5 +1,5 @@
 proc pnsynth {} {
-  cd C:/developuni/ies_project/projects/xupv5_final
+  cd H:/studium/ies-project/projects/xupv5_final
   if { [ catch { xload xmp system.xmp } result ] } {
     exit 10
   }

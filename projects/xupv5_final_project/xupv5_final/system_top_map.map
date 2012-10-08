@@ -10,15 +10,8 @@ Target Device  : xc5vlx110t
 Target Package : ff1136
 Target Speed   : -1
 Mapper Version : virtex5 -- $Revision: 1.55 $
-Mapped Date    : Tue Aug 21 10:39:42 2012
+Mapped Date    : Thu Sep 06 18:02:01 2012
 
-vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-INFO:Security:56 - Part 'xc5vlx110t' is not a WebPack part.
-INFO:Security:66 - Your license for 'ISE' is for evaluation use only.
-WARNING:Security:42 - Your software subscription period has lapsed. Your current
-version of Xilinx tools will continue to function, but you no longer qualify for
-Xilinx software updates or new releases.
-----------------------------------------------------------------------
 Mapping design into LUTs...
 WARNING:Pack:2874 - Trimming timing constraints from pin
    system_i/lmb_bram/lmb_bram/ramb36_0
@@ -635,11 +628,11 @@ WARNING:Timing:3225 - Timing constraint TIMEGRP "gmii_rx_0" OFFSET = IN 2.5 ns
 INFO:Map:215 - The Interim Design Summary has been generated in the MAP Report
    (.mrp).
 Running timing-driven placement...
-Total REAL time at the beginning of Placer: 1 mins 39 secs 
-Total CPU  time at the beginning of Placer: 1 mins 19 secs 
+Total REAL time at the beginning of Placer: 1 mins 2 secs 
+Total CPU  time at the beginning of Placer: 1 mins 
 
 Phase 1.1  Initial Placement Analysis
-Phase 1.1  Initial Placement Analysis (Checksum:2328d297) REAL time: 2 mins 11 secs 
+Phase 1.1  Initial Placement Analysis (Checksum:2328d297) REAL time: 1 mins 9 secs 
 
 Phase 2.7  Design Feasibility Check
 WARNING:Place:838 - An IO Bus with more than one IO standard is found.
@@ -654,19 +647,19 @@ WARNING:Place:838 - An IO Bus with more than one IO standard is found.
    	 Comp: fpga_0_LEDs_8Bit_GPIO_IO_pin<0>   IOSTANDARD = LVCMOS18
 
 
-Phase 2.7  Design Feasibility Check (Checksum:2328d297) REAL time: 2 mins 11 secs 
+Phase 2.7  Design Feasibility Check (Checksum:2328d297) REAL time: 1 mins 9 secs 
 
 Phase 3.31  Local Placement Optimization
-Phase 3.31  Local Placement Optimization (Checksum:840e19fe) REAL time: 2 mins 11 secs 
+Phase 3.31  Local Placement Optimization (Checksum:840e19fe) REAL time: 1 mins 9 secs 
 
 Phase 4.37  Local Placement Optimization
-Phase 4.37  Local Placement Optimization (Checksum:f27faa41) REAL time: 2 mins 12 secs 
+Phase 4.37  Local Placement Optimization (Checksum:f27faa41) REAL time: 1 mins 9 secs 
 
 Phase 5.33  Local Placement Optimization
-Phase 5.33  Local Placement Optimization (Checksum:f27faa41) REAL time: 4 mins 5 secs 
+Phase 5.33  Local Placement Optimization (Checksum:f27faa41) REAL time: 2 mins 29 secs 
 
 Phase 6.32  Local Placement Optimization
-Phase 6.32  Local Placement Optimization (Checksum:f27faa41) REAL time: 4 mins 8 secs 
+Phase 6.32  Local Placement Optimization (Checksum:f27faa41) REAL time: 2 mins 31 secs 
 
 Phase 7.2  Initial Clock and IO Placement
 
@@ -929,19 +922,19 @@ WARNING:Place:971 - A GCLK / GCLK clock component pair have been found that are 
    <BUFGCTRL_X0Y31>. The GCLK site can use the fast path to the other GCLK if both the GCLK components are placed in the
    same half of the device (TOP or BOTTOM). You may want to analyze why this problem exists and correct it. This is not
    an error so processing will continue.
-Phase 7.2  Initial Clock and IO Placement (Checksum:902613d8) REAL time: 4 mins 15 secs 
+Phase 7.2  Initial Clock and IO Placement (Checksum:902613d8) REAL time: 2 mins 35 secs 
 
 Phase 8.36  Local Placement Optimization
-Phase 8.36  Local Placement Optimization (Checksum:902613d8) REAL time: 4 mins 15 secs 
+Phase 8.36  Local Placement Optimization (Checksum:902613d8) REAL time: 2 mins 35 secs 
 
 Phase 9.30  Global Clock Region Assignment
-Phase 9.30  Global Clock Region Assignment (Checksum:902613d8) REAL time: 4 mins 15 secs 
+Phase 9.30  Global Clock Region Assignment (Checksum:902613d8) REAL time: 2 mins 35 secs 
 
 Phase 10.3  Local Placement Optimization
-Phase 10.3  Local Placement Optimization (Checksum:902613d8) REAL time: 4 mins 16 secs 
+Phase 10.3  Local Placement Optimization (Checksum:902613d8) REAL time: 2 mins 35 secs 
 
 Phase 11.5  Local Placement Optimization
-Phase 11.5  Local Placement Optimization (Checksum:902613d8) REAL time: 4 mins 16 secs 
+Phase 11.5  Local Placement Optimization (Checksum:902613d8) REAL time: 2 mins 36 secs 
 
 Phase 12.8  Global Placement
 ...............................
@@ -951,25 +944,25 @@ Phase 12.8  Global Placement
 ..............................
 ................
 ................
-Phase 12.8  Global Placement (Checksum:12509d00) REAL time: 6 mins 2 secs 
+Phase 12.8  Global Placement (Checksum:12509d00) REAL time: 3 mins 52 secs 
 
 Phase 13.29  Local Placement Optimization
-Phase 13.29  Local Placement Optimization (Checksum:12509d00) REAL time: 6 mins 2 secs 
+Phase 13.29  Local Placement Optimization (Checksum:12509d00) REAL time: 3 mins 52 secs 
 
 Phase 14.5  Local Placement Optimization
-Phase 14.5  Local Placement Optimization (Checksum:12509d00) REAL time: 6 mins 5 secs 
+Phase 14.5  Local Placement Optimization (Checksum:12509d00) REAL time: 3 mins 53 secs 
 
 Phase 15.18  Placement Optimization
-Phase 15.18  Placement Optimization (Checksum:a19e8be4) REAL time: 8 mins 19 secs 
+Phase 15.18  Placement Optimization (Checksum:a19e8be4) REAL time: 5 mins 41 secs 
 
 Phase 16.5  Local Placement Optimization
-Phase 16.5  Local Placement Optimization (Checksum:a19e8be4) REAL time: 8 mins 21 secs 
+Phase 16.5  Local Placement Optimization (Checksum:a19e8be4) REAL time: 5 mins 43 secs 
 
 Phase 17.34  Placement Validation
-Phase 17.34  Placement Validation (Checksum:a19e8be4) REAL time: 8 mins 22 secs 
+Phase 17.34  Placement Validation (Checksum:a19e8be4) REAL time: 5 mins 43 secs 
 
-Total REAL time to Placer completion: 8 mins 23 secs 
-Total CPU  time to Placer completion: 7 mins 14 secs 
+Total REAL time to Placer completion: 5 mins 44 secs 
+Total CPU  time to Placer completion: 5 mins 40 secs 
 Running post-placement packing...
 Writing output files...
 
@@ -1045,9 +1038,9 @@ Specific Feature Utilization:
 
 Average Fanout of Non-Clock Nets:                3.80
 
-Peak Memory Usage:  926 MB
-Total REAL time to MAP completion:  8 mins 48 secs 
-Total CPU time to MAP completion:   7 mins 33 secs 
+Peak Memory Usage:  939 MB
+Total REAL time to MAP completion:  5 mins 59 secs 
+Total CPU time to MAP completion:   5 mins 55 secs 
 
 Mapping completed.
 See MAP report file "system_top_map.mrp" for details.

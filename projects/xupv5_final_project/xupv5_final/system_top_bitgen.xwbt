@@ -1,8 +1,8 @@
 INTSTYLE=ise
-INFILE=C:\developuni\ies_project\projects\xupv5_final_project\xupv5_final\system_top.ncd
-OUTFILE=C:\developuni\ies_project\projects\xupv5_final_project\xupv5_final\system_top.bit
+INFILE=H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\system_top.ncd
+OUTFILE=H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\system_top.bit
 FAMILY=Virtex5
 PART=xc5vlx110t-1ff1136
-WORKINGDIR=C:\developuni\ies_project\projects\xupv5_final_project\xupv5_final
+WORKINGDIR=H:\studium\ies-project\projects\xupv5_final_project\xupv5_final
 LICENSE=ISE
-USER_INFO=210449214_0_0_901
+USER_INFO=210656129_0_0_028

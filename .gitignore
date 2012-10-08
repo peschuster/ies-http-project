@@ -62,6 +62,10 @@ report/IesProject.pdf
 /projects/*/pcores
 /projects/*/XpsGuiSessionLock
 /projects/*/SDK/SDK_Export
+/projects/*/*/smartxplorer_results
+/projects/*/*/planAhead_run_1
+/projects/*/*/planAhead_run_2
+/projects/*/*/*.ngc
 *.svf
 *.scr
 *.bak

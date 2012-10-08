@@ -5,18 +5,6 @@
      behavior or data corruption.  It is strongly advised that
      users do not edit the contents of this file. -->
 <messages>
-<msg type="warning" file="HDLParsers" num="3607" delta="new" >Unit <arg fmt="%s" index="1">work/system_top</arg> is now defined in a different file.  It was defined in &quot;<arg fmt="%s" index="2">H:/studium/ies-project/projects/xupv5_final/system_top.vhd</arg>&quot;, and is now defined in &quot;<arg fmt="%s" index="3">C:/developuni/ies_project/projects/xupv5_final/system_top.vhd</arg>&quot;.
-</msg>
-
-<msg type="warning" file="HDLParsers" num="3607" delta="new" >Unit <arg fmt="%s" index="1">work/system_top/STRUCTURE</arg> is now defined in a different file.  It was defined in &quot;<arg fmt="%s" index="2">H:/studium/ies-project/projects/xupv5_final/system_top.vhd</arg>&quot;, and is now defined in &quot;<arg fmt="%s" index="3">C:/developuni/ies_project/projects/xupv5_final/system_top.vhd</arg>&quot;.
-</msg>
-
-<msg type="warning" file="HDLParsers" num="3607" delta="new" >Unit <arg fmt="%s" index="1">work/system</arg> is now defined in a different file.  It was defined in &quot;<arg fmt="%s" index="2">H:/studium/ies-project/projects/xupv5_final/hdl/system.vhd</arg>&quot;, and is now defined in &quot;<arg fmt="%s" index="3">C:/developuni/ies_project/projects/xupv5_final/hdl/system.vhd</arg>&quot;.
-</msg>
-
-<msg type="warning" file="HDLParsers" num="3607" delta="new" >Unit <arg fmt="%s" index="1">work/system/STRUCTURE</arg> is now defined in a different file.  It was defined in &quot;<arg fmt="%s" index="2">H:/studium/ies-project/projects/xupv5_final/hdl/system.vhd</arg>&quot;, and is now defined in &quot;<arg fmt="%s" index="3">C:/developuni/ies_project/projects/xupv5_final/hdl/system.vhd</arg>&quot;.
-</msg>
-
 <msg type="info" file="Xst" num="2260" delta="old" >The FF/Latch &lt;<arg fmt="%s" index="1">microblaze_0/MicroBlaze_Core_I/Performance.Decode_I/EX_ALU_Op_0</arg>&gt; in Unit &lt;<arg fmt="%s" index="2">microblaze_0</arg>&gt; is equivalent to the following <arg fmt="%s" index="3">FF/Latch</arg> : <arg fmt="%s" index="4">&lt;microblaze_0/MicroBlaze_Core_I/Performance.Decode_I/EX_ALU_Op_0_1&gt; </arg>
 </msg>
 

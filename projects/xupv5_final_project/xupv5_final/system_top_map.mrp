@@ -9,7 +9,7 @@ Target Device  : xc5vlx110t
 Target Package : ff1136
 Target Speed   : -1
 Mapper Version : virtex5 -- $Revision: 1.55 $
-Mapped Date    : Tue Aug 21 10:39:42 2012
+Mapped Date    : Thu Sep 06 18:02:01 2012
 
 Design Summary
 --------------
@@ -81,9 +81,9 @@ Specific Feature Utilization:
 
 Average Fanout of Non-Clock Nets:                3.80
 
-Peak Memory Usage:  926 MB
-Total REAL time to MAP completion:  8 mins 48 secs 
-Total CPU time to MAP completion:   7 mins 33 secs 
+Peak Memory Usage:  939 MB
+Total REAL time to MAP completion:  5 mins 59 secs 
+Total CPU time to MAP completion:   5 mins 55 secs 
 
 Table of Contents
 -----------------
@@ -106,9 +106,6 @@ Section 1 - Errors
 
 Section 2 - Warnings
 --------------------
-WARNING:Security:42 - Your software subscription period has lapsed. Your current
-version of Xilinx tools will continue to function, but you no longer qualify for
-Xilinx software updates or new releases.
 WARNING:Pack:2874 - Trimming timing constraints from pin
    system_i/lmb_bram/lmb_bram/ramb36_0
    of frag REGCLKAU connected to power/ground net
@@ -740,8 +737,6 @@ WARNING:Place:971 - A GCLK / GCLK clock component pair have been found that are 
 
 Section 3 - Informational
 -------------------------
-INFO:Security:56 - Part 'xc5vlx110t' is not a WebPack part.
-INFO:Security:66 - Your license for 'ISE' is for evaluation use only.
 INFO:LIT:243 - Logical network N113 has no load.
 INFO:LIT:395 - The above info message is repeated 945 more times for the
    following (max. 5 shown):
