@@ -26,7 +26,8 @@ proc mysyslog { } {
             set char [expr [expr $mval >> $shift] & 0xff]
             # NULL ? End of string.
             if {$char == 0} {
-                return
+                close $fp
+				return
             }
             set char [format "%c" $char]
             puts -nonewline $fp "$char"
