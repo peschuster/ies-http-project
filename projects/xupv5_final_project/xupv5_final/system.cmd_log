@@ -1,0 +1,2 @@
+vhdtdtfi -lib work H:/studium/ies-project/projects/xupv5_final/__xps/system.vhd -prj xupv5_final -o system.spl -module system -template I:/Xilinx/14.1/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family virtex5 system.spl H:/studium/ies-project/projects/xupv5_final_project/xupv5_final/system.sym 

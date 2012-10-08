@@ -1,0 +1,203 @@
+
+<smartXplorerReport>
+    <command>"I:\Xilinx\14.1\ISE_DS\ISE\bin\nt64\smartxplorer.exe" -p xc5vlx110t-ff1136-1 -b -wd smartxplorer_results system_top.ngd -to "-v 3 -s 1 -n 3 -fastpaths -xml system_top.twx -ucf system_top.ucf" -host_list hostlistfile.txt -max_runs 7
+    </command>
+    <programStatus>Done
+    </programStatus>
+    <programPID>6556
+    </programPID>
+    
+    <strategy name="MapRunTime">
+        <strategyData>map  -ol high -w ; par  -ol high 
+        </strategyData>
+        <xdsFile>mapruntime.xds
+        </xdsFile>
+        <host name="PeterPC">
+            <hostData>Windows_NT, AMD64 Family 16 Model 4 Stepping 3, AuthenticAMD, 4-processor, -1G RAM
+            </hostData>
+        </host>
+        <runIndex>run1
+        </runIndex>
+        <status>Done
+        </status>
+        <logFile>system_top_sx.log
+        </logFile>
+        <timingScore>0
+        </timingScore>
+        <WorstCaseSlack>0.007ns
+        </WorstCaseSlack>
+        <Luts>10,712 (15%)
+	</Luts>
+	<SliceRegisters>11,274 (16%)
+	</SliceRegisters>
+	<runTime>0h 10m 17s
+        </runTime>
+    </strategy>
+    <strategy name="MapLogicOpt">
+        <strategyData>map  -ol high -xe n -logic_opt on -t 2 -w ; par  -ol high -xe n 
+        </strategyData>
+        <xdsFile>maplogicopt.xds
+        </xdsFile>
+        <host name="PeterPC">
+            <hostData>Windows_NT, AMD64 Family 16 Model 4 Stepping 3, AuthenticAMD, 4-processor, -1G RAM
+            </hostData>
+        </host>
+        <runIndex>run2
+        </runIndex>
+        <status>Stopped
+        </status>
+        <logFile>system_top_sx.log
+        </logFile>
+        <timingScore>None
+        </timingScore>
+        <WorstCaseSlack>None
+        </WorstCaseSlack>
+        <Luts>10,718 (15%)
+	</Luts>
+	<SliceRegisters>11,274 (16%)
+	</SliceRegisters>
+	<runTime>0h 10m 33s
+        </runTime>
+    </strategy>
+    <strategy name="MapGlobOptIOReg">
+        <strategyData>map  -ol high -global_opt speed -pr b -w ; par  -ol high -xe n 
+        </strategyData>
+        <xdsFile>mapgloboptioreg.xds
+        </xdsFile>
+        <host name="PeterPC">
+            <hostData>Windows_NT, AMD64 Family 16 Model 4 Stepping 3, AuthenticAMD, 4-processor, -1G RAM
+            </hostData>
+        </host>
+        <runIndex>run3
+        </runIndex>
+        <status>Stopped
+        </status>
+        <logFile>system_top_sx.log
+        </logFile>
+        <timingScore>0
+        </timingScore>
+        <WorstCaseSlack>0.037ns
+        </WorstCaseSlack>
+        <Luts>10,921 (15%)
+	</Luts>
+	<SliceRegisters>10,772 (15%)
+	</SliceRegisters>
+	<runTime>0h 10m 40s
+        </runTime>
+    </strategy>
+    <strategy name="MapRegDup">
+        <strategyData>map  -ol high -xe n -register_duplication on -w ; par  -ol high -xe n 
+        </strategyData>
+        <xdsFile>mapregdup.xds
+        </xdsFile>
+        <host name="PeterPC">
+            <hostData>Windows_NT, AMD64 Family 16 Model 4 Stepping 3, AuthenticAMD, 4-processor, -1G RAM
+            </hostData>
+        </host>
+        <runIndex>run4
+        </runIndex>
+        <status>Stopped
+        </status>
+        <logFile>system_top_sx.log
+        </logFile>
+        <timingScore>0
+        </timingScore>
+        <WorstCaseSlack>0.012ns
+        </WorstCaseSlack>
+        <Luts>10,721 (15%)
+	</Luts>
+	<SliceRegisters>11,275 (16%)
+	</SliceRegisters>
+	<runTime>0h 10m 46s
+        </runTime>
+    </strategy>
+    <strategy name="MapExtraEffortIOReg">
+        <strategyData>map  -ol high -xe n -pr b -t 7 -w ; par  -ol high -xe n 
+        </strategyData>
+        <xdsFile>mapextraeffortioreg.xds
+        </xdsFile>
+        <host name="None">
+            <hostData>None
+            </hostData>
+        </host>
+        <runIndex>None
+        </runIndex>
+        <status>None
+        </status>
+        <logFile>system_top_sx.log
+        </logFile>
+        <timingScore>None
+        </timingScore>
+        <WorstCaseSlack>None
+        </WorstCaseSlack>
+        <Luts>None
+	</Luts>
+	<SliceRegisters>None
+	</SliceRegisters>
+	<runTime>None
+        </runTime>
+    </strategy>
+    <strategy name="MapLogOptRegDup">
+        <strategyData>map  -ol high -xe n -logic_opt on -register_duplication on -t 2 -w ; par  -ol high -xe n 
+        </strategyData>
+        <xdsFile>maplogoptregdup.xds
+        </xdsFile>
+        <host name="None">
+            <hostData>None
+            </hostData>
+        </host>
+        <runIndex>None
+        </runIndex>
+        <status>None
+        </status>
+        <logFile>system_top_sx.log
+        </logFile>
+        <timingScore>None
+        </timingScore>
+        <WorstCaseSlack>None
+        </WorstCaseSlack>
+        <Luts>None
+	</Luts>
+	<SliceRegisters>None
+	</SliceRegisters>
+	<runTime>None
+        </runTime>
+    </strategy>
+    <strategy name="MapExtraEffort2">
+        <strategyData>map  -ol high -xe n -t 3 -w ; par  -ol high 
+        </strategyData>
+        <xdsFile>mapextraeffort2.xds
+        </xdsFile>
+        <host name="None">
+            <hostData>None
+            </hostData>
+        </host>
+        <runIndex>None
+        </runIndex>
+        <status>None
+        </status>
+        <logFile>system_top_sx.log
+        </logFile>
+        <timingScore>None
+        </timingScore>
+        <WorstCaseSlack>None
+        </WorstCaseSlack>
+        <Luts>None
+	</Luts>
+	<SliceRegisters>None
+	</SliceRegisters>
+	<runTime>None
+        </runTime>
+    </strategy>
+    <bestStrategy>MapRunTime
+    </bestStrategy>
+    <envVariables>
+        <env name="XILINX_VIVADO"  value="I:\Xilinx\Vivado\2012.1"/>
+        <env name="XILINX_PLANAHEAD"  value="I:\Xilinx\14.1\ISE_DS\PlanAhead"/>
+        <env name="XILINX_DSP"  value="I:\Xilinx\14.1\ISE_DS\ISE"/>
+        <env name="XILINX_EDK"  value="I:\Xilinx\14.1\ISE_DS\EDK"/>
+        <env name="PATH"  value="I:\Xilinx\14.1\ISE_DS\ISE\\lib\nt64;I:\Xilinx\14.1\ISE_DS\ISE\\bin\nt64;I:\Xilinx\14.1\ISE_DS\ISE\bin\nt64;I:\Xilinx\14.1\ISE_DS\ISE\lib\nt64;I:\Xilinx\Vivado\2012.1\bin;I:\Xilinx\14.1\ISE_DS\PlanAhead\bin;I:\Xilinx\14.1\ISE_DS\EDK\bin\nt64;I:\Xilinx\14.1\ISE_DS\EDK\lib\nt64;I:\Xilinx\14.1\ISE_DS\EDK\gnu\microblaze\nt64\bin;I:\Xilinx\14.1\ISE_DS\EDK\gnu\powerpc-eabi\nt64\bin;I:\Xilinx\14.1\ISE_DS\EDK\gnuwin\bin;I:\Xilinx\14.1\ISE_DS\EDK\gnu\arm\nt64\bin;I:\Xilinx\14.1\ISE_DS\common\bin\nt64;I:\Xilinx\14.1\ISE_DS\common\lib\nt64;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\MiKTeX 2.9\miktex\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\DTS\Binn\;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\Common Files\DivX Shared\;C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\;C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\;C:\Program Files (x86)\Microsoft SQL Server\100\DTS\Binn\;C:\Program Files\MATLAB\R2011a\runtime\win64;C:\Program Files\MATLAB\R2011a\bin;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Microsoft SQL Server Migration Assistant 2008 for MySQL\bin\;C:\Program Files (x86)\Microsoft Team Foundation Server 2010 Power Tools\;C:\Program Files (x86)\Microsoft Team Foundation Server 2010 Power Tools\Best Practices Analyzer\;C:\Program Files (x86)\Heroku\bin;C:\Program Files (x86)\ruby-1.9.3\bin;C:\Program Files (x86)\git\bin;C:\Program Files (x86)\git\cmd;J:\WinAVR-20100110\bin;J:\WinAVR-20100110\utils\bin;H:\Csharp\github\git-tfs\bin;H:\studium\hdl\iverilog\bin;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files (x86)\Windows Kits\8.0\Windows Performance Toolkit\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files (x86)\nodejs\;C:\Chocolatey\bin;C:\Users\Peter Schuster\AppData\Roaming\npm\"/>
+        <env name="XILINX"  value="I:\Xilinx\14.1\ISE_DS\ISE\"/>
+        
+    </envVariables>
+</smartXplorerReport>

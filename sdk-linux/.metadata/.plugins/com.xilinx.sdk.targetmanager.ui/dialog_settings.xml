@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<section name="Workbench">
-	<item value="C:\developuni\ies_project\sdk-linux\ml505_linux_hw_platform\system.bit" key="ml505_linux_hw_platform-bitFile"/>
-	<item value="C:\developuni\ies_project\sdk-linux\ml505_linux_hw_platform\system_bd.bmm" key="ml505_linux_hw_platform-bmmFile"/>
-	<item value="bootloop" key="ml505_linux_hw_platform-microblaze_0-initElf"/>
-</section>

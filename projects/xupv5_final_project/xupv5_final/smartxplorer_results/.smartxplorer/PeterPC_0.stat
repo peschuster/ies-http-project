@@ -1,0 +1,18 @@
+START:Strategy:1:MapRunTime
+REMOTE_PID:11824
+RUNNING:11824:8324:MapRunTime:map:system_top.ngd: -ol high -w  -p xc5vlx110t-ff1136-1 -o system_top_map.ncd  H:cl:bslstudium:bslies:dsproject:bslprojects:bslxupv5_final_project:bslxupv5_final:bslsmartxplorer_results:bslrun1:bslsystem_top.pcf
+STATUS:MapRunTime:map:Score:None:lut:None:slice_reg:11,274 (16%):slice:None:bram:None:dsp48:None:mult18x18:None:Power:None:wnsInfo:None:Time:411.54 secs 
+STATUS:MapRunTime:map:Score:None:lut:10,712 (15%):slice_reg:11,274 (16%):slice:None:bram:None:dsp48:None:mult18x18:None:Power:None:wnsInfo:None:Time:411.54 secs 
+STATUS:MapRunTime:map:Score:None:lut:10,712 (15%):slice_reg:11,274 (16%):slice:5,905 (34%):bram:None:dsp48:None:mult18x18:None:Power:None:wnsInfo:None:Time:411.54 secs 
+STATUS:MapRunTime:map:Score:None:lut:10,712 (15%):slice_reg:11,274 (16%):slice:5,905 (34%):bram:52:dsp48:None:mult18x18:None:Power:None:wnsInfo:None:Time:411.54 secs 
+STATUS:MapRunTime:map:Score:None:lut:10,712 (15%):slice_reg:11,274 (16%):slice:5,905 (34%):bram:52:dsp48:4 (6%):mult18x18:None:Power:None:wnsInfo:None:Time:411.54 secs 
+DONE:map:0
+RUNNING:11824:10992:MapRunTime:par:system_top_map.ncd: -ol high  -w system_top.ncd  H:cl:bslstudium:bslies:dsproject:bslprojects:bslxupv5_final_project:bslxupv5_final:bslsmartxplorer_results:bslrun1:bslsystem_top.pcf
+STATUS:MapRunTime:par:Score:123:lut:None:slice_reg:None:slice:None:bram:None:dsp48:None:mult18x18:None:Power:None:wnsInfo:None:Time:536.98 secs 
+STATUS:MapRunTime:par:Score:0:lut:None:slice_reg:None:slice:None:bram:None:dsp48:None:mult18x18:None:Power:None:wnsInfo:None:Time:536.98 secs 
+STATUS:MapRunTime:par:Score:0:lut:None:slice_reg:None:slice:None:bram:None:dsp48:None:mult18x18:None:Power:None:wnsInfo:0.007ns:Time:552.00 secs 
+DONE:par:0
+RUNNING:11824:9300:MapRunTime:trce:H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\run1\system_top.ncd:H:cl:bslstudium:bslies:dsproject:bslprojects:bslxupv5_final_project:bslxupv5_final:bslsmartxplorer_results:bslrun1:bslsystem_top.pcf -xml H:cl:bslstudium:bslies:dsproject:bslprojects:bslxupv5_final_project:bslxupv5_final:bslsmartxplorer_results:bslrun1:bslsystem_top.twx -v 3 -s 1 -n 3 -fastpaths   -ucf system_top.ucf -o H:cl:bslstudium:bslies:dsproject:bslprojects:bslxupv5_final_project:bslxupv5_final:bslsmartxplorer_results:bslrun1:bslsystem_top.twr
+STATUS:MapRunTime:trce:Score:0:lut:None:slice_reg:None:slice:None:bram:None:dsp48:None:mult18x18:None:Power:None:wnsInfo:None:Time:617.24 secs 
+DONE:trce:0
+DONE:Xplorer

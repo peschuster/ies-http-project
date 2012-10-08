@@ -1,0 +1,11 @@
+START:Strategy:2:MapLogicOpt
+REMOTE_PID:10112
+RUNNING:10112:10508:MapLogicOpt:map:system_top.ngd: -ol high -xe n -logic_opt on -t 2 -w  -p xc5vlx110t-ff1136-1 -o system_top_map.ncd  H:cl:bslstudium:bslies:dsproject:bslprojects:bslxupv5_final_project:bslxupv5_final:bslsmartxplorer_results:bslrun2:bslsystem_top.pcf
+STATUS:MapLogicOpt:map:Score:None:lut:None:slice_reg:11,274 (16%):slice:None:bram:None:dsp48:None:mult18x18:None:Power:None:wnsInfo:None:Time:546.66 secs 
+STATUS:MapLogicOpt:map:Score:None:lut:10,718 (15%):slice_reg:11,274 (16%):slice:None:bram:None:dsp48:None:mult18x18:None:Power:None:wnsInfo:None:Time:546.66 secs 
+STATUS:MapLogicOpt:map:Score:None:lut:10,718 (15%):slice_reg:11,274 (16%):slice:5,778 (33%):bram:None:dsp48:None:mult18x18:None:Power:None:wnsInfo:None:Time:546.66 secs 
+STATUS:MapLogicOpt:map:Score:None:lut:10,718 (15%):slice_reg:11,274 (16%):slice:5,778 (33%):bram:52:dsp48:None:mult18x18:None:Power:None:wnsInfo:None:Time:546.66 secs 
+STATUS:MapLogicOpt:map:Score:None:lut:10,718 (15%):slice_reg:11,274 (16%):slice:5,778 (33%):bram:52:dsp48:4 (6%):mult18x18:None:Power:None:wnsInfo:None:Time:546.66 secs 
+DONE:map:0
+RUNNING:10112:9080:MapLogicOpt:par:system_top_map.ncd: -ol high -xe n  -w system_top.ncd  H:cl:bslstudium:bslies:dsproject:bslprojects:bslxupv5_final_project:bslxupv5_final:bslsmartxplorer_results:bslrun2:bslsystem_top.pcf
+DONE:Xplorer

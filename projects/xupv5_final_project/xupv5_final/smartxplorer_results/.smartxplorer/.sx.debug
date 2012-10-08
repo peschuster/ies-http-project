@@ -1,0 +1,191 @@
+launching strategy on machine: PeterPC
+"I:\Xilinx\14.1\ISE_DS\ISE\bin\nt64\smartxplorer.exe"  --runStrategy  "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\run1"   "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\run1\system_top.ngd"  xc5vlx110t-ff1136-1  "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\run1\system_top_sx.log"   "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\.smartxplorer\PeterPC_0.stat"   "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\.smartxplorer\smartxplorer.env"   "None"  :oc:sqmap:sq:cl:sp:sq:sp:dsol:sphigh:sp:dsw:sp:sq:cm:sp:sqpower:sq:cl:sp:sqoff:sq:cm:sp:sqbitgen:sq:cl:sp:sqon:sq:cm:sp:sqsynplify:sq:cl:sp:sq:sq:cm:sp:sqngdbuild:sq:cl:sp:sq:dssd:spH:clcl:clbslstudium:clbslies:cldsproject:clbslprojects:clbslxupv5_final_project:clbslxupv5_final:sp:dsp:spxc5vlx110t:dsff1136:ds1:sp:dsuc:spH:clcl:clbslstudium:clbslies:cldsproject:clbslprojects:clbslxupv5_final_project:clbslxupv5_final:clbslsystem_top.ucf:sq:cm:sp:sqtrce:sq:cl:sp:sq:dsv:sp3:sp:dss:sp1:sp:dsn:sp3:sp:dsfastpaths:sp:dsxml:spsystem_top.twx:sp:dsucf:spsystem_top.ucf:sq:cm:sp:sqmax_score:sq:cl:spNone:cm:sp:sqindex:sq:cl:sp1:cm:sp:sqpar:sq:cl:sp:sq:sp:dsol:sphigh:sp:sq:cm:sp:sqname:sq:cl:sp:sqMapRunTime:sq:cm:sp:sqxst:sq:cl:sp:sq:sq:cm:sp:sqarea:sq:cl:sp:os:sqlut:sq:cm:sp:sqslice_reg:sq:cs:cm:sp:sqversion:sq:cl:sp:sq14.1:sq:cm:sp:sqenv:sq:cl:sp:sq:oc:cc:sq:cm:sp:sqsxLaunchDir:sq:cl:sp:sqH:cl:bsl:bslstudium:bsl:bslies:dsproject:bsl:bslprojects:bsl:bslxupv5_final_project:bsl:bslxupv5_final:sq:cc map par
+launching strategy on machine: PeterPC
+"I:\Xilinx\14.1\ISE_DS\ISE\bin\nt64\smartxplorer.exe"  --runStrategy  "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\run2"   "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\run2\system_top.ngd"  xc5vlx110t-ff1136-1  "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\run2\system_top_sx.log"   "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\.smartxplorer\PeterPC_1.stat"   "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\.smartxplorer\smartxplorer.env"   "None"  :oc:sqmap:sq:cl:sp:sq:sp:dsol:sphigh:sp:dsxe:spn:sp:dslogic_opt:spon:sp:dst:sp2:sp:dsw:sp:sq:cm:sp:sqpower:sq:cl:sp:sqoff:sq:cm:sp:sqbitgen:sq:cl:sp:sqon:sq:cm:sp:sqsynplify:sq:cl:sp:sq:sq:cm:sp:sqngdbuild:sq:cl:sp:sq:dssd:spH:clcl:clbslstudium:clbslies:cldsproject:clbslprojects:clbslxupv5_final_project:clbslxupv5_final:sp:dsp:spxc5vlx110t:dsff1136:ds1:sp:dsuc:spH:clcl:clbslstudium:clbslies:cldsproject:clbslprojects:clbslxupv5_final_project:clbslxupv5_final:clbslsystem_top.ucf:sq:cm:sp:sqtrce:sq:cl:sp:sq:dsv:sp3:sp:dss:sp1:sp:dsn:sp3:sp:dsfastpaths:sp:dsxml:spsystem_top.twx:sp:dsucf:spsystem_top.ucf:sq:cm:sp:sqmax_score:sq:cl:spNone:cm:sp:sqindex:sq:cl:sp2:cm:sp:sqpar:sq:cl:sp:sq:sp:dsol:sphigh:sp:dsxe:spn:sp:sq:cm:sp:sqname:sq:cl:sp:sqMapLogicOpt:sq:cm:sp:sqxst:sq:cl:sp:sq:sq:cm:sp:sqarea:sq:cl:sp:os:sqlut:sq:cm:sp:sqslice_reg:sq:cs:cm:sp:sqversion:sq:cl:sp:sq14.1:sq:cm:sp:sqenv:sq:cl:sp:sq:oc:cc:sq:cm:sp:sqsxLaunchDir:sq:cl:sp:sqH:cl:bsl:bslstudium:bsl:bslies:dsproject:bsl:bslprojects:bsl:bslxupv5_final_project:bsl:bslxupv5_final:sq:cc map par
+launching strategy on machine: PeterPC
+"I:\Xilinx\14.1\ISE_DS\ISE\bin\nt64\smartxplorer.exe"  --runStrategy  "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\run3"   "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\run3\system_top.ngd"  xc5vlx110t-ff1136-1  "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\run3\system_top_sx.log"   "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\.smartxplorer\PeterPC_2.stat"   "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\.smartxplorer\smartxplorer.env"   "None"  :oc:sqmap:sq:cl:sp:sq:sp:dsol:sphigh:sp:dsglobal_opt:spspeed:sp:dspr:spb:sp:dsw:sp:sq:cm:sp:sqpower:sq:cl:sp:sqoff:sq:cm:sp:sqbitgen:sq:cl:sp:sqon:sq:cm:sp:sqsynplify:sq:cl:sp:sq:sq:cm:sp:sqngdbuild:sq:cl:sp:sq:dssd:spH:clcl:clbslstudium:clbslies:cldsproject:clbslprojects:clbslxupv5_final_project:clbslxupv5_final:sp:dsp:spxc5vlx110t:dsff1136:ds1:sp:dsuc:spH:clcl:clbslstudium:clbslies:cldsproject:clbslprojects:clbslxupv5_final_project:clbslxupv5_final:clbslsystem_top.ucf:sq:cm:sp:sqtrce:sq:cl:sp:sq:dsv:sp3:sp:dss:sp1:sp:dsn:sp3:sp:dsfastpaths:sp:dsxml:spsystem_top.twx:sp:dsucf:spsystem_top.ucf:sq:cm:sp:sqmax_score:sq:cl:spNone:cm:sp:sqindex:sq:cl:sp3:cm:sp:sqpar:sq:cl:sp:sq:sp:dsol:sphigh:sp:dsxe:spn:sp:sq:cm:sp:sqname:sq:cl:sp:sqMapGlobOptIOReg:sq:cm:sp:sqxst:sq:cl:sp:sq:sq:cm:sp:sqarea:sq:cl:sp:os:sqlut:sq:cm:sp:sqslice_reg:sq:cs:cm:sp:sqversion:sq:cl:sp:sq14.1:sq:cm:sp:sqenv:sq:cl:sp:sq:oc:cc:sq:cm:sp:sqsxLaunchDir:sq:cl:sp:sqH:cl:bsl:bslstudium:bsl:bslies:dsproject:bsl:bslprojects:bsl:bslxupv5_final_project:bsl:bslxupv5_final:sq:cc map par
+launching strategy on machine: PeterPC
+"I:\Xilinx\14.1\ISE_DS\ISE\bin\nt64\smartxplorer.exe"  --runStrategy  "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\run4"   "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\run4\system_top.ngd"  xc5vlx110t-ff1136-1  "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\run4\system_top_sx.log"   "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\.smartxplorer\PeterPC_3.stat"   "H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\.smartxplorer\smartxplorer.env"   "None"  :oc:sqmap:sq:cl:sp:sq:sp:dsol:sphigh:sp:dsxe:spn:sp:dsregister_duplication:spon:sp:dsw:sp:sq:cm:sp:sqpower:sq:cl:sp:sqoff:sq:cm:sp:sqbitgen:sq:cl:sp:sqon:sq:cm:sp:sqsynplify:sq:cl:sp:sq:sq:cm:sp:sqngdbuild:sq:cl:sp:sq:dssd:spH:clcl:clbslstudium:clbslies:cldsproject:clbslprojects:clbslxupv5_final_project:clbslxupv5_final:sp:dsp:spxc5vlx110t:dsff1136:ds1:sp:dsuc:spH:clcl:clbslstudium:clbslies:cldsproject:clbslprojects:clbslxupv5_final_project:clbslxupv5_final:clbslsystem_top.ucf:sq:cm:sp:sqtrce:sq:cl:sp:sq:dsv:sp3:sp:dss:sp1:sp:dsn:sp3:sp:dsfastpaths:sp:dsxml:spsystem_top.twx:sp:dsucf:spsystem_top.ucf:sq:cm:sp:sqmax_score:sq:cl:spNone:cm:sp:sqindex:sq:cl:sp4:cm:sp:sqpar:sq:cl:sp:sq:sp:dsol:sphigh:sp:dsxe:spn:sp:sq:cm:sp:sqname:sq:cl:sp:sqMapRegDup:sq:cm:sp:sqxst:sq:cl:sp:sq:sq:cm:sp:sqarea:sq:cl:sp:os:sqlut:sq:cm:sp:sqslice_reg:sq:cs:cm:sp:sqversion:sq:cl:sp:sq14.1:sq:cm:sp:sqenv:sq:cl:sp:sq:oc:cc:sq:cm:sp:sqsxLaunchDir:sq:cl:sp:sqH:cl:bsl:bslstudium:bsl:bslies:dsproject:bsl:bslprojects:bsl:bslxupv5_final_project:bsl:bslxupv5_final:sq:cc map par
+PeterPC_0 PeterPC_0.stat 1345134285.68 1345134285.57 1345134285.83
+PeterPC_1 PeterPC_1.stat 1345134285.75 1345134285.63 1345134285.83
+PeterPC_2 PeterPC_2.stat 1345134285.82 1345134285.69 1345134285.83
+PeterPC_3 waiting on H:\studium\ies-project\projects\xupv5_final_project\xupv5_final\smartxplorer_results\.smartxplorer\.sx.keepAlive.PeterPC_3
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 PeterPC_3.stat 1345134285.9 1345134285.83 1345134300.58
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134315.7 1345134285.83 1345134330.8
+PeterPC_1 PeterPC_1.stat 1345134315.77 1345134285.83 1345134330.8
+PeterPC_2 PeterPC_2.stat 1345134315.84 1345134285.83 1345134330.81
+PeterPC_3 PeterPC_3.stat 1345134315.93 1345134300.58 1345134330.81
+PeterPC_0 PeterPC_0.stat 1345134345.72 1345134330.8 1345134345.87
+PeterPC_1 PeterPC_1.stat 1345134345.77 1345134330.81 1345134345.87
+PeterPC_2 PeterPC_2.stat 1345134345.87 1345134330.81 1345134345.87
+PeterPC_3 no new lines in stat file
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 PeterPC_3.stat 1345134345.93 1345134330.81 1345134360.91
+PeterPC_0 PeterPC_0.stat 1345134375.74 1345134345.87 1345134375.91
+PeterPC_1 PeterPC_1.stat 1345134375.78 1345134345.87 1345134375.91
+PeterPC_2 PeterPC_2.stat 1345134375.87 1345134345.87 1345134375.91
+PeterPC_3 no new lines in stat file
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 PeterPC_3.stat 1345134375.95 1345134360.91 1345134390.92
+PeterPC_0 PeterPC_0.stat 1345134405.76 1345134375.91 1345134405.94
+PeterPC_1 PeterPC_1.stat 1345134405.81 1345134375.91 1345134405.94
+PeterPC_2 PeterPC_2.stat 1345134405.9 1345134375.91 1345134405.94
+PeterPC_3 no new lines in stat file
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 PeterPC_3.stat 1345134405.98 1345134390.92 1345134421.03
+PeterPC_0 PeterPC_0.stat 1345134435.79 1345134405.94 1345134436.07
+PeterPC_1 PeterPC_1.stat 1345134435.84 1345134405.94 1345134436.07
+PeterPC_2 PeterPC_2.stat 1345134435.93 1345134405.94 1345134436.07
+PeterPC_3 PeterPC_3.stat 1345134436.0 1345134421.03 1345134436.07
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134465.83 1345134436.07 1345134466.25
+PeterPC_1 PeterPC_1.stat 1345134465.84 1345134436.07 1345134466.25
+PeterPC_2 PeterPC_2.stat 1345134465.93 1345134436.07 1345134466.25
+PeterPC_3 PeterPC_3.stat 1345134466.0 1345134436.07 1345134466.25
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134495.85 1345134466.25 1345134496.31
+PeterPC_1 PeterPC_1.stat 1345134495.86 1345134466.25 1345134496.31
+PeterPC_2 PeterPC_2.stat 1345134495.95 1345134466.25 1345134496.31
+PeterPC_3 PeterPC_3.stat 1345134496.02 1345134466.25 1345134496.31
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134525.86 1345134496.31 1345134526.46
+PeterPC_1 PeterPC_1.stat 1345134525.89 1345134496.31 1345134526.46
+PeterPC_2 PeterPC_2.stat 1345134525.96 1345134496.31 1345134526.46
+PeterPC_3 PeterPC_3.stat 1345134526.05 1345134496.32 1345134526.46
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134555.89 1345134526.46 1345134556.65
+PeterPC_1 PeterPC_1.stat 1345134555.92 1345134526.46 1345134556.65
+PeterPC_2 PeterPC_2.stat 1345134555.99 1345134526.46 1345134556.65
+PeterPC_3 PeterPC_3.stat 1345134556.07 1345134526.46 1345134556.65
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134585.9 1345134556.65 1345134586.77
+PeterPC_1 PeterPC_1.stat 1345134585.93 1345134556.65 1345134586.77
+PeterPC_2 PeterPC_2.stat 1345134586.0 1345134556.65 1345134586.77
+PeterPC_3 PeterPC_3.stat 1345134586.09 1345134556.65 1345134586.77
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134615.94 1345134586.77 1345134616.84
+PeterPC_1 PeterPC_1.stat 1345134615.95 1345134586.77 1345134616.84
+PeterPC_2 PeterPC_2.stat 1345134616.05 1345134586.77 1345134616.84
+PeterPC_3 PeterPC_3.stat 1345134616.11 1345134586.77 1345134616.84
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134645.95 1345134616.84 1345134646.94
+PeterPC_1 PeterPC_1.stat 1345134645.95 1345134616.84 1345134646.94
+PeterPC_2 PeterPC_2.stat 1345134646.05 1345134616.84 1345134646.94
+PeterPC_3 PeterPC_3.stat 1345134646.12 1345134616.84 1345134646.94
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134675.95 1345134646.94 1345134676.99
+PeterPC_1 PeterPC_1.stat 1345134676.02 1345134646.94 1345134676.99
+PeterPC_2 PeterPC_2.stat 1345134676.05 1345134646.94 1345134676.99
+PeterPC_3 PeterPC_3.stat 1345134676.12 1345134646.94 1345134676.99
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134705.97 1345134676.99 1345134707.1
+PeterPC_1 PeterPC_1.stat 1345134706.06 1345134676.99 1345134707.1
+PeterPC_2 PeterPC_2.stat 1345134706.07 1345134676.99 1345134707.1
+PeterPC_3 PeterPC_3.stat 1345134706.15 1345134676.99 1345134707.1
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134735.97 1345134707.1 1345134737.25
+PeterPC_1 PeterPC_1.stat 1345134736.08 1345134707.1 1345134737.25
+PeterPC_2 PeterPC_2.stat 1345134736.07 1345134707.1 1345134737.25
+PeterPC_3 PeterPC_3.stat 1345134736.18 1345134707.1 1345134737.26
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134766.01 1345134737.25 1345134767.44
+PeterPC_1 PeterPC_1.stat 1345134766.09 1345134737.25 1345134767.44
+PeterPC_2 PeterPC_2.stat 1345134766.11 1345134737.26 1345134767.44
+PeterPC_3 PeterPC_3.stat 1345134766.19 1345134737.26 1345134767.44
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134796.02 1345134767.44 1345134797.6
+PeterPC_1 PeterPC_1.stat 1345134796.11 1345134767.44 1345134797.6
+PeterPC_2 PeterPC_2.stat 1345134796.13 1345134767.44 1345134797.6
+PeterPC_3 PeterPC_3.stat 1345134796.2 1345134767.44 1345134797.6
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134826.15 1345134797.6 1345134827.79
+PeterPC_1 PeterPC_1.stat 1345134826.13 1345134797.6 1345134827.79
+PeterPC_2 PeterPC_2.stat 1345134826.18 1345134797.6 1345134827.8
+PeterPC_3 PeterPC_3.stat 1345134826.23 1345134797.6 1345134827.8
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134856.16 1345134827.79 1345134857.95
+PeterPC_1 PeterPC_1.stat 1345134856.16 1345134827.79 1345134857.95
+PeterPC_2 PeterPC_2.stat 1345134856.2 1345134827.8 1345134857.95
+PeterPC_3 PeterPC_3.stat 1345134856.25 1345134827.8 1345134857.95
+PeterPC_0 no new lines in stat file
+PeterPC_1 no new lines in stat file
+PeterPC_2 no new lines in stat file
+PeterPC_3 no new lines in stat file
+PeterPC_0 PeterPC_0.stat 1345134886.17 1345134857.95 1345134888.14
+PeterPC_1 PeterPC_1.stat 1345134886.18 1345134857.95 1345134888.14
+PeterPC_2 PeterPC_2.stat 1345134886.2 1345134857.95 1345134888.14
+PeterPC_3 PeterPC_3.stat 1345134886.28 1345134857.95 1345134888.14
+New best strategy: MapRunTime score: 0
+
+INFO: Timing Met... Stopping remaining jobs
+taskkill /F /pid 9300 /T
+taskkill /F /pid 11824 /T
+taskkill /F /pid 11824 /T
+taskkill /F /pid 9080 /T
+taskkill /F /pid 10112 /T
+taskkill /F /pid 10112 /T
+taskkill /F /pid 9844 /T
+taskkill /F /pid 7360 /T
+taskkill /F /pid 7360 /T
+taskkill /F /pid 11056 /T
+taskkill /F /pid 8436 /T
+taskkill /F /pid 8436 /T
+PeterPC_0 is Idle
+PeterPC_1 is Idle
+PeterPC_2 is Idle
+PeterPC_3 is Idle

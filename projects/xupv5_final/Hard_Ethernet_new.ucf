@@ -1,0 +1,44 @@
+###### Hard_Ethernet_MAC
+
+# EMAC0 TX Client Clock
+NET "*/RGMII_TX_CTL_0*" TNM_NET = "clk_client_tx0";
+TIMEGRP "rgmii_client_clk_tx0" = "clk_client_tx0";
+TIMESPEC "TS_rgmii_client_clk_tx0" = PERIOD "rgmii_client_clk_tx0" 7800 ps HIGH 50 %;
+
+# EMAC0 RX Client Clock
+NET "*/RGMII_RX_CTL_0*" TNM_NET = "clk_client_rx0";
+TIMEGRP "rgmii_client_clk_rx0" = "clk_client_rx0";
+TIMESPEC "TS_rgmii_client_clk_rx0" = PERIOD "rgmii_client_clk_rx0" 7800 ps HIGH 50 %;
+
+# EMAC0 TX PHY Clock
+NET "*/RGMII_TXC_0*" TNM_NET = "clk_phy_tx0";
+TIMEGRP "rgmii_phy_clk_tx0" = "clk_phy_tx0";
+TIMESPEC "TS_rgmii_phy_clk_tx0" = PERIOD "rgmii_phy_clk_tx0" 7800 ps HIGH 50 %;
+
+# EMAC0 RX PHY Clock
+NET "*/RGMII_RXC_0" TNM_NET = "clk_phy_rx0";
+TIMEGRP "rgmii_clk_phy_rx0" = "clk_phy_rx0";
+TIMESPEC "TS_rgmii_clk_phy_rx0" = PERIOD "rgmii_clk_phy_rx0" 7800 ps HIGH 50 %;
+
+# Set the IDELAY values on the data inputs.
+
+# Please modify to suit your design.
+INST "*rgmii0?rgmii_rx_ctl_delay" IOBDELAY_TYPE = FIXED;
+INST "*rgmii0?rgmii_rx_d0_delay" IOBDELAY_TYPE = FIXED;
+INST "*rgmii0?rgmii_rx_d1_delay" IOBDELAY_TYPE = FIXED;
+INST "*rgmii0?rgmii_rx_d2_delay" IOBDELAY_TYPE = FIXED;
+INST "*rgmii0?rgmii_rx_d3_delay" IOBDELAY_TYPE = FIXED;
+INST "*rgmii_rxc0_delay" IOBDELAY_TYPE = FIXED;
+INST "*rgmii0?rgmii_rx_ctl_delay" IDELAY_VALUE = 25;
+INST "*rgmii0?rgmii_rx_d0_delay" IDELAY_VALUE = 25;
+INST "*rgmii0?rgmii_rx_d1_delay" IDELAY_VALUE = 25;
+INST "*rgmii0?rgmii_rx_d2_delay" IDELAY_VALUE = 25;
+INST "*rgmii0?rgmii_rx_d3_delay" IDELAY_VALUE = 25;
+INST "*rgmii_rxc0_delay" IDELAY_VALUE = 0;
+
+NET "*/LlinkTemac0_CLK*" TNM_NET = "LLCLK";
+
+TIMESPEC "TS_LL_CLK0_2_RX_CLIENT_CLK0" = FROM LLCLK0 TO clk_client_rx0 8000 ps DATAPATHONLY;
+TIMESPEC "TS_LL_CLK0_2_TX_CLIENT_CLK0" = FROM LLCLK0 TO clk_client_tx0 8000 ps DATAPATHONLY;
+TIMESPEC "TS_RX_CLIENT_CLK0_2_LL_CLK0" = FROM clk_client_rx0 TO LLCLK0 8000 ps DATAPATHONLY;
+TIMESPEC "TS_TX_CLIENT_CLK0_2_LL_CLK0" = FROM clk_client_tx0 TO LLCLK0 8000 ps DATAPATHONLY;

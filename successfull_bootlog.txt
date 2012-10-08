@@ -1,0 +1,108 @@
+Early console on uartlite at 0x84020000
+bootconsole [earlyser0] enabled
+Ramdisk addr 0x00000003, Compiled-in FDT at 0xc034c278
+Linux version 3.3.0-14.2-build1-01464-ged63a4d-dirty (peschuster@IesProject) (gcc version 4.1.2) #16 Tue Aug 14 16:02:30 CEST 2012
+setup_cpuinfo: initialising
+setup_cpuinfo: No PVR support. Using static CPU info from FDT
+cache: wt_msr_noirq
+setup_memory: max_mapnr: 0x10000
+setup_memory: min_low_pfn: 0x50000
+setup_memory: max_low_pfn: 0x60000
+On node 0 totalpages: 65536
+free_area_init_node: node 0, pgdat c04107c4, node_mem_map c052c000
+  Normal zone: 512 pages used for memmap
+  Normal zone: 0 pages reserved
+  Normal zone: 65024 pages, LIFO batch:15
+early_printk_console remaping from 0x84020000 to 0xfdfff000
+pcpu-alloc: s0 r0 d32768 u32768 alloc=1*32768
+pcpu-alloc: [0] 0
+Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 65024
+Kernel command line: console=ttyUL0 root=/dev/ram
+PID hash table entries: 1024 (order: 0, 4096 bytes)
+Dentry cache hash table entries: 32768 (order: 5, 131072 bytes)
+Inode-cache hash table entries: 16384 (order: 4, 65536 bytes)
+Memory: 254292k/262144k available
+NR_IRQS:33
+XPS intc #0 at 0xd0000000, num_irq=9, edge=0x188
+XPS timer #0 at 0xd0002000, irq=4
+Heartbeat GPIO at 0xd0004000
+microblaze_timer_set_mode: shutdown
+microblaze_timer_set_mode: periodic
+Calibrating delay loop... 48.94 BogoMIPS (lpj=244736)
+pid_max: default: 4096 minimum: 301
+Mount-cache hash table entries: 512
+NET: Registered protocol family 16
+bio: create slab <bio-0> at 0
+gpiochip_add: registered GPIOs 248 to 255 on device: /plb@0/gpio@81460000
+gpiochip_add: registered GPIOs 240 to 247 on device: /plb@0/gpio@81440000
+gpiochip_add: registered GPIOs 235 to 239 on device: /plb@0/gpio@81420000
+gpiochip_add: registered GPIOs 230 to 234 on device: /plb@0/gpio@81400000
+Switching to clocksource microblaze_clocksource
+NET: Registered protocol family 2
+IP route cache hash table entries: 2048 (order: 1, 8192 bytes)
+TCP established hash table entries: 8192 (order: 4, 65536 bytes)
+TCP bind hash table entries: 8192 (order: 3, 32768 bytes)
+TCP: Hash tables configured (established 8192 bind 8192)
+TCP reno registered
+NET: Registered protocol family 1
+RPC: Registered named UNIX socket transport module.
+RPC: Registered udp transport module.
+RPC: Registered tcp transport module.
+RPC: Registered tcp NFSv4.1 backchannel transport module.
+Skipping unavailable RESET gpio -22 (reset)
+GPIO pin is already allocated
+msgmni has been set to 496
+io scheduler noop registered
+io scheduler deadline registered
+io scheduler cfq registered (default)
+Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+84020000.serial: ttyUL0 at MMIO 0x84020000 (irq = 9) is a uartlite
+console [ttyUL0] enabled, bootconsole disabled
+console [ttyUL0] enabled, bootconsole disabled
+84000000.serial: ttyUL1 at MMIO 0x84000000 (irq = 8) is a uartlite
+brd: module loaded
+xsysace 83600000.sysace: Xilinx SystemACE revision 1.0.12
+xsysace 83600000.sysace: capacity: 1981728 sectors
+ xs`: xs`1
+Xilinx SystemACE device driver, major=254
+Xilinx TEMAC MDIO: probed
+i2c /dev entries driver
+Device Tree Probing 'i2c'
+xilinx-iic #0 at 0x81600000 mapped to 0xD00A0000, irq=7
+TCP cubic registered
+NET: Registered protocol family 10
+IPv6 over IPv4 tunneling driver
+NET: Registered protocol family 17
+Registering the dns_resolver key type
+Freeing unused kernel memory: 943k freed
+Starting rcS...
+++ Creating device points
+++ Mounting filesystem
+++ Loading system loggers
+++ Starting telnet daemon
+rcS Complete
+/bin/sh: can't access tty; job control turned off
+/ # cat /proc/cpuinfo
+CPU-Family:     MicroBlaze
+FPGA-Arch:      virtex5
+CPU-Ver:        8.30.a, big endian
+CPU-MHz:        100.00
+BogoMips:       48.94
+HW:
+ Shift:         yes
+ MSR:           yes
+ PCMP:          yes
+ DIV:           yes
+ MMU:           3
+ MUL:           v2
+ FPU:           no
+ Exc:
+Stream-insns:   privileged
+Icache:         4kB     line length:    16B
+Dcache:         4kB     line length:    16B
+Dcache-Policy:  write-through
+HW-Debug:       yes
+PVR-USR1:       00
+PVR-USR2:       00000000
+Page size:      4096
+/ #
