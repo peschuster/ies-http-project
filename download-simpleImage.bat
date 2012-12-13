@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\WinSCP\winscp.exe" /command "open ""peschuster@IesProject""" "get /home/peschuster/project/linux-2.6-xlnx/arch/microblaze/boot/simpleImage.xupv5 H:\studium\ies-project\xmd\simpleImage.xupv5"
