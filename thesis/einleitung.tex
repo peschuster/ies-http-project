@@ -1,0 +1,27 @@
+\chapter{Introduction}
+
+\section{Project Context and Objectives}
+
+Context of this project is ongoing research for high performance network interface cards at the Integrated Electronics Systems Labs by Boris Traskov, also supervisor of this project.
+
+In our environment an increasing amount of data is created by every kind of device. Furthermore, the amount of transferred data over networks (i.e. the internet) increases dramatically. This generates a demand for high speed network interfaces, on the one hand and high performance, low cost full stack network implementations on the other hand. 
+
+Service providers and back-end nodes need to be able to transfer large amounts of data to multiple receivers concurrently, requiring high speed network interfaces. To circumvent - potentially unnecessary - \gls{cpu} utilization, much of the work can be "offloaded" to a network interface, providing a higher level of abstraction to the transfer of data, than current state of the art systems provide.
+
+In a future scenario with all devices being connected to each other, often described as the "internet of things", an increasing demand for simple to implement network interfaces, not requiring the presence of an operating system or high performance processors, will be created.
+
+%The ability to provide network interfaces at low cost, becomes especially relevant in the future "`internet of things"', describing a connection of almost all devices among each other.
+
+Objectives for the whole project entitled "Design of an Accelerated Event-based Server" is to setup a hardware system on a \textit{Xilinx} \gls{fpga} utilizing \gls{ip} cores, running \textit{nginx} (an event-based web server) on top. Furthermore benchmarks have to be conducted, to prove the strength of such a system. Ideally proving that the system is capable of utilizing the full Gigabit Ethernet interface without breaking down on attempted \gls{dos} attacks.
+
+Desired goal for this project seminar was to lay the necessary foundations, so that outstanding implementation work and extensive measurements can be completed in a subsequent bachelor thesis.
+
+\section{Hardware Platform and Tool Set}
+
+All development, measurements and tests were done on the \textit{Xilinx XUPV5-LX110T} evaluation board.
+
+The \textit{Xilinx XUPV5-LX110T} evaluation board is a modified version of the \textit{ML505} board for universities \cite{xupv5manual}. The difference between the two boards is a larger \gls{fpga} chip on the \textit{XUPV5-LX110T}, containing the \textit{Virtex-5 XC5VLX110T} with 17,280 slices\footnote{Basic logic unit of an \gls{fpga} \cite{fpga_ni}} and four in hardware implemented Ethernet \gls{mac} cores, whereas the \textit{ML505} board contains the \textit{XC5VLX50} with only 7,200 slices and no Ethernet \gls{mac} cores implemented in hardware.
+
+Building the hardware design for the \gls{fpga} was started using the \textit{\gls{xps}} and continued with the \textit{Xilinx ISE Project Navigator}, for a finer control over the parameters of used tools and better logging and reporting capabilities. All used \textit{Xilinx} tools are part of the \textit{Xilinx ISE Design Suite} in version 14.1. The synthesis tool (xst) of this version of the tool suite features parallel synthesis speeding up the development process heavily.
+
+Initial software development for testing purpose was done using the \textit{Xilinx Software Development Kit (SDK)}. The \textit{Linux kernel} itself and all software build on top was configured and compiled on a virtual machine running \textit{Ubuntu Linux} in version 12.04.

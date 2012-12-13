@@ -1,0 +1,16 @@
+\chapter{System Requirements}
+
+Requirements for the designed system must be collected with two key points in mind: the desired outcome of the project and the chosen/available hardware system and tool set.
+
+Objective of the project is to run \textit{nginx}, an event-based web server. \textit{nginx} can not be executed directly on the processor, because it requires the presence of an an \gls{os} providing a file system and taking responsibility of process and thread management. 
+
+\textit{nginx} supports a number of free (FreeBSD, Solaris, Linux) and proprietary (AIX, HP-UX) unix-based operating systems and Microsoft Windows.\footnote{see \url{http://nginx.org/en/\#tested_os_and_platforms}}
+
+Microsoft Windows is currently only available for Intel's \textit{x86} and AMD's \textit{AMD64} (also known as \textit{x86-64}) architectures. The constraint on the available \textit{Xilinx XC5VLX110T} \gls{fpga} demands an easy-to-implement, low cost microprocessor system. But the mentioned processor architectures do not count towards these categories. Therefore the choices are limited to free unix-based operating systems.
+
+Due to the by far largest number of supported processor architectures and wide distribution, the choice was made to go with Linux as operating system for the project.
+
+Linux demands an \gls{mmu} in virtual mode and two memory protection zones.\footnote{Linux Kernel can be configured for processors without \gls{mmu}, but this is not recommended.} \gls{mmu}s enable an \gls{os} "to exercise a high degree of
+management and control over its address space and the address space it allocates to processes". \cite{linuxPrimer}[sec. 2.3.5]
+
+Furthermore the presence of two timers and an interrupt controller is required.\footnote{see \url{http://wiki.xilinx.com/microblaze-linux\#toc4}, as of 09/07/2012}

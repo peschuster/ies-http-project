@@ -1,0 +1,138 @@
+\documentclass[parskip,
+			twoside,
+			%longdoc,
+			10pt,
+			noheadingspace,
+			accentcolor=tud0a,
+			bigchapter,
+			%draft,
+			colorback]{tudreport}
+
+%% Spracheinstellungen
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+\usepackage{microtype} % optischer Randausgleich bei pdflatex mit Zeichendehnung
+
+%% Grafikeinstellungen
+\usepackage{float} % u.a. genaue Plazierung von Gleitobjekten mit H
+\usepackage{wrapfig}
+%\addto\captionsngerman{%
+%  \renewcommand{\figurename}{Abb.}%
+%}
+
+\usepackage{listings}
+\lstset{breaklines=true} 
+
+%% Tabelleneinstellungen
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{tabularx}
+
+%% Mathematik
+\usepackage{amsmath}
+\usepackage{nicefrac}
+\usepackage{icomma}
+
+%% Code
+%\usepackage{listings} 
+	%\lstset{numbers=left, numberstyle=\tiny}  %, numbersep=2pt
+	%\lstset{language=Perl}
+
+\usepackage{etoolbox}
+\makeatletter
+\preto{\@verbatim}{\topsep=0pt \partopsep=0pt }
+\makeatother
+
+
+%% sonstige Einstellungen
+\usepackage{paralist}% erweiterte Listenumgebung (z.B. compactitem)
+\usepackage{textcomp} % verschiedene Symbole
+\usepackage{hyperref}
+%\renewcommand\plparsep{1ex}
+
+% Don't stretch spaces
+\raggedbottom
+
+
+\usepackage{enumerate}
+
+\usepackage[acronym,toc]{glossaries}
+%\renewcommand{\glsnamefont}[1]{\textbf{#1}}
+\renewcommand{\glossaryname}{Acronyms}
+
+\usepackage{makeidx}
+\makeindex
+
+\usepackage[fixlanguage]{babelbib}
+\selectbiblanguage{english}
+
+
+\title{Design of an Accelerated Event-based Server}
+\subtitle{Bachelor Thesis by Peter Schuster}
+\subsubtitle{January 2013}
+%\setinstitutionlogo{ies-logo.pdf}
+\institution{\textbf{Department of Electrical Engineering and Information Technology (ETiT)}\vspace{1mm}\\Institute of Computer Engineering\\Integrated Electronic Systems Lab\\Prof. Dr.-Ing. Klaus Hofmann}
+%\settitlepicture{images/spartan}
+\begin{document}
+
+%% Titel %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\maketitle
+\cleardoublepage
+
+%% Vorgeplnkel %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{empty}
+\pagenumbering{none}
+
+
+\input{decls_en}
+
+\tableofcontents
+
+%\newpage
+%\phantomsection %notwendig, damit Link nicht unterhalb der Überschrift zeigt
+%\addcontentsline{toc}{chapter}{List of figures}
+%\listoffigures
+
+\pagenumbering{arabic}
+
+% include glossary
+\include{glossary}
+\makeglossaries
+
+\clearpage
+\glossarystyle{list}
+\renewcommand{\glsgroupskip}{}
+\begin{normalsize}
+	\setlength{\parskip}{8pt}
+	
+	\printglossary[type=\acronymtype ,title={Acronyms}]
+\end{normalsize}
+
+%% Hauptteil %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{headings}
+
+
+\include{einleitung}
+\include{requirements}
+\include{preceding}
+\include{nginx}
+\include{performance}
+\include{linux-network}
+\include{conclusion}
+
+%% Anhang %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+
+\clearpage
+% \nocite{*}
+%\newpage %neue Seite, damit Link auf Seitenanfang zeigt
+\phantomsection %notwendig, damit Link nicht unterhalb der Überschrift zeigt
+\addcontentsline{toc}{chapter}{Bibliography} %Eintrag im Inhaltsverzeichnis
+\bibliographystyle{plain}
+\bibliography{literaturverzeichnis}
+
+\include{appendix}
+
+\end{document}

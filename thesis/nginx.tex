@@ -1,0 +1,100 @@
+\chapter{nginx}
+
+\section{Introduction}
+
+The context of this project is to implement a testbed for a \textit{\gls{toe}} being developed in another research project. This testbed should enable testing the \gls{toe} in an environment and with workloads close to usage in real world. One usage of \gls{tcp} is as protocol layer for \gls{http} requests. \gls{http} is the second most used protocol among all internet traffic, with a share of about 20 to 30 \% (in 2008/09) \cite{internet_study} and therefore very relevant for usage outside lab environments. 
+
+The server-side endpoint for \gls{http} traffic is a web server software. For this project nginx (pronounced "engine-x") was chosen, which is a web server software, following an asynchronous architecture. It was released to the public in 2004 and focuses on "high performance, high concurrency and high memory usages"\cite{aosa}.
+
+The asynchronous architecture is accomplished by using an event-pattern, instead of thread-based processing. This means - very much simplified - that \textit{nginx} never "waits" during processing a request for any external operation to complete, but pushes it to an event system, does something other useful and picks up the event, when it is finished for further processing steps.
+
+\section{Architecture}
+
+\section{Configuration and Building}
+
+\subsection{Extending the Configuration System}
+
+The build process of nginx can be configured with a number of parameters and constants to add or remove optional modules. The inclusion of modules can be configured with command line arguments to the configuration tool, but many of the parameters can not be set externally.
+
+The values of these parameters are determined by a custom "auto configuration" tool. This tool writes small c programs to a temporary file, compiles them using the configured compiler and reads back the results. By this process nginx adjusts its own build process to the features and properties of the current system. This configuration process is not working for cross-compiling nginx for another target system. Therefore the configuration process needed to be extended to allow input of required configuration parameters into the build process from an external source.
+
+The implemented solution is based on a suggested patch by Daniele Salvatore Albano\footnote{\textit{Cross compilation support for nginx}, Daniele Salvatore Albano, 01/03/2011 \url{http://web.archiveorange.com/archive/v/Tuw7Ryz8rztiNaIFfqCg}}, but incorporates more parameters and is streamlined to the process of cross-compiling the Linux kernel. Cross-compiling can be enabled by setting the environment variable "\texttt{CROSS\_COMPILE}" to the utilized compiler tool chain prefix. For the MicroBlaze tool chain this is "\texttt{microblaze-unknown-linux-gnu-}".
+
+Parameters that are covered by this modification to the configuration system include endianness (\texttt{with-endian}), the size of primitive data types (\texttt{with-int}, \texttt{with-long}, etc.) and the maximum error number, to be used for custom error types (\texttt{with-sys-nerr}).
+
+Value for these introduced parameters can be determined through a small test program executed on the \gls{soc} (see appendix \ref{sec:nginx-env-eval}). This leads to the following values:
+
+\begin{verbatim}
+    --with-endian=big \
+    --with-sys-nerr=132 \
+    --with-int=4 \
+    --with-long=4 \
+    --with-long-long=8 \
+    --with-ptr-size=4 \
+    --with-sig-atomic-t=4 \
+    --with-size-t=4 \
+    --with-off-t=4 \
+    --with-time-t=4
+\end{verbatim}
+
+\subsection{Modules}
+
+nginx consists of a number of (optional) modules. These modules can be in- or excluded from the build using parameters to the configuration tool. Objective of the nginx build for the MicroBlaze system was a small binary with just the necessary parts included. There for the following modules were excluded:
+
+\begin{verbatim}
+    --without-http_rewrite_module \
+    --without-http_gzip_module \
+    --without-http_charset_module \
+    --without-http_ssi_module \
+    --without-http_userid_module \
+    --without-http_access_module \
+    --without-http_auth_basic_module \
+    --without-http_autoindex_module \
+    --without-http_status_module \
+    --without-http_geo_module \
+    --without-http_map_module \
+    --without-http_split_clients_module \
+    --without-http_referer_module \
+    --without-http_proxy_module \
+    --without-http_fastcgi_module \
+    --without-http_uwsgi_module \
+    --without-http_scgi_module \
+    --without-http_memcached_module \
+    --without-http_limit_conn_module \
+    --without-http_limit_req_module \
+    --without-http_empty_gif_module \
+    --without-http_browser_module \
+    --without-http_upstream_ip_hash_module \
+    --without-http_upstream_least_conn_module \
+    --without-http_upstream_keepalive_module \
+    --without-pcre \
+    --without-select_module \
+    --without-poll_module
+\end{verbatim}
+
+Some of these modules could be included in the build, if necessary, but the modules \texttt{http\_rewrite\_module} and \texttt{http\_gzip\_module} require external libraries which are not present on the MicroBlaze system and therefore would not work.
+
+\subsection{Compiler Configuration}
+
+Besides the configuration for nginx itself, the compiler needs to be configured for the target MicroBlaze system. When building the Linux kernel, the compiler configuration is set by the configuration of the kernel during the build process. nginx does not have this functionality in its configuration system, but comes with a parameter (\texttt{--with-cc-opt=...}) to pass custom parameters to the compiler.
+
+Through this configuration setting, the gcc cross-compiler needs to be configured for the feature set of the MicroBlaze system. For the presented MicroBlaze \gls{soc}, the required parameters are
+
+\begin{verbatim}
+-mxl-multiply-high -mno-xl-soft-mul -mno-xl-soft-div \
+-mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.30.a
+\end{verbatim}
+
+Additionally the path to the standard libraries on the system needs to be set through the \texttt{--sysroot} parameter. These libraries are part of the tool chain for MicroBlaze systems provided by Xilinx. 
+
+By specifying the \texttt{--static} parameter all referenced libraries are build into the resulting binary. Therefore the binary has less dependencies to be executed.
+
+Combining it all together the value of the \texttt{--with-cc-opt} parameter needs to be set to something like the following: 
+
+\begin{verbatim}
+--with-cc-opt="-mxl-multiply-high -mno-xl-soft-mul -mno-xl-soft-div 
+-mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.30.a --static 
+--sysroot=/home/peschuster/project/microblaze-unknown-linux-gnu/microblaze-unknown-linux-gnu/sys-root"
+\end{verbatim}
+
+\section{Interfaces to the Operating System}
