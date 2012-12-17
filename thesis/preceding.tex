@@ -13,75 +13,39 @@ An overview of the complete hardware architecture of the system described in the
 \subsubsection{Processor}
 \label{subsubsec:microblaze}
 
-The used \textit{XC5VLX110T} \gls{fpga} does not have a build-in hard core processor, therefore a single core \textit{MicroBlaze} processor was chosen. The \textit{MicroBlaze} processor is a proprietary processor, developed by \textit{Xilinx} for their \gls{fpga} families and supported by the Xilinx hard- and software development kits. Its design follows the Harvard architecture with separate data and instruction memory.
+The used \textit{XC5VLX110T} \gls{fpga} does not have a build-in hard core processor, therefore a single core \textit{MicroBlaze} soft core processor was chosen. The \textit{MicroBlaze} processor is a proprietary processor, developed by \textit{Xilinx} for their \gls{fpga} families and supported by the Xilinx hard- and software development kits. Its design follows the Harvard architecture with separate data and instruction memory.
 
-Running Linux kernel requires the presence of a \gls{mmu}. To improve the system performance it is recommended to enable instruction and data caches (16 KB), barrel shifter, multiplier (64 bit) and the hardware division module.
+Running Linux kernel requires the presence of a \gls{mmu}. To improve the system performance instruction and data caches (16 KB), barrel shifter, multiplier (64 bit) and the hardware division modules were enabled.
 
 \subsubsection{Bus System}
 
-For connecting the \textit{MicroBlaze} processor to other peripherals on the chip a bus system needs to be selected. The \gls{xps} wizard provides an option for choosing between two interconnect types: \gls{axi} and \gls{plb}.
+For connecting the \textit{MicroBlaze} processor to other peripherals on the chip the \gls{plb}, invented by \textit{IBM} as part of the \textit{CoreConnect} bus system, was selected.
 
-Prior to the \textit{Virtex-6} \gls{fpga} family, only \gls{plb} invented by \textit{IBM} as part of the \textit{CoreConnect} bus system was available. \textit{Virtex-6} \gls{fpga}s support both bus systems, but the used \textit{Xilinx XC5VLX110T} \gls{fpga} is part of the \textit{Virtex-5} family, therefore \gls{plb} needs to be selected as interconnect type. \cite{axi_interconnect}[p. 1, facts table]
+Prior to the \textit{Virtex-6} \gls{fpga} family, only this bus system was available. \textit{Virtex-6} \gls{fpga}s support also the \gls{axi} system, which is part of the \gls{amba}, designed by \textit{ARM}, but the used \textit{Xilinx XC5VLX110T} \gls{fpga} is part of the \textit{Virtex-5} family, therefore \gls{plb} needed to be selected as interconnect type. \cite{axi_interconnect}[p. 1, facts table]
 
 \subsubsection{Memory}
 
-The \textit{XUPV5-LX110T} board contains a single-rank unregistered 256 MB DDR2 SODIMM, which is connected to the processor via a memory controller. This memory controller is implemented in the \gls{ip} core \textit{Multi-Port Memory Controller} (MPMC).
-
-The designed hardware system uses \texttt{0x50000000} as memory base address in this project.
+\textit{XUPV5-LX110T} boards contain a single-rank unregistered 256 MB DDR2 SODIMM, which is connected to the processor via a memory controller. This memory controller is implemented in the \textit{Multi-Port Memory Controller} (MPMC) \gls{ip} core. The memory base address was set to \texttt{0x50000000}.
 
 \subsubsection{Network Interface}
 
-The \textit{Xilinx XC5VLX110T} \gls{fpga} has four \textit{Tri-Mode Ethernet Media Access Controllers}, designed to the IEEE 802.3-2002 specification, operating at 10, 100, and 1,000 Mb/s. \cite{virtex5}[p. 4, table 1] To use these hard core controllers an \texttt{xps\_ll\_temac} soft IP core can be added to the \gls{soc}, acting as a wrapper for the hard core to integrate it into the system.
+The \textit{Xilinx XC5VLX110T} \gls{fpga} has four \textit{Tri-Mode Ethernet Media Access Controllers}, designed to the IEEE 802.3-2002 specification, operating at 10, 100, and 1,000 Mb/s. \cite{virtex5}[p. 4, table 1] To use these hard core controllers an \texttt{xps\_ll\_temac} soft IP core was added to the \gls{soc}, acting as a wrapper for the hard core to integrate it into the system.
 
-For a simple and easy-to-implement interconnection between the \gls{phy} and the various \gls{mac} sub-layers, \gls{mii} was invented. \gls{mii} was designed originally for \gls{phy}s with data rates of 10 Mb/s and 100 Mb/s. \gls{gmii} is an backwards compatible extension to \gls{mii} supporting data rates of up to 1,000 Mb/s. \textit{RMII/RGMII} is an interface with reduced data path width (by half). This is accomplished by clocking data on rising and falling edges of the clock. \cite{rgmii}[p. 3]
 
-For the project \gls{gmii} was selected as physical interface type, because support for Gigabit Ethernet was desired, but there was no need for a reduced data path width. Therefore the parameter \texttt{C\_PHY\_TYPE} needs to be set to \texttt{1} on the \gls{ip} core configuration.
+\gls{gmii} as a backwards compatible extension to \gls{mii} supporting data rates of up to 1,000 Mb/s was selected as physical interface type, because support for Gigabit Ethernet was desired, but there was no need for a reduced data path width. Therefore the jumpers \texttt{J22} and \texttt{J23} on the \textit{Xilinx XUPV5} board need to be set to positions \texttt{1-2} to enable \gls{gmii} as physical interface type.
 
-Despite setting the \texttt{C\_PHY\_TYPE} parameter, the jumpers \texttt{J22} and \texttt{J23} on the \textit{Xilinx XUPV5} board need to be set to positions \texttt{1-2} to enable \gls{gmii} as physical interface type.
-
-Depending on the (temporarily) selected \gls{fpga} during the \gls{xps} project wizard, it might be required to change the location of \textit{IDELAYCTRL elements} (set by the \texttt{C\_IDELAYCTRL\_LOC} parameter) to "\texttt{IDELAYCTRL\_X0Y4-IDELAYCTRL\_X1Y5}".
-
-Through the parameters \texttt{C\_TEMAC0\_TXCSUM} and \texttt{C\_TEMAC0\_RXCSUM} offloading checksum calculation to hardware circuits can be enabled, to improve performance. Though there were no measurements done to prove any performance boost during the course of this project, due to lack of time.
+Usage of an integrated checksum calculation circuit is enabled on the system, using the parameters \texttt{C\_TEMAC0\_TXCSUM} and \texttt{C\_TEMAC0\_RXCSUM}.
 
 \subsection{Clocks}
 \label{sec:clocks}
 
-\subsubsection{Clock Generation}
+Clocks for the system are generated using a \textit{clock\_generator} \gls{ip} core, with an external oscillator providing a 100 MHz clock. \cite{ug347}[p. 20]
 
-Clocks for the system can be generated using a \textit{clock\_generator} \gls{ip} core. This \gls{ip} core can generate up to 16 different clocks from one input clock signal. On the \textit{Xilinx XUPV5} board an external oscillator providing a 100 MHz clock can be connected to the clock generator. \cite{ug347}[p. 20]
+Due to high delays on data paths in the decode pipeline stage, a clock period of at least \textit{9.12 ns} is required, resulting in a system clock frequency for the processor and local bus of 100 MHz.
 
-\subsubsection{Timing Considerations}
+The memory controller (MPMC) is driven by base clock of 200 MHz, a clock with half the frequency of the base clock (100 MHs) and a 200 MHz clock signal, shifted by 90°. All these clock signals are controlled by the same \gls{pll} used by the system clock signal.
 
-After synthesis the minimum clock period is reported as \textit{7.566 ns} (i.e. a maximum clock frequency of \textit{132.170 MHz}). Therefore it could be assumed that a 125.00 MHz system clock frequency as select-able in the \gls{xps} wizard should work well, but the Xilinx place and route tool (\textit{par}) is not able to meet all timing constraints for this frequency with enabled \gls{mmu} and instruction cache. The reason for unmet constraints are high delays on data paths in the decode pipeline stage, demanding a clock period of about \textit{9.12 ns}.
-
-Considering these constraints on the clock period, the system clock was set to 100 MHz. This clock is used by the processor and the local bus.
-
-\subsubsection{Clock Signals for Peripherals}
-
-The memory controller (MPMC) demands atleast three different clocks: a base clock, a clock with half the frequency of the base clock and a clock signal with the same frequency as the base clock, but shifted by 90°. If the frequency of the base clock is not 200 MHz a fourth clock with this frequency is required. All clocks need to be controller by the same \gls{pll}.
-
-Therefore the clock pins of the memory controller were connected to the following signals:
-
-\begin{verbatim}
- PORT MPMC_Clk0 = clk_200_0000MHzPLL0
- PORT MPMC_Clk0_DIV2 = clk_100_0000MHzPLL0
- PORT MPMC_Clk90 = clk_200_0000MHz90PLL0
- PORT MPMC_Clk_200MHz = clk_200_0000MHzPLL0
-\end{verbatim}
-
-The Ethernet \gls{mac} \gls{ip} core requires a clock signal with exactly 125 MHz at the \texttt{GTX\_CLK} port for operating GMII. This is defined in the specifications of GMII \cite{ieee802_3}[sec. 35.2.2.1]. For \gls{dma} a clock signal with a frequency identical to the local bus clock is required. The \texttt{REFCLK} needs to be connected to a 200 MHz clock, according to the respective manual of the \gls{ip} core \cite{xps_ll_temac}[p. 11, table 3].
-
-\begin{verbatim}
- PORT GTX_CLK_0 = clk_125_0000MHz
- PORT REFCLK = clk_200_0000MHzPLL0
- PORT LlinkTemac0_CLK = clk_100_0000MHzPLL0
-\end{verbatim}
-
-The ratio between the MPMC base clock and the clock signal for LocalLink \gls{dma} access of the Ethernet \gls{mac} IP core ($200:100 = 2$) needs to be set to the parameter \texttt{C\_SDMA2\_PI2LL\_CLK\_RATIO} of the MPMC core.
-
-The clock generator is configured to generate a buffered 200 MHz clock on \texttt{CLKOUT3} and a buffered 200 MHz clock with a phase shift of 90° on \texttt{CLKOUT2}. All utilizing the same \gls{pll} unit (PLL0).
-
-\texttt{CLKOUT1} is configured to provide a buffered 125 MHz clock. The buffered 100 MHz system clock is set to port \texttt{CLKOUT0}:
+The \texttt{GTX\_CLK} port of the Ethernet \gls{mac} \gls{ip} core is driven by a clock signal with exactly 125 MHz for operating \textit{GMII} (defined by the specifications of GMII \cite{ieee802_3}[sec. 35.2.2.1]). For \gls{dma} a clock signal with a frequency identical to the local bus clock is required. The \texttt{REFCLK} was connected to a 200 MHz clock, according to the respective manual of the \gls{ip} core \cite{xps_ll_temac}[p. 11, table 3].
 
 \subsection{Endianness}
 
@@ -95,7 +59,7 @@ Linux can be build for little, as well as for big endian systems. Only confineme
 
 The \textit{MicroBlaze} processor has the parameter \texttt{C\_ENDIANNESS} to specify the endianness of the processor. But although the \textit{MicroBlaze Processor Reference Guide} states that "the \texttt{C\_ENDIANNESS} parameter is automatically set to little endian when using AXI4, and to big endian when using PLB, but can be overridden by the user" \cite{mb_ref}[p. 52], this parameter must not be changed for \textit{Virtex-5} \gls{fpga}s. This is reasoned in the disability of the peripheral cores connected via \gls{plb}, to handle data other than in big endian byte order. The \gls{axi} bus circumvents this problem by swapping bytes.\footnote{\url{http://forums.xilinx.com/t5/EDK-and-Platform-Studio/Memory-Test-fails-for-8-and-16-bit/m-p/253922/highlight/true\#M23973} (in-official statement by a Xilinx employee)}
 
-Therefore big endian must be selected for the system architecture of this project.
+Therefore big endian was selected for the system architecture of this project.
 
 \section{The Software}
 
