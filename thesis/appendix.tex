@@ -96,6 +96,7 @@ proc syslog { } {
             set char [expr [expr $mval >> $shift] & 0xff]
             # NULL ? End of string.
             if {$char == 0} {
+                close $fp
                 return
             }
             set char [format "%c" $char]

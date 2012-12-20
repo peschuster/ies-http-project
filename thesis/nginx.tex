@@ -4,11 +4,13 @@
 
 The context of this project is to implement a testbed for a \textit{\gls{toe}} being developed in another research project. This testbed should enable testing the \gls{toe} in an environment and with workloads close to usage in real world. One usage of \gls{tcp} is as protocol layer for \gls{http} requests. \gls{http} is the second most used protocol among all internet traffic, with a share of about 20 to 30 \% (in 2008/09) \cite{internet_study} and therefore very relevant for usage outside lab environments. 
 
-The server-side endpoint for \gls{http} traffic is a web server software. For this project nginx (pronounced "engine-x") was chosen, which is a web server software, following an asynchronous architecture. It was released to the public in 2004 and focuses on "high performance, high concurrency and high memory usages"\cite{aosa}.
+The server-side endpoint for \gls{http} traffic is a web server software. For this project nginx (pronounced "engine-x") was chosen, which follows an asynchronous architecture. It was released to the public in 2004 and focuses on "high performance, high concurrency and high memory usages"\cite{aosa}.
 
 The asynchronous architecture is accomplished by using an event-pattern, instead of thread-based processing. This means - very much simplified - that \textit{nginx} never "waits" during processing a request for any external operation to complete, but pushes it to an event system, does something other useful and picks up the event, when it is finished for further processing steps.
 
 \section{Architecture}
+
+A running nginx instance always consists of atleast two processes: a master and a worker process. The master process spins-up, monitors and controls the worker processes. The worker processes process the actual (HTTP) requests on a single thread.
 
 \section{Configuration and Building}
 
