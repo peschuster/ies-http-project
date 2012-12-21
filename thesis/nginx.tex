@@ -1,4 +1,5 @@
 \chapter{nginx}
+\label{ch:nginx}
 
 \section{Introduction}
 
@@ -9,6 +10,7 @@ The server-side endpoint for \gls{http} traffic is a web server software. For th
 The asynchronous architecture is accomplished by using an event-pattern, instead of thread-based processing. This means - very much simplified - that \textit{nginx} never "waits" during processing a request for any external operation to complete, but pushes it to an event system, does something other useful and picks up the event, when it is finished for further processing steps.
 
 \section{Architecture}
+\label{sec:nginx-arch}
 
 A running nginx instance always consists of atleast two processes: a master and a worker process. The master process spins-up, monitors and controls the worker processes. The worker processes process the actual (HTTP) requests on a single thread.
 
