@@ -27,6 +27,7 @@
 *.mtc
 *.mtc0
 report/IesProject.pdf
+thesis/IesThesis.pdf
 
 /external
 /temp
