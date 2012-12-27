@@ -12,9 +12,16 @@ The asynchronous architecture is accomplished by using an event-pattern, instead
 \section{Architecture}
 \label{sec:nginx-arch}
 
+\subsection{Overview}
+
 A running nginx instance always consists of atleast two processes: a master and a worker process. The master process spins-up, monitors and controls the worker processes. The worker processes process the actual (HTTP) requests on a single thread.
 
+\subsection{Event-driven Architecture}
+
+
+
 \section{Configuration and Building}
+\label{sec:nginx-config}
 
 \subsection{Extending the Configuration System}
 
@@ -89,7 +96,7 @@ Through this configuration setting, the gcc cross-compiler needs to be configure
 -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.30.a
 \end{verbatim}
 
-Additionally the path to the standard libraries on the system needs to be set through the \texttt{--sysroot} parameter. These libraries are part of the tool chain for MicroBlaze systems provided by Xilinx. 
+Additionally the path to the standard libraries on the system needs to be set through the \texttt{--sysroot} parameter. These libraries are part of the tool chain for \textit{MicroBlaze} systems provided by \textit{Xilinx}. 
 
 By specifying the \texttt{--static} parameter all referenced libraries are build into the resulting binary. Therefore the binary has less dependencies to be executed.
 
@@ -101,4 +108,138 @@ Combining it all together the value of the \texttt{--with-cc-opt} parameter need
 --sysroot=/home/peschuster/project/microblaze-unknown-linux-gnu/microblaze-unknown-linux-gnu/sys-root"
 \end{verbatim}
 
+\subsection{Memory Leaks}
+
+One problem that arose during tests were memory leaks. It turned out that nginx allocated about 4053.2 Bytes of memory for each request. Assuming available memory of about 200 MB, nginx crashed the complete system after approximately 50,500 requests in total. of course, this is an unacceptable behavior for a (web) server system.
+
+\begin{figure}[H]
+\begin{minipage}{0.4\textwidth}
+\begin{tabular}{|r|r|r|}
+    \hline
+     \textbf{requests} & \textbf{master / KB} & \textbf{worker / KB} \\
+    \hline
+    0     & 3064  & 3204 \\
+    1000  & 3064  & 7296 \\
+    2000  & 3064  & 11256 \\
+    3000  & 3064  & 15348 \\
+    4000  & 3064  & 19440 \\
+    5000  & 3064  & 23404 \\
+    6000  & 3064  & 27496 \\
+    7000  & 3064  & 31588 \\
+    8000  & 3064  & 35552 \\
+    9000  & 3064  & 39644 \\
+    10000 & 3064  & 43736 \\
+    \hline
+    \end{tabular}
+\end{minipage}
+\begin{minipage}{0.65\textwidth}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[width=\textwidth,height=8cm,
+			xlabel={requests},
+			ylabel={memory / KB},
+			xmin=0,
+			ymin=0,
+			extra y ticks={3064},
+			%extra y tick label style={/pgf/number format/1000 sep=},
+			extra y tick style={grid=major},
+			extra x tick style={grid=major},
+			y tick label style={/pgf/number format/1000 sep=},
+			legend pos = north west]
+			\addplot table[x index=0, y index=1] {graphdata/nginx-mem.csv};
+			\addlegendentry{master process}
+			\addplot table[x index=0, y index=2] {graphdata/nginx-mem.csv};
+			\addlegendentry{worker process}
+		\end{axis}
+	\end{tikzpicture}
+\end{minipage}
+  \label{fig:nginx-mem}
+  \caption{Memory consumption of nginx processes over total requests.}
+\end{figure}
+
+\subsubsection{Investigations}
+
+The described behavior of nginx could not be replicated on a standard x86 server system running \textit{Ubuntu Linux 12.04}. That means nginx in general should work correct, using just as much memory as required and releasing unused memory to the \gls{os}. However, on the \textit{MicroBlaze} system this does not work properly.
+
+With activated \texttt{debug} log. nginx writes some information about inner workings to the error log. The debug log can be activated with the following option in the configuration file:
+
+\begin{verbatim}
+error_log  logs/error.log  debug;
+\end{verbatim}
+
+But there must be only one \texttt{error\_log} line in the nginx configuration file. The option specifying the severity level is inclusive for all lower levels.
+
+The following table shows all memory related debug messages as found in the error log for a single request to a static file on the \textit{MicroBlaze} system running a nginx instance, which is configured as described in the previous section (\ref{sec:nginx-config}):
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|r|r|}
+    \hline
+     \textbf{Log entry} & \textbf{ptr} & \textbf{allocated} & \textbf{freed} \\
+    \hline \hline
+\texttt{*1 malloc: 10080890:644} & 10080890 & 644 &  \\ \hline
+\texttt{*1 malloc: 10080B18:1024} & 10080B18 & 1024 &  \\ \hline
+\texttt{*1 posix\_memalign: 1007B5B0:4096 @16} & 1007B5B0 & 4096 &  \\ \hline \hline
+\texttt{*1 free: 1007B5B0, unused: 2079} & 1007B5B0 & & 4096 \\ \hline
+\texttt{*1 free: 10080890} & 10080890 & & 644 \\ \hline
+\texttt{*1 free: 10080B18} & 10080B18 & & 1024 \\ \hline
+\end{tabular}
+\label{tab:debug_mem}
+\caption{Memory management related debug messages of a single request.}
+\end{table}
+
+All pointers to allocated memory for one request are passed to the \texttt{free(..)} function of the \textit{C Standard Library} (\textit{libc}) and therefore should be released to the system. But performance and stress tests on the system proved a different behavior: The nginx worker process consumes more memory for each request with a linear relation to the number of requests (see \ref{fig:nginx-mem}).
+
+This lead to another theory as source for the misbehavior of nginx: It could be possible that memory management of the Linux kernel or \textit{libc} port to the \textit{MicroBlaze} architecture are broken. This is a strong allegation, especially because fully analyzing the problem on this wide dimensions was beyond the scope of this bachelor thesis. But there are a view points promoting this theory which should be considered:
+
+There is a answer by \textit{Xilinx} support (\textit{AR \#12421}) stating that memory management (especially the function \textit{free(..)}) is "very system-specific" and not fully implemented/supported for \textit{MicroBlaze} processors \cite{mbfree}. The answer was published on 09/09/2010 and explicitly only valid for versions of the \textit{MicroBlaze} processors without a hardware memory management unit. Therefore it should not apply to the used version of the \textit{MicroBlaze} processor and \textit{C Standard Library}, but it shows that the memory management functions were added to the toolchain and supporting environment only recently and might not be as stable as other parts.
+
+Another point benefiting this theory is the unusual way nginx deals with memory. Memory management is done by nginx's pool allocator. This could be seen as an abstraction to the memory allocation mechanisms provided by the \gls{os}. When a module/sub-routine/function requires dynamically allocated memory, it requests it from the nginx pool allocator, which itself requests a larger chunk of memory (called "pool") from the \gls{os} and distributes small blocks of the pool on requests. As soon as no blocks of a pool are used anymore, it is returned to the \gls{os}. nginx uses this design to minimize system calls and reduce expensive requests for memory allocation by the hardware memory management unit \cite{aosa}. Another consequence of this design is that nginx only rarely reuses once allocated memory, but just allocates new memory blocks when required and releasing them to the system upon finished operations. This comes in unfavorable, when the memory management of the system (\gls{os} and processor) might not work properly.
+
+\subsection{A First Workaround}
+
+It was not possible to fix the root cause of the memory leaks during this bachelor thesis. Therefore another solution to circumvent the described arising problems needed to be found to be able to use the system and conduct intensive performance tests.
+
+A workaround to circumvent complete system crashes during tests due to exhausted memory is to restart the nginx worker process on low remaining system memory.
+
+This can be accomplished by sending the \texttt{HUB} signal to the nginx master process using the \texttt{kill} command of \textit{Unix} systems\footnote{\url{http://unixhelp.ed.ac.uk/CGI/man-cgi?kill}}. This signal tells nginx to initiate a re-configuration operation, resulting in spinning up new worker processes and shutting down the previous ones. The process id of the master process on the system under test is always stored in the file \texttt{/usr/local/nginx/logs/nginx.pid}. Therefore the complete command for restarting the nginx worker process can be constructed as follows:
+
+\begin{verbatim}
+kill -HUP $( cat /usr/local/nginx/logs/nginx.pid )
+\end{verbatim}
+
+Information about currently allocated and free memory can be displayed using tools like \textit{top}\footnote{\url{http://www.busybox.net/downloads/BusyBox.html\#top}}, which provides "a view of process activity in real time" \cite{busybox}. \textit{top} internally aggregates information from multiple (virtual) file handles like \texttt{/proc/meminfo}.
+
+\subsection{An Integrated Solution}
+
+This workaround works well, but requires manual actions by a user and is therefore ignorant for automation which is a key part of extensive performance tests.
+
+An idea for an extended solution was to shift checking for low remaining memory to the nginx master process.
+
+After configuring and building up the system, including the start of worker processes, the master process returns to a standby mode, waiting for external signals (like the above used \texttt{HUB} signal). This is implemented using the default \textit{C Standard Library} signal implementation, mainly \texttt{sigsuspend}\footnote{\url{http://www.gnu.org/software/libc/manual/html\_node/Sigsuspend.html}}, inside of the \texttt{ngx\_master\_process\_cycle(..)} function (in the file \texttt{ngx\_worker\_cycle.c}).
+
+At this point a developed patch to check memory consumption of the system and initiate restarts of the worker processes hooks in. 
+
+The patch consists of three major parts:
+
+\begin{enumerate}
+\item A function reading the file handle \texttt{/proc/meminfo}, parsing out the required information about free system memory and comparing it with a configured threshold value. This is implemented in the new file \texttt{ngx\_process\_memguard.c/.h}.
+
+\item Start of a timer, awaking the master process every second from suspension to trigger a check for remaining system memory. The timer itself is implemented using the Linux command \texttt{setitimer}\footnote{\url{http://linux.about.com/library/cmd/blcmdl2\_setitimer.htm}} in \texttt{ITIMER\_REAL} mode to send a \texttt{SIGALRM} signal to the hosting process.
+
+\item A signal handler for dealing with the \texttt{SIGALRM} signal, sent by the timer, to check the remaining system memory and trigger a restart of the worker processes, if necessary.
+\end{enumerate}
+
+Usage of the newly implemented functionality needs to be activated upon build/configuration by providing the parameter \texttt{----with-min-free-mem=[value]}. \texttt{[value]} is the threshold value in bytes which is compared to the free system memory to decide on a required restart of worker processes. During tests of the system this value was set to "\texttt{10240}" (bytes).
+
+The complete patch is included in the appendix of this report or can be found in the master branch of the nginx fork at \url{https://github.com/peschuster/nginx}.
+
 \section{Interfaces to the Operating System}
+
+socket
+
+accept
+
+writev, sendfile
+
+recv
