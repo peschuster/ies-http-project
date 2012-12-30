@@ -92,13 +92,7 @@ Another part of the system configuration is the \textit{Device Tree}. It is an a
 \subsection{The File System}
 \label{subsec:fs}
 
-Although possible, it makes little sense to use the Linux kernel without a file system. Therefore one of the last steps in the boot process is the initialization of a \textit{root file system (rootfs)}. \cite{linuxPrimer}[sec. 6.1] On modern desktop and server systems this \textit{rootfs} is usually just a bare minimum file system, containing all necessary files to boot the Linux kernel, mounting a file system located on a hard drive or flash memory right after booting up. But the used system in this project has no hard drive attached, neither is one required for the purpose of the project, at the moment. Therefore we will stick with the initial \textit{rootfs} as the main file system.
-
-A simple way to provide an initial \textit{rootfs} is the \textit{Initial RAM Disk (initrd)}. This is a file system packed in a \textit{cpio} archive and linked into the Linux kernel image. It is unpacked completely into the main memory during kernel boot process. \textit{Xilinx} provides two packed file system archives for a \textit{MicroBlaze} system within their Linux kernel repository: \texttt{initramfs\_minimal.cpio.gz} and \texttt{initramfs\_complete.cpio.gz}. Both contain all files and structures sufficient for this project. The archives can be linked into the Linux kernel image by setting the configuration option \texttt{INITRAMFS\_SOURCE} to one of the file names, respectively.
-
-\textit{cpio} archives can be unpacked using the following command. This command should be executed as privileged root user to allow the creation of node points, used in the file system.
-
-After all changes were made to the files representing the file system, it can be packed into a \textit{cpio} archive using the bash script supplied in the appendix of this report ("\texttt{pack-fs.sh}", \ref{subsec:pack-fs}). The paths to the Linux kernel sources and file system root need to be adjusted to meet the current environment.
+Although possible, it makes little sense to use the Linux kernel without a file system. Therefore an \textit{Initial RAM Disk (initrd)} image is mounted as \textit{root file system (rootfs)} \cite{linuxPrimer}[sec. 6.1]. This is a file system packed into a \textit{cpio} archive and linked into the Linux kernel image. It is unpacked completely into the main memory during kernel boot process.
 
 \section{Deployment}
 
@@ -106,19 +100,36 @@ The generated \textit{bitstream} of the hardware system representing the \gls{so
 
 When the Linux kernel build is finished, the resulting \textit{\gls{elf}} file can be found at \texttt{arch/microblaze/boot/simpleImage.<dts-name>}. This file can be loaded into the \gls{fpga} using \textit{\gls{xmd}}, which is also part of the \textit{Xilinx ISE Design Suite}.
 
-\chapter{Modifications to the system}
+\chapter{Modifications to the System}
 
 \section{Hardware}
 
-Data and instructions caches were extended to 64 Kilobytes. Because it gives a slight performance gain for the system and the used \gls{fpga} had sufficient resources left.
+Data and instructions caches were extended to 64 Kilobytes. This gives a slight performance gain for the system and the used \gls{fpga} had sufficient resources left.
 
 \section{Software}
 
-The toolchain used during the preceding project was updated to the latest version provided by \textit{Xilinx}. This version has the identifier "\texttt{microblaze-unkwnown-linux-gnu-.... (crosstool-NG 1.14.1) 4.6.2 20111018 (prerelease)}". The \gls{gcc} version included in this version is \texttt{4.6.2}. This \gls{gcc} version is not compatible with the Linux kernel version used previously. Therefore the Linux kernel was updated to version 3.5.0 (commit: \texttt{45b74487f57324fa66da40cd4d52be6f07e2aefd}\footnote{\url{http://git.xilinx.com/?p=linux-xlnx.git;a=commit;h=45b74487f57324fa66da40cd4d52be6f07e2aefd}}). The toolchain upgrade itself was required for the work on user space applications described in the following chapters.
+The toolchain used during the preceding project was updated to the latest version provided by \textit{Xilinx}. This version has the identifier "\texttt{microblaze-unkwnown-linux-gnu-.... (crosstool-NG 1.14.1) 4.6.2 20111018 (prerelease)}". The \gls{gcc} version included in this version is \texttt{4.6.2}. This \gls{gcc} version is not compatible with the Linux kernel version used previously. Therefore the Linux kernel was updated to version 3.5.0 (commit \texttt{45b74487f57324fa66da40cd4d52be6f07e2aefd}\footnote{\url{http://git.xilinx.com/?p=linux-xlnx.git;a=commit;h=45b74487f57324fa66da40cd4d52be6f07e2aefd}}). The toolchain upgrade itself was required for the work on user space applications described in the following chapters.
 
-The utilized web server software (nginx) requires the availability of an event module in the \gls{os}. Therefore \texttt{epoll} was activated in the Linux kernel configuration (\texttt{.config} file). This is done by setting the switch \texttt{CONFIG\_EPOLL=y}. Further explanations on this change can be found in the related chapter about the nginx architecture (see \ref{sec:nginx-arch}).
+The used web server software (nginx) requires the availability of an event module in the \gls{os}. Therefore \texttt{epoll} was activated in the Linux kernel configuration (\texttt{.config} file). This is done by setting the switch \texttt{CONFIG\_EPOLL=y}. Further explanations on this change can be found in the related chapter about the nginx architecture (see \ref{sec:nginx-arch}).
 
-Another event, affecting the software part of this project was the corporate takeover of \textit{PetaLogix} by \textit{Xilinx} in late August 2012 \cite{takeover}. In consequence the efforts of both companies on Linux kernel development for the \textit{MicroBlaze} architecture were bundled, leading -- amongst others -- to a common source code repository for related developments. This alleviated the software part of the project.
+Another event, affecting the software part of this project was the corporate takeover of \textit{PetaLogix} by \textit{Xilinx} in late August 2012 \cite{takeover}. In consequence the efforts of both companies on Linux kernel development for the \textit{MicroBlaze} architecture were bundled, leading -- amongst others -- to a common source code repository for related developments. This alleviated working on the software part of the project.
 
 \section{The File System}
 
+For deployment of user space applications to the test system a number of \textit{C standard library (libc)} components need to be copied to the system. This results in a combined Linux image size of about 25 MB. Loading this image into the \textit{MicroBlaze} memory using \gls{xmd} tool takes about 9 minutes. For frequent develop-deploy-test cycles this adds unnecessary burden to the overall development process.
+
+To circumvent this problem, the file system was embedded using \gls{nfs} during development of user space applications. When using \gls{nfs} a directory on another system is mounted on the \textit{MicroBlaze} system as root file system.
+
+To enable this change for the \textit{MicroBlaze} system, the Linux kernel configuration option \texttt{CONFIG\_CMDLINE} needs to be changed to the following value:
+
+\texttt{CONFIG\_CMDLINE="console=ttyUL0 ip=192.168.2.125 rootfstype=nfs root=/dev/nfs rw $ \hookleftarrow$\\  nfsroot=192.168.2.112:/home/peschuster/customfs/complete,tcp"} %\swarrow\rhook
+
+This sets \texttt{192.168.2.125} to be the static IP address, changes the root file system type to \gls{nfs} and mounts the directory \texttt{/home/peschuster/customfs/complete} on a system with IP address \texttt{192.168.2.112} as root file system with read and write permissions over TCP. These exact values need to be adjusted to the current environment, of course.
+
+On the system hosting the mounted directory, \gls{nfs} server needs to be configured for allowing the respective directory to be mounted by the other system. On \textit{Debian} and \textit{Ubuntu} Linux distributions this is done by adding a line like the following to \texttt{/etc/exports}: 
+
+\texttt{/home/peschuster/project/customfs/complete	192.168.2.125(rw,sync,no\_root\_squash)}
+
+This allows mounting of \texttt{/home/peschuster/project/customfs/complete} on a system with IP address \texttt{192.168.2.125} with read and write access and synchronous data transfer. The option \texttt{no\_root\_squash} allows access and modifications to files and directories belonging to the \texttt{root} user. It is required, because there are no users and user groups defined on the \textit{MicroBlaze} system.
+
+For conducted performance tests in a later stage of this project, these temporary changes to file system mounting were reverted and the file system was embedded into the Linux kernel image as a packed \textit{cpio} archive.

@@ -24,9 +24,6 @@
 \pgfplotsset{compat=1.3}
 \usepackage{caption}
 
-\usepackage{listings}
-\lstset{breaklines=true} 
-
 %% Tabelleneinstellungen
 \usepackage{booktabs}
 \usepackage{multirow}
@@ -39,10 +36,13 @@
 \usepackage{icomma}
 
 %% Code
+%\usepackage{listings}
+%\lstset{breaklines=true} 
 %\usepackage{listings} 
 	%\lstset{numbers=left, numberstyle=\tiny}  %, numbersep=2pt
 	%\lstset{language=Perl}
 
+\usepackage{calc}
 \usepackage{etoolbox}
 \makeatletter
 \preto{\@verbatim}{\topsep=0pt \partopsep=0pt }
@@ -58,9 +58,7 @@
 % Don't stretch spaces
 \raggedbottom
 
-
 \usepackage{enumerate}
-
 \usepackage[acronym,toc]{glossaries}
 %\renewcommand{\glsnamefont}[1]{\textbf{#1}}
 \renewcommand{\glossaryname}{Acronyms}
@@ -78,6 +76,9 @@
 %\setinstitutionlogo{ies-logo.pdf}
 \institution{\textbf{Department of Electrical Engineering and Information Technology (ETiT)}\vspace{1mm}\\Institute of Computer Engineering\\Integrated Electronic Systems Lab\\Prof. Dr.-Ing. Klaus Hofmann}
 %\settitlepicture{images/spartan}
+
+\setcounter{tocdepth}{1}
+
 \begin{document}
 
 %% Titel %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -88,10 +89,9 @@
 \pagestyle{empty}
 \pagenumbering{none}
 
+%\input{decls_en}
 
-\input{decls_en}
-
-%\tableofcontents
+\tableofcontents
 
 %\newpage
 %\phantomsection %notwendig, damit Link nicht unterhalb der Überschrift zeigt
@@ -123,8 +123,8 @@
 \include{nginx}
 \include{performance}
 \include{linux-network}
+\include{toe}
 \include{conclusion}
-\include{appendix}
 
 %% Anhang %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
@@ -137,5 +137,6 @@
 \bibliographystyle{plain}
 \bibliography{literaturverzeichnis}
 
+\include{appendix}
 
 \end{document}

@@ -1,5 +1,3 @@
-%\appendix 
-
 \chapter{Resources}
 
 \section{Hardware Architecture Overview}
@@ -7,9 +5,8 @@
 
 \begin{figure}[H]
 \centering
-%\includegraphics[width=0.9\textwidth]{system_blkd.jpg}
+\includegraphics[width=0.9\textwidth]{images/system_blkd.jpg}
 \end{figure}
-
 
 \section{Hardware Project Configurations}
 
@@ -34,9 +31,7 @@ CONFIG_XILINX_MICROBLAZE0_USE_DIV=1
 CONFIG_XILINX_MICROBLAZE0_USE_HW_MUL=2
 CONFIG_XILINX_MICROBLAZE0_USE_FPU=0
 CONFIG_XILINX_MICROBLAZE0_HW_VER="8.30.a"
-\end{verbatim}
-
- 
+\end{verbatim} 
 
 \subsection{Patches}
 \label{subsec:pvr_patch}
@@ -124,7 +119,8 @@ size of off_t: 4
 size of time_t: 4
 \end{verbatim}
 
-\subsection{nginx patch: memory guard}
+\section{nginx patch: memory guard}
+\label{appendix:memguard}
 
 \begin{verbatim}
 From 123fb80eea9fa7b3e6503c2d70a2eb9a32c33aca Mon Sep 17 00:00:00 2001
@@ -344,4 +340,61 @@ index 0000000..0a3d035
 -- 
 1.7.8.msysgit.0
 
+\end{verbatim}
+
+
+\section{C\# Load Test Console Application}
+\label{appendix:csharp-load}
+
+\begin{verbatim}
+using System;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        while (true)
+        {
+            Console.WriteLine("Specify params. Form: [number]:[threads]");
+            string input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input))
+                return;
+
+            string[] p = input.Split(':');
+            int req = int.Parse(p[0]);
+            if (req <= 0)
+                return;
+
+            long count = 0;
+            DateTime start = DateTime.Now;
+
+            int parallel = int.Parse(p[1]);
+            string baseUrl = "http://192.168.2.125/10K.html?id=";
+            var parellelOptions = new ParallelOptions { MaxDegreeOfParallelism = parallel };
+
+            Parallel.For(0, req, parellelOptions, i =>
+            {
+                var http = HttpWebRequest.CreateHttp(baseUrl + i);
+                    
+                using (http.GetResponse())
+                {
+                }
+
+                double c = Interlocked.Increment(ref count);
+
+                if (i % 10 == 0)
+                {
+                    Console.WriteLine(
+                        "{0, 8} {1:0.000}", 
+                        c, 
+                        c / (DateTime.Now - start).TotalSeconds);
+                }
+            });
+        }
+    }
+}
 \end{verbatim}

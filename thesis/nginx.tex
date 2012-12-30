@@ -153,8 +153,8 @@ One problem that arose during tests were memory leaks. It turned out that nginx 
 		\end{axis}
 	\end{tikzpicture}
 \end{minipage}
-  \label{fig:nginx-mem}
   \caption{Memory consumption of nginx processes over total requests.}
+  \label{fig:nginx-mem}
 \end{figure}
 
 \subsubsection{Investigations}
@@ -167,7 +167,7 @@ With activated \texttt{debug} log. nginx writes some information about inner wor
 error_log  logs/error.log  debug;
 \end{verbatim}
 
-But there must be only one \texttt{error\_log} line in the nginx configuration file. The option specifying the severity level is inclusive for all lower levels.
+There must be only one \texttt{error\_log} line in the nginx configuration file, but the option specifying the severity level is inclusive for all lower levels.
 
 The following table shows all memory related debug messages as found in the error log for a single request to a static file on the \textit{MicroBlaze} system running a nginx instance, which is configured as described in the previous section (\ref{sec:nginx-config}):
 
@@ -184,62 +184,67 @@ The following table shows all memory related debug messages as found in the erro
 \texttt{*1 free: 10080890} & 10080890 & & 644 \\ \hline
 \texttt{*1 free: 10080B18} & 10080B18 & & 1024 \\ \hline
 \end{tabular}
-\label{tab:debug_mem}
 \caption{Memory management related debug messages of a single request.}
+\label{tab:debug_mem}
 \end{table}
 
 All pointers to allocated memory for one request are passed to the \texttt{free(..)} function of the \textit{C Standard Library} (\textit{libc}) and therefore should be released to the system. But performance and stress tests on the system proved a different behavior: The nginx worker process consumes more memory for each request with a linear relation to the number of requests (see \ref{fig:nginx-mem}).
 
-This lead to another theory as source for the misbehavior of nginx: It could be possible that memory management of the Linux kernel or \textit{libc} port to the \textit{MicroBlaze} architecture are broken. This is a strong allegation, especially because fully analyzing the problem on this wide dimensions was beyond the scope of this bachelor thesis. But there are a view points promoting this theory which should be considered:
+Therefore the error causing this misbehavior probably is not located in nginx itself, but in the underlying system layers. This would mean that memory management of the Linux kernel or \textit{libc} port to the \textit{MicroBlaze} architecture are broken, in the described respect. This is a strong allegation, especially because fully analyzing the problem on this wide dimensions was beyond the scope of this bachelor thesis. But there are a view points promoting this theory which should be considered:
 
-There is a answer by \textit{Xilinx} support (\textit{AR \#12421}) stating that memory management (especially the function \textit{free(..)}) is "very system-specific" and not fully implemented/supported for \textit{MicroBlaze} processors \cite{mbfree}. The answer was published on 09/09/2010 and explicitly only valid for versions of the \textit{MicroBlaze} processors without a hardware memory management unit. Therefore it should not apply to the used version of the \textit{MicroBlaze} processor and \textit{C Standard Library}, but it shows that the memory management functions were added to the toolchain and supporting environment only recently and might not be as stable as other parts.
+There is an answer by \textit{Xilinx} support (\textit{AR \#12421}) stating that memory management (especially the function \textit{free(..)}) is "very system-specific" and not fully implemented/supported for \textit{MicroBlaze} processors \cite{mbfree}. The answer was published on 09/09/2010 and is explicitly only valid for versions of the \textit{MicroBlaze} processors without a hardware memory management unit. Therefore it should not apply to the used version of the \textit{MicroBlaze} processor and \textit{C Standard Library}, but it shows that these memory management functions were added to the toolchain and supporting environment only recently and might not be as stable as other parts.
 
-Another point benefiting this theory is the unusual way nginx deals with memory. Memory management is done by nginx's pool allocator. This could be seen as an abstraction to the memory allocation mechanisms provided by the \gls{os}. When a module/sub-routine/function requires dynamically allocated memory, it requests it from the nginx pool allocator, which itself requests a larger chunk of memory (called "pool") from the \gls{os} and distributes small blocks of the pool on requests. As soon as no blocks of a pool are used anymore, it is returned to the \gls{os}. nginx uses this design to minimize system calls and reduce expensive requests for memory allocation by the hardware memory management unit \cite{aosa}. Another consequence of this design is that nginx only rarely reuses once allocated memory, but just allocates new memory blocks when required and releasing them to the system upon finished operations. This comes in unfavorable, when the memory management of the system (\gls{os} and processor) might not work properly.
+Another point benefiting this theory is the unusual way nginx deals with memory. Memory management is done by nginx's pool allocator. This could be seen as an abstraction to the memory allocation mechanisms provided by the \gls{os}. When a module/sub-routine/function requires dynamically allocated memory, it requests it from the nginx pool allocator, which itself requests a larger chunk of memory (called "pool") from the \gls{os} and distributes small blocks of the pool on requests from other parts of nginx. When no blocks of a pool are used anymore, it is returned to the \gls{os}. nginx uses this design to minimize system calls and reduce expensive requests for memory allocation by the hardware memory management unit \cite{aosa}. Another consequence of this design is that nginx does not reuse once allocated memory, but just allocates new memory blocks when required and releasing them to the system upon finished operations. This is by design and beneficial for speed and efficiency, but comes in unfavorable, when the memory management of the system (\gls{os} and processor) might not work properly.
 
-\subsection{A First Workaround}
+\subsubsection{A First Workaround}
 
-It was not possible to fix the root cause of the memory leaks during this bachelor thesis. Therefore another solution to circumvent the described arising problems needed to be found to be able to use the system and conduct intensive performance tests.
+It was not possible to fix the root cause of the memory leaks during this bachelor thesis. To circumvent the described arising problems, another solution needed to be found to be able to use the system and conduct extensive performance tests.
 
 A workaround to circumvent complete system crashes during tests due to exhausted memory is to restart the nginx worker process on low remaining system memory.
 
-This can be accomplished by sending the \texttt{HUB} signal to the nginx master process using the \texttt{kill} command of \textit{Unix} systems\footnote{\url{http://unixhelp.ed.ac.uk/CGI/man-cgi?kill}}. This signal tells nginx to initiate a re-configuration operation, resulting in spinning up new worker processes and shutting down the previous ones. The process id of the master process on the system under test is always stored in the file \texttt{/usr/local/nginx/logs/nginx.pid}. Therefore the complete command for restarting the nginx worker process can be constructed as follows:
+This can be accomplished by sending the \texttt{HUB} signal to the nginx master process using the \texttt{kill} command of \textit{Unix} systems\footnote{\url{http://unixhelp.ed.ac.uk/CGI/man-cgi?kill}}. The \texttt{HUB} signal tells nginx to reload the current configuration, resulting in spinning up new worker processes and gracefully shutting down the previous ones. This differs from complete restarts of nginx in the way that no incoming requests are lost during the restart process\footnote{\url{http://wiki.nginx.org/CommandLine} (as of 12/2012)}.
+
+The process id of the master process on the system under test is always stored in the file \texttt{/usr/local/nginx/logs/nginx.pid}. Therefore the complete command for restarting the nginx worker process can be constructed as follows:
 
 \begin{verbatim}
 kill -HUP $( cat /usr/local/nginx/logs/nginx.pid )
 \end{verbatim}
 
-Information about currently allocated and free memory can be displayed using tools like \textit{top}\footnote{\url{http://www.busybox.net/downloads/BusyBox.html\#top}}, which provides "a view of process activity in real time" \cite{busybox}. \textit{top} internally aggregates information from multiple (virtual) file handles like \texttt{/proc/meminfo}.
+Information about currently allocated and free memory can be displayed using tools like \textit{top}\footnote{\url{http://www.busybox.net/downloads/BusyBox.html\#top}}, which provide "a view of process activity in real time" \cite{busybox}. \textit{top} internally aggregates information from multiple (virtual) file handles like e.g. \texttt{/proc/meminfo} for information about memory.
 
-\subsection{An Integrated Solution}
+\subsubsection{An Integrated Solution}
 
 This workaround works well, but requires manual actions by a user and is therefore ignorant for automation which is a key part of extensive performance tests.
 
 An idea for an extended solution was to shift checking for low remaining memory to the nginx master process.
 
-After configuring and building up the system, including the start of worker processes, the master process returns to a standby mode, waiting for external signals (like the above used \texttt{HUB} signal). This is implemented using the default \textit{C Standard Library} signal implementation, mainly \texttt{sigsuspend}\footnote{\url{http://www.gnu.org/software/libc/manual/html\_node/Sigsuspend.html}}, inside of the \texttt{ngx\_master\_process\_cycle(..)} function (in the file \texttt{ngx\_worker\_cycle.c}).
+After configuring and building up the system, including the start of worker processes, the master process returns to a standby mode, waiting for external signals (like the previously described \texttt{HUB} signal). This is implemented using the default \textit{C Standard Library} signal implementation, mainly \texttt{sigsuspend}\footnote{\url{http://www.gnu.org/software/libc/manual/html\_node/Sigsuspend.html}}, inside of the \texttt{ngx\_master\_process\_cycle(..)} function (in the file \texttt{ngx\_worker\_cycle.c}).
 
-At this point a developed patch to check memory consumption of the system and initiate restarts of the worker processes hooks in. 
+A developed patch to check memory consumption of the system and initiate worker process restarts hooks in at this point inside of the master process. 
 
 The patch consists of three major parts:
 
 \begin{enumerate}
-\item A function reading the file handle \texttt{/proc/meminfo}, parsing out the required information about free system memory and comparing it with a configured threshold value. This is implemented in the new file \texttt{ngx\_process\_memguard.c/.h}.
 
-\item Start of a timer, awaking the master process every second from suspension to trigger a check for remaining system memory. The timer itself is implemented using the Linux command \texttt{setitimer}\footnote{\url{http://linux.about.com/library/cmd/blcmdl2\_setitimer.htm}} in \texttt{ITIMER\_REAL} mode to send a \texttt{SIGALRM} signal to the hosting process.
+\item Starting a timer, to awake the master process every second from suspension. This is implemented using the Linux command \texttt{setitimer}\footnote{\url{http://linux.about.com/library/cmd/blcmdl2\_setitimer.htm}} in \texttt{ITIMER\_REAL} mode to send a \texttt{SIGALRM} signal to the hosting (i.e. nginx master) process.
 
-\item A signal handler for dealing with the \texttt{SIGALRM} signal, sent by the timer, to check the remaining system memory and trigger a restart of the worker processes, if necessary.
+\item A signal handler for dealing with the \texttt{SIGALRM} signal, to check the remaining system memory and trigger a restart of the worker processes, if necessary.
+
+\item A function reading the file handle \texttt{/proc/meminfo}, parsing out the required information about free system memory and comparing it with a configured threshold value. This is implemented in the new file \texttt{ngx\_process\_memguard.c}.
 \end{enumerate}
 
-Usage of the newly implemented functionality needs to be activated upon build/configuration by providing the parameter \texttt{----with-min-free-mem=[value]}. \texttt{[value]} is the threshold value in bytes which is compared to the free system memory to decide on a required restart of worker processes. During tests of the system this value was set to "\texttt{10240}" (bytes).
+Usage of the newly implemented functionality needs to be activated upon build configuration by providing the parameter \texttt{----with-min-free-mem=[value]}. \texttt{[value]} is the threshold value in bytes which is compared to the free system memory to decide on a required restart of worker processes. During tests of the system this value was set to "\texttt{51200}" (kilobytes).
 
-The complete patch is included in the appendix of this report or can be found in the master branch of the nginx fork at \url{https://github.com/peschuster/nginx}.
+The complete patch is included in the appendix of this report (see \ref{appendix:memguard}) or can be found in the master branch of the nginx fork at \url{https://github.com/peschuster/nginx}.
 
 \section{Interfaces to the Operating System}
+
+This section briefly describes interactions between nginx and the underlying \gls{os} to deal with HTTP requests and responses.
 
 socket
 
 accept
 
-writev, sendfile
+Responses for requests to static files are written to the socket buffer using the two functions \texttt{writev} (for HTTP header data) and \texttt{sendfile} for content of the actual static file. This leads to atleast two TCP packets, always (see introduction to performance tests: \ref{subsec:mtu}).
 
 recv
