@@ -17,6 +17,7 @@
 %% Grafikeinstellungen
 \usepackage{float} % u.a. genaue Plazierung von Gleitobjekten mit H
 \usepackage{wrapfig}
+%\setlength{\intextsep}{0pt}
 %\addto\captionsngerman{%
 %  \renewcommand{\figurename}{Abb.}%
 %}
@@ -89,8 +90,9 @@
 \pagestyle{empty}
 \pagenumbering{none}
 
-%\input{decls_en}
+\input{decls_en}
 
+\cleardoublepage
 \tableofcontents
 
 %\newpage
@@ -116,7 +118,7 @@
 %% Hauptteil %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagestyle{headings}
 
-
+\cleardoublepage
 \include{einleitung}
 \include{requirements}
 \include{preceding}

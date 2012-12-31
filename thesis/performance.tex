@@ -31,13 +31,13 @@ Figure \ref{fig:net-layers} shows the five layers of the TCP/IP model with corre
 \subsection{Maximal Transfer Unit (MTU)}
 \label{subsec:mtu}
 
-The \gls{mtu} is the maximum size of unit transferred over the network in bytes. It is a parameter set for a complete network, specifying and limiting its capacity to a robust and reliable usage level. In Ethernet networks the \gls{mtu} is usually set to 1500 bytes \cite{kn1}. This includes only the data as received by the Ethernet layer. Header data of  the Ethernet protocol does not count into this size limit. When messages (including header data of upper layers) exceed the \gls{mtu} size, they are split up into multiple packets. In practice this means that for transmitting a single HTTP message (i.e. request) two or more TCP messages might be required.
+The \gls{mtu} is the maximum size of a single unit transferred over the network in bytes. It is a parameter set for a complete network (sender, receiver, intermediate stations), specifying and limiting its capacity to a robust and reliable usage level. On differing \gls{mtu} values for connected stations the lowest takes effect. In Ethernet networks the \gls{mtu} is usually set to 1500 bytes \cite{kn1}. This includes only the data as received by the Ethernet layer. Header data of  the Ethernet protocol does not count into this size limit. When messages (including header data of upper layers) exceed the \gls{mtu} size, they are split up into multiple packets. In practice this means that for transmitting a single HTTP message (i.e. request or response) two or more \gls{tcp} messages might be required.
 
 \subsection{Transmission Control Protocol (TCP)}
 
-Although \gls{http} is not fixed to be used only with \gls{tcp}; \gls{http} on top of \gls{tcp} on top of \gls{ip} is the most dominant usage combination. This is, because \gls{tcp} provides reliable communication on top of unreliable networks \cite{tcp}. \gls{tcp} accomplishes this by setting up and maintaining a connection. Therefore sending data over TCP consists of three steps: establishing a connection, sending the actual message, closing the connection. To guarantee arrival of sent data, TCP works with a handshake protocol between both involved parties. Maintaining a connection is the price to be paid for a reliable communication channel between two systems. But it also allows sending more than one messages using an already established connection. This comes in handy, when a message size exceed the \gls{mtu} or multiple \gls{http} requests are send to a server (used in persistent HTTP connections, also called "HTTP keep-alive" \cite{http}).
+Although \gls{http} is not fixed to be used only with \gls{tcp}; \gls{http} on top of \gls{tcp} on top of \gls{ip} is the most dominant usage combination. This is, because \gls{tcp} provides reliable communication on top of unreliable networks \cite{tcp}. \gls{tcp} accomplishes this by setting up and maintaining a connection. Therefore sending data over TCP consists of three steps: establishing a connection, sending the actual message, closing the connection. To guarantee arrival of sent data, \gls{tcp} works with a handshake protocol between both involved parties. Maintaining a connection is the price to be paid for a reliable communication channel between two systems. But it also allows sending more than one messages using an already established connection. This comes in handy, when a message size exceed the \gls{mtu} or multiple \gls{http} requests are send to a server (used in persistent HTTP connections, also called "HTTP keep-alive" \cite{http}).
 
-\gls{ip} introduced so called IP addresses as identifiers for single systems. TCP extends this model by port numbers. An application providing services to other system (i.e. a server) uses one single port, but client applications need to open separate ports for each TCP connection. This is required, because TCP connections are identified by the four parts "server address", "server port", "client address" and "client port" \cite{tcp}. The TCP header contains two 16 bit fields for source and destination port \cite{kn1}. This leads to a maximum of $2^{16} = 65,536$ concurrently used (open) TCP connections on a single client system.
+\gls{ip} introduced so called IP addresses as identifiers for single systems. \gls{tcp} extends this model by port numbers. An application providing services to other system (i.e. a server) uses one single port, but client applications need to open separate ports for each \gls{tcp} connection. This is required, because \gls{tcp} connections are identified by the four parts "server address", "server port", "client address" and "client port" \cite{tcp}. The TCP header contains two 16 bit fields for source and destination port \cite{kn1}. This leads to a maximum of $2^{16} = 65,536$ concurrently used (open) \gls{tcp} connections on a single client system.
 
 \section{Measuring Web Server Performance}
 
@@ -70,8 +70,8 @@ To circumvent this issue limits on the current system need to be increased and \
 
 \item httperf needs to be re-compiled from source:\\
  \\
-\texttt{wget ftp://ftp.hpl.hp.com/pub/httperf/httperf-0.9.0.tar.gz\\
-tar xvzf httperf-0.9.0.tar.gz \&\& cd httperf-0.9.0\\
+\texttt{wget} \url{ftp://ftp.hpl.hp.com/pub/httperf/httperf-0.9.0.tar.gz}\\
+\texttt{tar xvzf httperf-0.9.0.tar.gz \&\& cd httperf-0.9.0\\
 ./configure \&\& make\\
 sudo make install}
 \end{enumerate}
@@ -95,7 +95,7 @@ It was used in this project for debugging initial problems with the network stac
 
 The tests were conducted using \textit{httperf} on a virtual machine running \textit{Ubuntu Linux 12.04}. To proof that the limiting factor during the tests is not this client machine, but the system under test, all tests were also performed against a \textit{Microsoft IIS 7.5} web server instance on top of a \textit{Microsoft Windows 7 Professional} operating system running on a bare metal machine with an \textit{AMD Phenom II X4 965} processor at 3.40 GHz.
 
-According to the \textit{HTTP Archive}\footnote{\url{http://httparchive.org/interesting.php\#responsesizes} (as of Dec. 15th 2012)} an average HTML page has a size of about 6 kB. Other content types, like images, stylesheets and script files vary on average between 5 kB and 21 kB. Therefore tests were performed using static files with two sizes: one file having exactly 10 kB (10.240 bytes) from now on referenced as "10K.html" and one very minimal HTML page having just 354 bytes ("index.html"). The major difference between these two files from a "network perspective" is that the small file can be transmitted in two TCP packet (one for the HTTP header and one for the actual data), whereas the 10 KB file needs to be split up in 9 TCP packets due to the default \gls{mtu} size of 1500 bytes.
+According to the \textit{HTTP Archive}\footnote{\url{http://httparchive.org/interesting.php\#responsesizes} (as of Dec. 15th 2012)} an average HTML page has a size of about 6 kB. Other content types, like images, stylesheets and script files vary on average between 5 kB and 21 kB. Therefore tests were performed using static files with two sizes: one file having exactly 10 kB (10.240 bytes) from now on referred to as "10K.html" and one very minimal HTML page having just 354 bytes ("index.html"). The major difference between these two files from a "network perspective" is that the small file can be transmitted in two TCP packets (one for the HTTP header and one for the actual data, see section \ref{sec:nginx-os-if}), whereas the 10 KB file needs to be split up in 9 TCP packets due to the default \gls{mtu} size of 1500 bytes.
 
 The following figure (\ref{fig:initial-req}) shows request and response rates two both files with an increasing connection rate (20 conn./s to 120 conn./s, step size: 10). On each connection three HTTP requests were made to the respective file. On every connection rate level 3.000 connections were opened to obtain reliable results.
 
@@ -124,7 +124,7 @@ The following figure (\ref{fig:initial-req}) shows request and response rates tw
   \label{fig:initial-req}
 \end{figure}
 
-The difference between request and response rate origins in failed requests. The following figure shows the corresponding error rate.
+The difference between request and response rate origins in failed requests. The following figure shows the corresponding error rate which increases with over-saturating the system.
 
 \begin{figure}[H]
 	\centering
@@ -149,6 +149,8 @@ The difference between request and response rate origins in failed requests. The
   \label{fig:initial-req-errors}
 \end{figure}
 
+The response \textbf{rate} decreases only slowly with growing saturation, but the average response \textbf{time} increases from  5 ms to about 500-650 ms:
+
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
@@ -171,6 +173,48 @@ The difference between request and response rate origins in failed requests. The
   \caption{Response time for two static files (\texttt{10K.html} and \texttt{index.html}).}
   \label{fig:initial-req-time}
 \end{figure}
+
+\begin{wrapfigure}[16]{r}{.5\textwidth}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[ybar stacked,
+			legend style={at={(1.05,1.0)},anchor=north west},
+			xtick={0,1},
+			axis x line*=bottom,
+			tick label style={font=\footnotesize},
+			legend style={font=\footnotesize},
+			label style={font=\footnotesize},
+			ytick={0,25,50,75,100},
+			width=5cm,
+			height=6cm,
+			bar width=10mm,
+			ylabel={CPU load / \%},
+			xticklabels={index.html, 10K.html},
+			ymajorgrids=true,
+			minor tick style={very thin, gray},
+			minor y tick num=4,
+			ymin=0,
+			ymax=100,
+			area legend,
+			legend cell align=left,
+			enlarge x limits=0.5]
+			\addplot[fill=blue] coordinates % usr
+			{(0,46.6) (1,32.1)};
+			\addplot[fill=red] coordinates % sys
+			{(0,36.5) (1,45.5)};
+			\addplot[fill=teal] coordinates % sirq
+			{(0,16.7) (1,22.3)};
+			\legend{user space,system/kernel,soft irq}
+		\end{axis}
+	\end{tikzpicture}
+	\caption{CPU load distribution for different request types.}
+  \label{fig:initial-req-cpu}
+\end{wrapfigure}
+
+The difference in request and response rates the system can handle is also visible in \textbf{CPU utilization}. Main responsibility of \textit{nginx} for serving requests is to handle the HTTP part. This includes parsing the request header, generating responses and delivering static files. The \gls{os} on the other hand does the "translation" to and from \gls{tcp} and handles all lower layers (see also figure \ref{fig:net-layers}). An increased payload size of single responses entails therefore a shift in processing time from \textit{nginx} ("user space") to the operations inside the Linux kernel.
+
+The \textbf{network throughput} of both tests follows naturally the trend of response rates. For the test requesting the "index.html" file, the shown throughput is very low, because \textit{httperf} calculates the average throughput as $\cfrac{\text{[size]} \cdot \text{[total repsonses]}}{\text{[test time]}}$.
+\vspace{1cm}
 
 \begin{figure}[H]
 	\centering
@@ -195,6 +239,7 @@ The difference between request and response rate origins in failed requests. The
   \label{fig:initial-req-io}
 \end{figure}
 
+\clearpage
 \subsection{Network throughput}
 
 To test the maximal network throughput the server can provide, a test needs to be designed focusing just this parameter to prevent other parts of the system under test to get into the way. A constant high exchange of TCP packets can be achieved by transferring single large files over the network. Therefore a large binary (movie) file with a payload size of 33.4 MB was used for throughput tests.
@@ -250,7 +295,7 @@ The following figure (\ref{fig:tcp-io-perf-cpu}) shows the CPU utilization by ti
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
-		\begin{axis}[width=\textwidth,height=6cm,
+		\begin{axis}[ybar stacked,width=\textwidth,height=6cm,
 			xlabel={connection rate},
 			ylabel={percentage},
 			extra y tick style={grid=major},
@@ -259,12 +304,14 @@ The following figure (\ref{fig:tcp-io-perf-cpu}) shows the CPU utilization by ti
 			minor tick style={very thin, gray},
 			minor y tick num=3,
 			ymajorgrids=true,
+			bar width=10mm,
+			area legend,
 			legend columns=6,
 			legend style = {at={(0.5,1.03)}, anchor=south}]
 %			legend pos = south east]
-			\addplot[color=red,mark=x] table[x index=0, y index=2] {graphdata/tcp-io-perf.csv};
+			\addplot[fill=red] table[x index=0, y index=2] {graphdata/tcp-io-perf.csv};	%,mark=x
 			\addlegendentry{user space  }
-			\addplot[color=blue,mark=o] table[x index=0, y index=3] {graphdata/tcp-io-perf.csv};
+			\addplot[fill=blue] table[x index=0, y index=3] {graphdata/tcp-io-perf.csv};	%,mark=o
 			\addlegendentry{system/kernel}
 %			\addplot[color=magenta,mark=o] table[x index=0, y index=4] {graphdata/tcp-io-perf.csv};
 %			\addlegendentry{low priority (nice)}
@@ -274,7 +321,7 @@ The following figure (\ref{fig:tcp-io-perf-cpu}) shows the CPU utilization by ti
 %			\addlegendentry{io (waiting)}
 %			\addplot[color=green,mark=|] table[x index=0, y index=7] {graphdata/tcp-io-perf.csv};
 %			\addlegendentry{irq}
-			\addplot[color=teal,mark=diamond] table[x index=0, y index=8] {graphdata/tcp-io-perf.csv};
+			\addplot[fill=teal] table[x index=0, y index=8] {graphdata/tcp-io-perf.csv};	%,mark=diamond
 			\addlegendentry{soft irq}
 		\end{axis}
 	\end{tikzpicture}
@@ -282,7 +329,7 @@ The following figure (\ref{fig:tcp-io-perf-cpu}) shows the CPU utilization by ti
   \label{fig:tcp-io-perf-cpu}
 \end{figure}
 
-To proof that obtained performance limits were not limits of the client executing the tests or the network infrastructure, the same test was executed against the "reference system" running an \textit{Microsoft IIS 7.5} web server. Figure \ref{fig:tcp-io-perf-iis} shows the results which outplay the results of the \textit{MicroBlaze} system by more than a factor of eight:
+To proof that obtained performance limits were not limits of the client executing the tests or the network infrastructure, the same test was executed against the "reference system" running an \textit{Microsoft IIS 7.5} web server. Figure \ref{fig:tcp-io-perf-iis} shows the results which outplays the results of the \textit{MicroBlaze} system by more than a factor of eight:
 
 \begin{figure}[H]
 	\centering

@@ -3,33 +3,66 @@
 
 \section{Introduction}
 
-The context of this project is to implement a testbed for a \textit{\gls{toe}} being developed in another research project. This testbed should enable testing the \gls{toe} in an environment and with workloads close to usage in real world. One usage of \gls{tcp} is as protocol layer for \gls{http} requests. \gls{http} is the second most used protocol among all internet traffic, with a share of about 20 to 30 \% (in 2008/09) \cite{internet_study} and therefore very relevant for usage outside lab environments. 
+The context of this project is to implement a testbed for a \textit{\gls{toe}} being developed in another research project. This testbed should enable testing the \gls{toe} in an environment and with workloads close to usage in real world. One usage of \gls{tcp} is as transport layer for \gls{http} requests. \gls{http} is the second most used protocol among all internet traffic, with a share of about 20 to 30 \% (in 2008/09) \cite{internet_study} and therefore very relevant outside of lab environments. 
 
-The server-side endpoint for \gls{http} traffic is a web server software. For this project nginx (pronounced "engine-x") was chosen, which follows an asynchronous architecture. It was released to the public in 2004 and focuses on "high performance, high concurrency and high memory usages"\cite{aosa}.
+The server-side endpoint for \gls{http} traffic is a web server software. For this project \textit{nginx} (pronounced "engine-x") was chosen, which follows an asynchronous architecture. It was released to the public in 2004 and focuses on "high performance, high concurrency and high memory usages" \cite{aosa}.
 
-The asynchronous architecture is accomplished by using an event-pattern, instead of thread-based processing. This means - very much simplified - that \textit{nginx} never "waits" during processing a request for any external operation to complete, but pushes it to an event system, does something other useful and picks up the event, when it is finished for further processing steps.
+A server system, like a web server, needs to be non-blocking to handle multiple requests at once. That is it must be able to accept and process requests while it is still busy with other, previously received requests. Systems with a "traditional" (i.e. thread-based) architecture fulfill this requirement by spawning separate processes or threads for incoming requests. An application designed by this model does not favor performance, because spawning new processes or threads "requires preparation of a new runtime environment, including allocation of heap and stack memory, and the creation of a new execution context" \cite{aosa}.
+
+In contrast to this, \textit{nginx} was designed following in an asynchronous architecture, which is accomplished by using a so called event-pattern. This means -- very much simplified -- that \textit{nginx} never "waits" during processing a request for any external operation to complete, but pushes it to an event system, being part of the \gls{os}, does something other useful like processing new requests and picks up the event, when it is finished for further processing steps.
 
 \section{Architecture}
 \label{sec:nginx-arch}
 
 \subsection{Overview}
 
-A running nginx instance always consists of atleast two processes: a master and a worker process. The master process spins-up, monitors and controls the worker processes. The worker processes process the actual (HTTP) requests on a single thread.
+A running \textit{nginx} instance always consists of atleast two processes: a \textbf{master} and a \textbf{worker} process. The master process spins-up, monitors and controls the worker processes. The worker processes process the actual (HTTP) requests on a single thread.
+
+%\setlength{\intextsep}{0pt}
+\begin{wrapfigure}[12]{r}{.4\textwidth}
+	\centering
+	\includegraphics[scale=1]{images/nginx-overview.pdf}
+	\caption{Overview of nginx process model.}
+	\label{fig:nginx-overview}
+\end{wrapfigure}
+
+After initialization both processes run in a so called \textbf{process cycle}. That is an infinite loop with the process waiting to be activated from suspension by external events. For the master process these are signals send to the process which might indicate requests for shutdown, configuration reload or previously initiated timed events.
+
+Design of the worker process had as key principle "to be as non-blocking as possible" \cite{aosa}. This is done by relying heavily on asynchronous operations being implemented through "modularity, event notifications, extensive use of callback functions and fine-tuned timers" \cite{aosa}. It also makes the process cycle of the worker process the "most complicated part of \textit{nginx}" \cite{aosa}.
+
+Processing of requests is outsourced from the \textit{nginx} core routines to a number of dedicated modules. These modules hook into a processing pipeline forming a \textbf{chain of modules}. When a request receives, it is passed through the pipeline with every module doing the relevant work \cite{aosa}. Functionality of modules includes handling a specific protocol (e.g. \gls{http}), modifying content, filtering, handling special variables or load balancing. It is also possible to develop and integrate custom modules.
+
+An \gls{http} request runs through a number of processing phases with dedicated \textbf{phase handlers}. These process a request and generate an appropriate response, send the header and send the body. Generation of content is done by \textbf{content handlers}. Out-of-the-box there exist several default handlers for index views or simple static files. The result of this handlers is passed to \textbf{filters} performing outbound content modifications. Filters form a separate processing pipeline, passing results among themselves until the final filter is called. Functionality of filters includes amongst others generation of header data, charset modification and gzip compression. \cite{aosa}
 
 \subsection{Event-driven Architecture}
 
+Another task of modules in the \textit{nginx} architecture is to implement functionality specific to a certain \gls{os}. One of this specifically designed tasks is the integration of an event module. Consistent and strict usage of the event-driven architecture is the fundamental point of \textit{nginx}.
 
+This is accomplished by using asynchronous, i.e. non-blocking, i/o-functions of the operating system. Handling of returning events is done through an event module provided by the \gls{os}. For this project Linux's \textit{epoll}\footnote{\url{http://linux.die.net/man/4/epoll}} module is used. \textit{epoll} handles events on file descriptors. Therefore also network related and custom events can be handled, because in Linux everything is a file descriptor\footnote{Linus Torvalds, "The everything-is-a-file principle": \url{http://yarchive.net/comp/linux/everything_is_file.html} (as of 12/2012)} (or process).
+
+Events are queued and dequeued in the worker process cycle. The total workload for processing a request is split into multiple chunks, each handled when necessary operations of the \gls{os} returned.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1]{images/nginx-event-proc.pdf}
+	\caption{Processing model of worker threads.}
+	\label{fig:nginx-event-proc}
+\end{figure}
+
+This leads to a responsive nginx worker thread which "can handle many thousands of concurrent connections and requests per second" (on a decent server system) \cite{aosa}.
 
 \section{Configuration and Building}
 \label{sec:nginx-config}
 
+After this general overview of \textit{nginx}'s architecture and underlying concepts, the next section focuses on practical implications of bringing \textit{nginx} to a \textit{MicroBlaze} system.
+
 \subsection{Extending the Configuration System}
 
-The build process of nginx can be configured with a number of parameters and constants to add or remove optional modules. The inclusion of modules can be configured with command line arguments to the configuration tool, but many of the parameters can not be set externally.
+The build process of \textit{nginx} can be configured with a number of parameters and constants to add or remove optional modules. The inclusion of modules can be configured with command line arguments to the configuration tool, but many of the parameters can not be set externally.
 
-The values of these parameters are determined by a custom "auto configuration" tool. This tool writes small c programs to a temporary file, compiles them using the configured compiler and reads back the results. By this process nginx adjusts its own build process to the features and properties of the current system. This configuration process is not working for cross-compiling nginx for another target system. Therefore the configuration process needed to be extended to allow input of required configuration parameters into the build process from an external source.
+The values of these parameters are determined by a custom "auto configuration" tool. This tool writes small c programs to a temporary file, compiles them using the configured compiler and reads back the results. By this process \textit{nginx} adjusts its own build process to the features and properties of the current system. This configuration process is not working for cross-compiling \textit{nginx} for another target system. Therefore the configuration process needed to be extended to allow input of required configuration parameters into the build process from an external source.
 
-The implemented solution is based on a suggested patch by Daniele Salvatore Albano\footnote{\textit{Cross compilation support for nginx}, Daniele Salvatore Albano, 01/03/2011 \url{http://web.archiveorange.com/archive/v/Tuw7Ryz8rztiNaIFfqCg}}, but incorporates more parameters and is streamlined to the process of cross-compiling the Linux kernel. Cross-compiling can be enabled by setting the environment variable "\texttt{CROSS\_COMPILE}" to the utilized compiler tool chain prefix. For the MicroBlaze tool chain this is "\texttt{microblaze-unknown-linux-gnu-}".
+The implemented solution is based on a suggested patch by Daniele Salvatore Albano\footnote{\textit{Cross compilation support for nginx}, Daniele Salvatore Albano, 01/03/2011 \url{http://web.archiveorange.com/archive/v/Tuw7Ryz8rztiNaIFfqCg}}, but incorporates more parameters and is streamlined to the process of cross-compiling the Linux kernel. Cross-compiling can be enabled by setting the environment variable "\texttt{CROSS\_COMPILE}" to the suitable compiler tool chain prefix. For the \textit{MicroBlaze} tool chain this is "\texttt{microblaze-unknown-linux-gnu-}".
 
 Parameters that are covered by this modification to the configuration system include endianness (\texttt{with-endian}), the size of primitive data types (\texttt{with-int}, \texttt{with-long}, etc.) and the maximum error number, to be used for custom error types (\texttt{with-sys-nerr}).
 
@@ -50,7 +83,7 @@ Value for these introduced parameters can be determined through a small test pro
 
 \subsection{Modules}
 
-nginx consists of a number of (optional) modules. These modules can be in- or excluded from the build using parameters to the configuration tool. Objective of the nginx build for the MicroBlaze system was a small binary with just the necessary parts included. There for the following modules were excluded:
+\textit{nginx} consists of a number of (optional) modules. These modules can be in- or excluded from the build using parameters to the configuration tool. Objective of the \textit{nginx} build for the MicroBlaze system was a small binary with just the necessary parts included. There for the following modules were excluded:
 
 \begin{verbatim}
     --without-http_rewrite_module \
@@ -78,6 +111,7 @@ nginx consists of a number of (optional) modules. These modules can be in- or ex
     --without-http_upstream_ip_hash_module \
     --without-http_upstream_least_conn_module \
     --without-http_upstream_keepalive_module \
+    --without-http-cache \
     --without-pcre \
     --without-select_module \
     --without-poll_module
@@ -87,30 +121,27 @@ Some of these modules could be included in the build, if necessary, but the modu
 
 \subsection{Compiler Configuration}
 
-Besides the configuration for nginx itself, the compiler needs to be configured for the target MicroBlaze system. When building the Linux kernel, the compiler configuration is set by the configuration of the kernel during the build process. nginx does not have this functionality in its configuration system, but comes with a parameter (\texttt{--with-cc-opt=...}) to pass custom parameters to the compiler.
+Besides the configuration for \textit{nginx} itself, the compiler needs to be configured for the target MicroBlaze system. When building the Linux kernel, the compiler configuration is set by the configuration of the kernel during the build process. \textit{nginx} does not have this functionality in its configuration system, but comes with a parameter (\texttt{--with-cc-opt=...}) to pass custom parameters to the compiler.
 
 Through this configuration setting, the gcc cross-compiler needs to be configured for the feature set of the MicroBlaze system. For the presented MicroBlaze \gls{soc}, the required parameters are
 
-\begin{verbatim}
--mxl-multiply-high -mno-xl-soft-mul -mno-xl-soft-div \
--mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.30.a
-\end{verbatim}
+\texttt{-mxl-multiply-high -mno-xl-soft-mul -mno-xl-soft-div} $\hookleftarrow$ \\
+\texttt{-mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.30.a}
 
 Additionally the path to the standard libraries on the system needs to be set through the \texttt{--sysroot} parameter. These libraries are part of the tool chain for \textit{MicroBlaze} systems provided by \textit{Xilinx}. 
 
-By specifying the \texttt{--static} parameter all referenced libraries are build into the resulting binary. Therefore the binary has less dependencies to be executed.
+By specifying the \texttt{----static} parameter all referenced libraries are build into the resulting binary. Therefore the binary has less dependencies to be executed.
 
 Combining it all together the value of the \texttt{--with-cc-opt} parameter needs to be set to something like the following: 
 
-\begin{verbatim}
---with-cc-opt="-mxl-multiply-high -mno-xl-soft-mul -mno-xl-soft-div 
--mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.30.a --static 
---sysroot=/home/peschuster/project/microblaze-unknown-linux-gnu/microblaze-unknown-linux-gnu/sys-root"
-\end{verbatim}
+\texttt{--with-cc-opt="-mxl-multiply-high -mno-xl-soft-mul -mno-xl-soft-div} $ \hookleftarrow$ \\
+\texttt{-mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.30.a ----static} $ \hookleftarrow$ \\
+\texttt{----sysroot=/home/peschuster/project/microblaze-unknown-linux-gnu/} $ \hookleftarrow$ \\
+\texttt{microblaze-unknown-linux-gnu/sys-root"}
 
 \subsection{Memory Leaks}
 
-One problem that arose during tests were memory leaks. It turned out that nginx allocated about 4053.2 Bytes of memory for each request. Assuming available memory of about 200 MB, nginx crashed the complete system after approximately 50,500 requests in total. of course, this is an unacceptable behavior for a (web) server system.
+One problem that arose during tests were memory leaks. It turned out that \textit{nginx} allocated about 4053.2 Bytes of memory for each request. Assuming available memory of about 200 MB, \textit{nginx} crashed the complete system after approximately 50,500 requests in total. of course, this is an unacceptable behavior for a (web) server system.
 
 \begin{figure}[H]
 \begin{minipage}{0.4\textwidth}
@@ -132,14 +163,15 @@ One problem that arose during tests were memory leaks. It turned out that nginx 
     \hline
     \end{tabular}
 \end{minipage}
-\begin{minipage}{0.65\textwidth}
+\begin{minipage}{0.60\textwidth}
 	\centering
 	\begin{tikzpicture}
-		\begin{axis}[width=\textwidth,height=8cm,
+		\begin{axis}[width=\textwidth,height=7cm,
 			xlabel={requests},
 			ylabel={memory / KB},
 			xmin=0,
 			ymin=0,
+			xmax=10000,
 			extra y ticks={3064},
 			%extra y tick label style={/pgf/number format/1000 sep=},
 			extra y tick style={grid=major},
@@ -159,17 +191,17 @@ One problem that arose during tests were memory leaks. It turned out that nginx 
 
 \subsubsection{Investigations}
 
-The described behavior of nginx could not be replicated on a standard x86 server system running \textit{Ubuntu Linux 12.04}. That means nginx in general should work correct, using just as much memory as required and releasing unused memory to the \gls{os}. However, on the \textit{MicroBlaze} system this does not work properly.
+The described behavior of \textit{nginx} could not be replicated on a standard x86 server system running \textit{Ubuntu Linux 12.04}. That means \textit{nginx} in general should work correct, using just as much memory as required and releasing unused memory to the \gls{os}. However, on the \textit{MicroBlaze} system this does not work properly.
 
-With activated \texttt{debug} log. nginx writes some information about inner workings to the error log. The debug log can be activated with the following option in the configuration file:
+With activated \texttt{debug} log. \textit{nginx} writes some information about inner workings to the error log. The debug log can be activated with the following option in the configuration file:
 
 \begin{verbatim}
 error_log  logs/error.log  debug;
 \end{verbatim}
 
-There must be only one \texttt{error\_log} line in the nginx configuration file, but the option specifying the severity level is inclusive for all lower levels.
+There must be only one \texttt{error\_log} line in the \textit{nginx} configuration file, but the option specifying the severity level is inclusive for all lower levels.
 
-The following table shows all memory related debug messages as found in the error log for a single request to a static file on the \textit{MicroBlaze} system running a nginx instance, which is configured as described in the previous section (\ref{sec:nginx-config}):
+The following table shows all memory related debug messages as found in the error log for a single request to a static file on the \textit{MicroBlaze} system running a \textit{nginx} instance, which is configured as described in the previous section (\ref{sec:nginx-config}):
 
 \begin{table}[H]
 \centering
@@ -188,23 +220,23 @@ The following table shows all memory related debug messages as found in the erro
 \label{tab:debug_mem}
 \end{table}
 
-All pointers to allocated memory for one request are passed to the \texttt{free(..)} function of the \textit{C Standard Library} (\textit{libc}) and therefore should be released to the system. But performance and stress tests on the system proved a different behavior: The nginx worker process consumes more memory for each request with a linear relation to the number of requests (see \ref{fig:nginx-mem}).
+All pointers to allocated memory for one request are passed to the \texttt{free(..)} function of the \textit{C Standard Library} (\textit{libc}) and therefore should be released to the system. But performance and stress tests on the system proved a different behavior: The \textit{nginx} worker process consumes more memory for each request with a linear relation to the number of requests (see \ref{fig:nginx-mem}).
 
-Therefore the error causing this misbehavior probably is not located in nginx itself, but in the underlying system layers. This would mean that memory management of the Linux kernel or \textit{libc} port to the \textit{MicroBlaze} architecture are broken, in the described respect. This is a strong allegation, especially because fully analyzing the problem on this wide dimensions was beyond the scope of this bachelor thesis. But there are a view points promoting this theory which should be considered:
+Therefore the error causing this misbehavior probably is not located in \textit{nginx} itself, but in the underlying system layers. This would mean that memory management of the Linux kernel or \textit{libc} port to the \textit{MicroBlaze} architecture are broken, in the described respect. This is a strong allegation, especially because fully analyzing the problem on this wide dimensions was beyond the scope of this bachelor thesis. But there are a view points promoting this theory which should be considered:
 
 There is an answer by \textit{Xilinx} support (\textit{AR \#12421}) stating that memory management (especially the function \textit{free(..)}) is "very system-specific" and not fully implemented/supported for \textit{MicroBlaze} processors \cite{mbfree}. The answer was published on 09/09/2010 and is explicitly only valid for versions of the \textit{MicroBlaze} processors without a hardware memory management unit. Therefore it should not apply to the used version of the \textit{MicroBlaze} processor and \textit{C Standard Library}, but it shows that these memory management functions were added to the toolchain and supporting environment only recently and might not be as stable as other parts.
 
-Another point benefiting this theory is the unusual way nginx deals with memory. Memory management is done by nginx's pool allocator. This could be seen as an abstraction to the memory allocation mechanisms provided by the \gls{os}. When a module/sub-routine/function requires dynamically allocated memory, it requests it from the nginx pool allocator, which itself requests a larger chunk of memory (called "pool") from the \gls{os} and distributes small blocks of the pool on requests from other parts of nginx. When no blocks of a pool are used anymore, it is returned to the \gls{os}. nginx uses this design to minimize system calls and reduce expensive requests for memory allocation by the hardware memory management unit \cite{aosa}. Another consequence of this design is that nginx does not reuse once allocated memory, but just allocates new memory blocks when required and releasing them to the system upon finished operations. This is by design and beneficial for speed and efficiency, but comes in unfavorable, when the memory management of the system (\gls{os} and processor) might not work properly.
+Another point benefiting this theory is the unusual way \textit{nginx} deals with memory. Memory management is done by \textit{nginx}'s pool allocator. This could be seen as an abstraction to the memory allocation mechanisms provided by the \gls{os}. When a module/sub-routine/function requires dynamically allocated memory, it requests it from the \textit{nginx} pool allocator, which itself requests a larger chunk of memory (called "pool") from the \gls{os} and distributes small blocks of the pool on requests from other parts of \textit{nginx}. When no blocks of a pool are used anymore, it is returned to the \gls{os}. \textit{nginx} uses this design to minimize system calls and reduce expensive requests for memory allocation by the hardware memory management unit \cite{aosa}. Another consequence of this design is that \textit{nginx} does not reuse once allocated memory, but just allocates new memory blocks when required and releasing them to the system upon finished operations. This is by design and beneficial for speed and efficiency, but comes in unfavorable, when the memory management of the system (\gls{os} and processor) might not work properly.
 
 \subsubsection{A First Workaround}
 
 It was not possible to fix the root cause of the memory leaks during this bachelor thesis. To circumvent the described arising problems, another solution needed to be found to be able to use the system and conduct extensive performance tests.
 
-A workaround to circumvent complete system crashes during tests due to exhausted memory is to restart the nginx worker process on low remaining system memory.
+A workaround to circumvent complete system crashes during tests due to exhausted memory is to restart the \textit{nginx} worker process on low remaining system memory.
 
-This can be accomplished by sending the \texttt{HUB} signal to the nginx master process using the \texttt{kill} command of \textit{Unix} systems\footnote{\url{http://unixhelp.ed.ac.uk/CGI/man-cgi?kill}}. The \texttt{HUB} signal tells nginx to reload the current configuration, resulting in spinning up new worker processes and gracefully shutting down the previous ones. This differs from complete restarts of nginx in the way that no incoming requests are lost during the restart process\footnote{\url{http://wiki.nginx.org/CommandLine} (as of 12/2012)}.
+This can be accomplished by sending the \texttt{HUB} signal to the \textit{nginx} master process using the \texttt{kill} command of \textit{Unix} systems\footnote{\url{http://unixhelp.ed.ac.uk/CGI/man-cgi?kill}}. The \texttt{HUB} signal tells \textit{nginx} to reload the current configuration, resulting in spinning up new worker processes and gracefully shutting down the previous ones. This differs from complete restarts of \textit{nginx} in the way that no incoming requests are lost during the restart process\footnote{\url{http://wiki.nginx.org/CommandLine} (as of 12/2012)}.
 
-The process id of the master process on the system under test is always stored in the file \texttt{/usr/local/nginx/logs/nginx.pid}. Therefore the complete command for restarting the nginx worker process can be constructed as follows:
+The process id of the master process on the system under test is always stored in the file \texttt{/usr/local/nginx/logs/nginx.pid}. Therefore the complete command for restarting the \textit{nginx} worker process can be constructed as follows:
 
 \begin{verbatim}
 kill -HUP $( cat /usr/local/nginx/logs/nginx.pid )
@@ -216,7 +248,7 @@ Information about currently allocated and free memory can be displayed using too
 
 This workaround works well, but requires manual actions by a user and is therefore ignorant for automation which is a key part of extensive performance tests.
 
-An idea for an extended solution was to shift checking for low remaining memory to the nginx master process.
+An idea for an extended solution was to shift checking for low remaining memory to the \textit{nginx} master process.
 
 After configuring and building up the system, including the start of worker processes, the master process returns to a standby mode, waiting for external signals (like the previously described \texttt{HUB} signal). This is implemented using the default \textit{C Standard Library} signal implementation, mainly \texttt{sigsuspend}\footnote{\url{http://www.gnu.org/software/libc/manual/html\_node/Sigsuspend.html}}, inside of the \texttt{ngx\_master\_process\_cycle(..)} function (in the file \texttt{ngx\_worker\_cycle.c}).
 
@@ -226,7 +258,7 @@ The patch consists of three major parts:
 
 \begin{enumerate}
 
-\item Starting a timer, to awake the master process every second from suspension. This is implemented using the Linux command \texttt{setitimer}\footnote{\url{http://linux.about.com/library/cmd/blcmdl2\_setitimer.htm}} in \texttt{ITIMER\_REAL} mode to send a \texttt{SIGALRM} signal to the hosting (i.e. nginx master) process.
+\item Starting a timer, to awake the master process every second from suspension. This is implemented using the Linux command \texttt{setitimer}\footnote{\url{http://linux.about.com/library/cmd/blcmdl2\_setitimer.htm}} in \texttt{ITIMER\_REAL} mode to send a \texttt{SIGALRM} signal to the hosting (i.e. \textit{nginx} master) process.
 
 \item A signal handler for dealing with the \texttt{SIGALRM} signal, to check the remaining system memory and trigger a restart of the worker processes, if necessary.
 
@@ -235,16 +267,31 @@ The patch consists of three major parts:
 
 Usage of the newly implemented functionality needs to be activated upon build configuration by providing the parameter \texttt{----with-min-free-mem=[value]}. \texttt{[value]} is the threshold value in bytes which is compared to the free system memory to decide on a required restart of worker processes. During tests of the system this value was set to "\texttt{51200}" (kilobytes).
 
-The complete patch is included in the appendix of this report (see \ref{appendix:memguard}) or can be found in the master branch of the nginx fork at \url{https://github.com/peschuster/nginx}.
+The complete patch is included in the appendix of this report (see \ref{appendix:memguard}) or can be found in the master branch of the \textit{nginx} fork at \url{https://github.com/peschuster/nginx}.
+
+\section{Compilation and Installation}
+
+After configuration the \textit{nginx} binary file is compiled using "\texttt{make -f objs/Makefile}". The resulting image file has a size of about 1.8 MB.
+
+Installation into the target directory is initiated executing the command "\texttt{make install DESTDIR=<dir>}". "\texttt{<dir>}" needs to be replaced with the path to the target directory. In the used environment during this project this is the directory of the target file system "\texttt{/home/peschuster/project/customfs/complete}".
+
+Executing the described \texttt{install} command creates the required directory structure with default configuration files and copies the image file.
+
+\section{Runtime Configuration}
+
+Configuration of an \textit{nginx} installation is stored in the \texttt{conf/} directory relative to the \textit{nginx} root. For this project and conducted performance tests, there was no need to change the default configuration (\texttt{nginx.conf}), which is loaded at application start up when no other options are specified.
 
 \section{Interfaces to the Operating System}
+\label{sec:nginx-os-if}
 
-This section briefly describes interactions between nginx and the underlying \gls{os} to deal with HTTP requests and responses.
+This section briefly describes interactions between \textit{nginx} and the underlying \gls{os} to deal with HTTP requests and responses.
 
-socket
+User applications can interact with the network stack implemented in the Linux kernel using the \textbf{socket}\footnote{\url{http://linux.die.net/man/7/socket}} interface.
 
-accept
+nginx master process opens sockets using the \texttt{socket(..)} command and binds them to configured addresses using \texttt{bind(..)}. By default this is port \texttt{80} on all IP addresses (\texttt{0.0.0.0:80}). Last step during initialization is a call to \texttt{listen(..)} to indicate that \textit{nginx} is ready for accepting incoming connections.
+
+nginx worker process initializes the core event module, which itself registers the callback \texttt{ngx\_event\_accept(..)} for incoming connections. Inside of \texttt{ngx\_event\_accept} the system call \texttt{accept(..)} is made.
 
 Responses for requests to static files are written to the socket buffer using the two functions \texttt{writev} (for HTTP header data) and \texttt{sendfile} for content of the actual static file. This leads to atleast two TCP packets, always (see introduction to performance tests: \ref{subsec:mtu}).
 
-recv
+Data is read from sockets using \texttt{recv(..)} which is called on parsing the HTTP request header, but also on demand in several phases of an \textit{nginx} worker thread.
