@@ -5,7 +5,7 @@
 
 The context of this project is to implement a testbed for a \textit{\gls{toe}} being developed in another research project. This testbed should enable testing the \gls{toe} in an environment and with workloads close to usage in real world. One usage of \gls{tcp} is as transport layer for \gls{http} requests. \gls{http} is the second most used protocol among all internet traffic, with a share of about 20 to 30 \% (in 2008/09) \cite{internet_study} and therefore very relevant outside of lab environments. 
 
-The server-side endpoint for \gls{http} traffic is a web server software. For this project \textit{nginx} (pronounced "engine-x") was chosen, which follows an asynchronous architecture. It was released to the public in 2004 and focuses on "high performance, high concurrency and high memory usages" \cite{aosa}.
+The server-side endpoint for \gls{http} traffic is a web server software. For this project \textit{nginx} (pronounced "engine-x") was chosen, which follows an asynchronous architecture. It was released to the public in 2004 and focuses on "high performance, high concurrency and high memory usages" \cite{aosa}. Creator and main developer of nginx is Igor Sysoev\footnote{\url{http://sysoev.ru/en/}}.
 
 A server system, like a web server, needs to be non-blocking to handle multiple requests at once. That is it must be able to accept and process requests while it is still busy with other, previously received requests. Systems with a "traditional" (i.e. thread-based) architecture fulfill this requirement by spawning separate processes or threads for incoming requests. An application designed by this model does not favor performance, because spawning new processes or threads "requires preparation of a new runtime environment, including allocation of heap and stack memory, and the creation of a new execution context" \cite{aosa}.
 
@@ -281,17 +281,22 @@ Executing the described \texttt{install} command creates the required directory 
 
 Configuration of an \textit{nginx} installation is stored in the \texttt{conf/} directory relative to the \textit{nginx} root. For this project and conducted performance tests, there was no need to change the default configuration (\texttt{nginx.conf}), which is loaded at application start up when no other options are specified.
 
-\section{Interfaces to the Operating System}
+\section{Interactions with the Operating System}
 \label{sec:nginx-os-if}
 
 This section briefly describes interactions between \textit{nginx} and the underlying \gls{os} to deal with HTTP requests and responses.
 
 User applications can interact with the network stack implemented in the Linux kernel using the \textbf{socket}\footnote{\url{http://linux.die.net/man/7/socket}} interface.
+%beejs
 
-nginx master process opens sockets using the \texttt{socket(..)} command and binds them to configured addresses using \texttt{bind(..)}. By default this is port \texttt{80} on all IP addresses (\texttt{0.0.0.0:80}). Last step during initialization is a call to \texttt{listen(..)} to indicate that \textit{nginx} is ready for accepting incoming connections.
+nginx master process opens sockets using the \texttt{socket(..)} command. This opens a file descriptor (type: \texttt{int}) which is stored in the \texttt{ngx\_connection\_t} struct and used for subsequent calls to functions of the socket interface. Next the initialized socket is bind to the configured local port using \texttt{bind(..)}. This is done for all \texttt{listen} directives specified in the configuration file. The default setting "\texttt{listen 80}" opens a socket on port \texttt{80} for all IP addresses (\texttt{0.0.0.0:80}). It is also possible to listen on unix sockets by specifying a configuration value in the format "\texttt{listen unix:/tmp/nginx1.sock;}".\footnote{\url{http://nginx.org/en/docs/http/ngx\_http\_core\_module.html\#listen} (as of 12/2012)}.
 
-nginx worker process initializes the core event module, which itself registers the callback \texttt{ngx\_event\_accept(..)} for incoming connections. Inside of \texttt{ngx\_event\_accept} the system call \texttt{accept(..)} is made.
+Last step during initialization is a call to \texttt{listen(..)} to indicate that \textit{nginx} is ready for accepting incoming connections. The \texttt{backlog} parameter, indicating the maximum number of incoming connections the \gls{os} is allowed to queue up, is set during compile time to 511. This is assumed to be a "safe value" for the Linux \gls{os}.\footnote{Mailing list answer by Igor Sysoev: \url{http://forum.nginx.org/read.php?2,9959,9967\#msg-9967}}
 
-Responses for requests to static files are written to the socket buffer using the two functions \texttt{writev} (for HTTP header data) and \texttt{sendfile} for content of the actual static file. This leads to atleast two TCP packets, always (see introduction to performance tests: \ref{subsec:mtu}).
+nginx worker processes initialize the core event module, which itself registers the callback \texttt{ngx\_event\_accept(..)} for incoming connections. Inside of \texttt{ngx\_event\_accept} the system call \texttt{accept(..)} is made. The result of \texttt{accept} calls is again a file descriptor, but just for the single connection \cite{beejs}. It is stored in a newly created struct of type \texttt{ngx\_connection\_t} for further references. Information about the remote host is also stored in this new connection struct.
 
-Data is read from sockets using \texttt{recv(..)} which is called on parsing the HTTP request header, but also on demand in several phases of an \textit{nginx} worker thread.
+Data is read from sockets using \texttt{recv(..)} which is called on parsing the HTTP request header. The call to \texttt{recv(..)} simply copies received bytes to the \texttt{header\_in} field of the current \texttt{ngx\_request\_t} struct.
+
+Responses for requests to static files are written to the socket buffer using the two functions \texttt{writev} (for HTTP header data) and \texttt{sendfile} for content of the actual static file. \texttt{writev} is favored over \texttt{write} or \texttt{send}, because it allows writing data to a file descriptor from multiple local buffers\footnote{\url{http://linux.die.net/man/2/writev}}. \texttt{sendfile} is a function provided by the Linux kernel for copying data between two file descriptors. It is more efficient than a combination of \texttt{read(..)} and \texttt{write(..)}, because copying is done completely within the kernel without the requirement of "transferring data to and from user space"\footnote{http://www.kernel.org/doc/man-pages/online/pages/man2/sendfile.2.html}.
+
+An interesting point to note is that the combined use of \texttt{writev(..)} and \texttt{sendfile(..)} leads always to atleast two TCP packets (see introduction to performance tests: section \ref{subsec:mtu}).

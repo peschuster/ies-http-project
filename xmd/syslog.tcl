@@ -6,13 +6,13 @@ proc mysyslog { } {
     # set bufaddr 0xc04e3c10
 	# set bufaddr 0xc04e6c10
 	# set bufaddr 0xc0433c10
-	set bufaddr 0xc04d3c30
+	set bufaddr 0xc1840ba0
     set bufsize 0x00020000
 
     set startaddr $bufaddr
     set endaddr [expr $bufaddr + $bufsize]
 	
-	set fp [open "syslog_neu16.txt" w]
+	set fp [open "syslog_neu1.txt" w]
 
     puts $fp "Displaying Linux syslog buffer of $bufsize length at $bufaddr"
 	

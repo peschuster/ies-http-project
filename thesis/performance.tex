@@ -12,7 +12,7 @@ Real communication between two systems, i.e. exchange of data, always happens on
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1]{images/protocol-headers.pdf}
-	\caption{Header data for multiple protocol layers.}
+	\caption{Header data for multiple protocol layers (3-5).}
 	\label{fig:header-layers}
 \end{figure}
 %\end{wrapfigure}
@@ -95,9 +95,11 @@ It was used in this project for debugging initial problems with the network stac
 
 The tests were conducted using \textit{httperf} on a virtual machine running \textit{Ubuntu Linux 12.04}. To proof that the limiting factor during the tests is not this client machine, but the system under test, all tests were also performed against a \textit{Microsoft IIS 7.5} web server instance on top of a \textit{Microsoft Windows 7 Professional} operating system running on a bare metal machine with an \textit{AMD Phenom II X4 965} processor at 3.40 GHz.
 
-According to the \textit{HTTP Archive}\footnote{\url{http://httparchive.org/interesting.php\#responsesizes} (as of Dec. 15th 2012)} an average HTML page has a size of about 6 kB. Other content types, like images, stylesheets and script files vary on average between 5 kB and 21 kB. Therefore tests were performed using static files with two sizes: one file having exactly 10 kB (10.240 bytes) from now on referred to as "10K.html" and one very minimal HTML page having just 354 bytes ("index.html"). The major difference between these two files from a "network perspective" is that the small file can be transmitted in two TCP packets (one for the HTTP header and one for the actual data, see section \ref{sec:nginx-os-if}), whereas the 10 KB file needs to be split up in 9 TCP packets due to the default \gls{mtu} size of 1500 bytes.
+According to the \textit{HTTP Archive}\footnote{\url{http://httparchive.org/interesting.php\#responsesizes} (as of Dec. 15th 2012)} an average HTML page has a size of about 6 kB. Other content types, like images, stylesheets and script files vary on average between 5 kB and 21 kB. Therefore tests were performed using static files with two sizes: one file having exactly 10 kB (10.240 bytes) from now on referred to as "10K.html" and one very minimal HTML page having just 354 bytes ("index.html"). The major difference between these two files from a "network perspective" is that the small file can be transmitted in two TCP packets, one is used for the HTTP header and one for the actual data (see section \ref{sec:nginx-os-if}), whereas the 10 KB file needs to be split up in 9 TCP packets due to the default \gls{mtu} size of 1500 bytes. A third test run was performed requesting a file that does not exist. This results in a HTTP response with code "404 - Not Found". This is a special case, because the response is transmitted in a single TCP packet and no file needs to be read from the file system.
 
-The following figure (\ref{fig:initial-req}) shows request and response rates two both files with an increasing connection rate (20 conn./s to 120 conn./s, step size: 10). On each connection three HTTP requests were made to the respective file. On every connection rate level 3.000 connections were opened to obtain reliable results.
+Figure \ref{fig:initial-req} shows request and response rates for all three test cases with an increasing connection rate (20 conn./s to 120 conn./s, step size: 10). On each connection three HTTP requests were made to the respective file. 
+
+On every connection rate level 3,000 connections were opened to obtain reliable results. Therefore each test run included $11 \cdot 3,000 = 33,000$ connections and up to $33,000 \cdot 3 = 99,000$ requests.
 
 \begin{figure}[H]
 	\centering
@@ -109,22 +111,29 @@ The following figure (\ref{fig:initial-req}) shows request and response rates tw
 			extra x tick style={grid=major},
 			y tick label style={/pgf/number format/1000 sep=},
 			ymajorgrids=true,
-			legend pos = south east]
-			\addplot table[x index=0, y index=1] {graphdata/perf-initial2.csv};
-			\addlegendentry{request rate (index.html)}
-			\addplot table[x index=0, y index=8] {graphdata/perf-initial2.csv};
-			\addlegendentry{reponse rate (index.html)}
-			\addplot table[x index=0, y index=2] {graphdata/perf-initial2.csv};
-			\addlegendentry{request rate (10K.html)}
-			\addplot table[x index=0, y index=9] {graphdata/perf-initial2.csv};
-			\addlegendentry{reponse rate (10K.html)}
+			legend cell align = left,
+			legend pos = north west]
+			\addplot table[x index=0, y index=1] {graphdata/perf-initial3.csv};
+			\addlegendentry{request (index.html)}
+			\addplot table[x index=0, y index=8] {graphdata/perf-initial3.csv};
+			\addlegendentry{reponse (index.html)}
+			\addplot table[x index=0, y index=2] {graphdata/perf-initial3.csv};
+			\addlegendentry{request (10K.html)}
+			\addplot table[x index=0, y index=9] {graphdata/perf-initial3.csv};
+			\addlegendentry{reponse (10K.html)}
+			\addplot[color=orange,mark=diamond] table[x index=0, y index=17] {graphdata/perf-initial3.csv};
+			\addlegendentry{request (404)}
+			\addplot[color=teal,mark=x] table[x index=0, y index=19] {graphdata/perf-initial3.csv};
+			\addlegendentry{reponse (404)}
 		\end{axis}
 	\end{tikzpicture}
-  \caption{Request and response rates for two static files (\texttt{10K.html} and \texttt{index.html}).}
+  \caption{Request and response rates for the different test runs.}
   \label{fig:initial-req}
 \end{figure}
 
-The difference between request and response rate origins in failed requests. The following figure shows the corresponding error rate which increases with over-saturating the system.
+The test result shows that at a certain request rate, the response rates levels off. For the two test runs with small response sizes, response rates even decrease slightly. At this points the server becomes saturated and requests overstep its actual capacity. These points are namely at about 300 req./s for the very small response, at about 270 req./s for the "index.html" file and at about 190 req./s for the "10K.html" file.
+
+The difference between request and response rate origins in failed requests. The following figure shows the corresponding error rate. It increases with over-saturating the system.
 
 \begin{figure}[H]
 	\centering
@@ -138,18 +147,21 @@ The difference between request and response rate origins in failed requests. The
 			minor tick style={very thin, gray},
 			minor y tick num=3,
 			ymajorgrids=true,
+			legend cell align = left,
 			legend pos = north west]
-			\addplot table[x index=0, y index=15] {graphdata/perf-initial2.csv};
+			\addplot table[x index=0, y index=15] {graphdata/perf-initial3.csv};
 			\addlegendentry{index.html}
-			\addplot table[x index=0, y index=16] {graphdata/perf-initial2.csv};
+			\addplot table[x index=0, y index=16] {graphdata/perf-initial3.csv};
 			\addlegendentry{10K.html}
+			\addplot table[x index=0, y index=22] {graphdata/perf-initial3.csv};
+			\addlegendentry{404}
 		\end{axis}
 	\end{tikzpicture}
-  \caption{Error rate (failed requests) for two static files (\texttt{10K.html} and \texttt{index.html}).}
+  \caption{Error rate (failed requests) for the different test runs.}
   \label{fig:initial-req-errors}
 \end{figure}
 
-The response \textbf{rate} decreases only slowly with growing saturation, but the average response \textbf{time} increases from  5 ms to about 500-650 ms:
+The response \textbf{rate} decreases only slowly with growing saturation, but the average response \textbf{time} increases from  5 ms to about 500-700 ms:
 
 \begin{figure}[H]
 	\centering
@@ -163,33 +175,38 @@ The response \textbf{rate} decreases only slowly with growing saturation, but th
 			minor tick style={very thin, gray},
 			minor y tick num=3,
 			ymajorgrids=true,
-			legend pos = south east]
-			\addplot table[x index=0, y index=10] {graphdata/perf-initial2.csv};
+			legend cell align = left,
+			legend pos = north west]
+			\addplot table[x index=0, y index=10] {graphdata/perf-initial3.csv};
 			\addlegendentry{index.html}
-			\addplot table[x index=0, y index=11] {graphdata/perf-initial2.csv};
+			\addplot table[x index=0, y index=11] {graphdata/perf-initial3.csv};
 			\addlegendentry{10K.html}
+			\addplot table[x index=0, y index=20] {graphdata/perf-initial3.csv};
+			\addlegendentry{404}
 		\end{axis}
 	\end{tikzpicture}
-  \caption{Response time for two static files (\texttt{10K.html} and \texttt{index.html}).}
+  \caption{Response time for the different test runs.}
   \label{fig:initial-req-time}
 \end{figure}
+
+The reason for decreasing slopes in response times might be a clogged backlog for incoming connections, resulting in an early, and therefore cheap rejection of further incoming requests.
 
 \begin{wrapfigure}[16]{r}{.5\textwidth}
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[ybar stacked,
 			legend style={at={(1.05,1.0)},anchor=north west},
-			xtick={0,1},
+			xtick={0,1,2},
 			axis x line*=bottom,
 			tick label style={font=\footnotesize},
 			legend style={font=\footnotesize},
 			label style={font=\footnotesize},
 			ytick={0,25,50,75,100},
-			width=5cm,
+			width=6cm,
 			height=6cm,
-			bar width=10mm,
+			bar width=8mm,
 			ylabel={CPU load / \%},
-			xticklabels={index.html, 10K.html},
+			xticklabels={404, index.html, 10K.html},
 			ymajorgrids=true,
 			minor tick style={very thin, gray},
 			minor y tick num=4,
@@ -197,24 +214,24 @@ The response \textbf{rate} decreases only slowly with growing saturation, but th
 			ymax=100,
 			area legend,
 			legend cell align=left,
-			enlarge x limits=0.5]
+			enlarge x limits=0.3]
 			\addplot[fill=blue] coordinates % usr
-			{(0,46.6) (1,32.1)};
+			{(0,46.2) (1,46.6) (2,32.1)};
 			\addplot[fill=red] coordinates % sys
-			{(0,36.5) (1,45.5)};
+			{(0,38.1) (1,36.5) (2,45.5)};
 			\addplot[fill=teal] coordinates % sirq
-			{(0,16.7) (1,22.3)};
-			\legend{user space,system/kernel,soft irq}
+			{(0,15.6) (1,16.7) (2,22.3)};
+			\legend{user,sys/kernel,soft irq}
 		\end{axis}
 	\end{tikzpicture}
 	\caption{CPU load distribution for different request types.}
   \label{fig:initial-req-cpu}
 \end{wrapfigure}
 
-The difference in request and response rates the system can handle is also visible in \textbf{CPU utilization}. Main responsibility of \textit{nginx} for serving requests is to handle the HTTP part. This includes parsing the request header, generating responses and delivering static files. The \gls{os} on the other hand does the "translation" to and from \gls{tcp} and handles all lower layers (see also figure \ref{fig:net-layers}). An increased payload size of single responses entails therefore a shift in processing time from \textit{nginx} ("user space") to the operations inside the Linux kernel.
+The difference in request and response rates the system can handle is also visible in \textbf{CPU utilization}. Main responsibility of \textit{nginx} for serving requests is to handle the HTTP part of the process. This includes parsing request headers, generating responses and delivering static files. The \gls{os} on the other hand does the "translation" to and from \gls{tcp} and handles all work on lower network layers (see also figure \ref{fig:net-layers}). An increased payload size of single responses entails therefore a shift in processing time from \textit{nginx} ("user space") towards the operations inside the Linux kernel. Figure \ref{fig:initial-req-cpu} shows exactly this correlation.
 
-The \textbf{network throughput} of both tests follows naturally the trend of response rates. For the test requesting the "index.html" file, the shown throughput is very low, because \textit{httperf} calculates the average throughput as $\cfrac{\text{[size]} \cdot \text{[total repsonses]}}{\text{[test time]}}$.
-\vspace{1cm}
+\clearpage
+Network \textbf{throughput} of the tests follows naturally the trend of response rates. For tests requesting the "index.html" file and those resulting in "HTTP 404 - Not Found" responses, the shown throughput is very low, because \textit{httperf} calculates throughput using the formula $\frac{\text{[size]} \cdot \text{[total repsonses]}}{\text{[test time]}}$. Therefore very small response sizes yield a low average throughput.
 
 \begin{figure}[H]
 	\centering
@@ -228,23 +245,27 @@ The \textbf{network throughput} of both tests follows naturally the trend of res
 			minor tick style={very thin, gray},
 			minor y tick num=3,
 			ymajorgrids=true,
+			legend cell align = left,
 			legend pos = north west]
-			\addplot table[x index=0, y index=13] {graphdata/perf-initial2.csv};
+			\addplot table[x index=0, y index=13] {graphdata/perf-initial3.csv};
 			\addlegendentry{index.html}
-			\addplot table[x index=0, y index=14] {graphdata/perf-initial2.csv};
+			\addplot table[x index=0, y index=14] {graphdata/perf-initial3.csv};
 			\addlegendentry{10K.html}
+			\addplot table[x index=0, y index=21] {graphdata/perf-initial3.csv};
+			\addlegendentry{404}
 		\end{axis}
 	\end{tikzpicture}
-  \caption{Throughput for two static files (\texttt{10K.html} and \texttt{index.html}).}
+  \caption{Throughput for the different test runs.}
   \label{fig:initial-req-io}
 \end{figure}
 
-\clearpage
-\subsection{Network throughput}
+\subsection{Dedicated Network Throughput Tests}
 
-To test the maximal network throughput the server can provide, a test needs to be designed focusing just this parameter to prevent other parts of the system under test to get into the way. A constant high exchange of TCP packets can be achieved by transferring single large files over the network. Therefore a large binary (movie) file with a payload size of 33.4 MB was used for throughput tests.
+To test the maximal network throughput the server can provide, a test needs to be designed focusing on just this parameter. This prevents other parts of the system from getting into the way. A constant high exchange of TCP packets can be achieved by transferring very few, but large files over the network. Therefore a large binary file having a size of 33.4 MB was used for throughput tests.
 
-The following figure (\ref{fig:tcp-io-perf}) shows the network throughput for requests to this file with an increasing connection rate and two requests per connection. The system under test goes into saturation at about 61 Megabits/sec. The figure also shows the total CPU utilization of the tested system.
+Figure \ref{fig:tcp-io-perf} shows the network throughput for requests to this file with an increasing connection rate and two HTTP requests on each connection. The system under test goes into saturation at about 61 Megabits/sec. This is equivalent to $6.1\ \%$ of the available network bandwidth, providing a maximum of 1 Gigabit/sec.
+
+The figure also shows the total CPU utilization of the tested system.
 
 \begin{figure}[H]
 	\centering
@@ -282,7 +303,7 @@ The following figure (\ref{fig:tcp-io-perf}) shows the network throughput for re
   \label{fig:tcp-io-perf}
 \end{figure}
 
-The following figure (\ref{fig:tcp-io-perf-cpu}) shows the CPU utilization by time spent in the different types of the system. It shows that most time is spent in kernel space and handling interrupt requests by the network driver and sub system. nginx (user space) takes only very low CPU utilization and is not the limiting factor in this test.
+Figure \ref{fig:tcp-io-perf-cpu} shows the CPU utilization by time spent in the different types of the system. It shows that most time is spent in kernel space and handling interrupt requests by the network driver and sub system (soft irq). nginx (user space) takes only very low CPU utilization and is not the limiting factor in this test. This conforms with test results of the previous tests on smaller files.
 
 %usr	%CPU spent by User space applications		
 %sys	%CPU spent by the System (kernel mode)		
@@ -329,7 +350,7 @@ The following figure (\ref{fig:tcp-io-perf-cpu}) shows the CPU utilization by ti
   \label{fig:tcp-io-perf-cpu}
 \end{figure}
 
-To proof that obtained performance limits were not limits of the client executing the tests or the network infrastructure, the same test was executed against the "reference system" running an \textit{Microsoft IIS 7.5} web server. Figure \ref{fig:tcp-io-perf-iis} shows the results which outplays the results of the \textit{MicroBlaze} system by more than a factor of eight:
+To proof that obtained performance limits were not limits of the client executing the tests or the network infrastructure, the same test was executed against a "reference system" running an \textit{Microsoft IIS 7.5} web server. Figure \ref{fig:tcp-io-perf-iis} shows the results. Measured throughput (averaged per request) had a maximum at about 515.7 Megabits/sec which outplays the results of the \textit{MicroBlaze} system by more than a factor of eight.
 
 \begin{figure}[H]
 	\centering
@@ -351,3 +372,13 @@ To proof that obtained performance limits were not limits of the client executin
   \caption{Network throughput of an AMD Phenom II X4 processor at 3.40 GHz running Microsoft IIS 7.5 on Windows 7.}
   \label{fig:tcp-io-perf-iis}
 \end{figure}
+
+\section{Discussion of Results}
+
+Obtained performance results show that the designed System on Chip with custom configured and compiled Linux kernel is capable of running a web server serving up to about 300 requests per second and 100 concurrent connections. Compared to the low performance indicator of 48.94 BogoMIPS\footnote{"The number of million times per second a processor can do absolutely nothing." (untraceable source: Eric S Raymond, Geoff Mackenzie -- \url{http://www.tldp.org/HOWTO/html\_single/BogoMips/})}, which is less than a $\frac{1}{130}$ of the value Linux kernel reports for a virtualized \textit{AMD Phenom II X4} processor at 3.40 GHz running on two cores\footnote{6414.98 BogoMips}, this is not to bad. But the capacity of the server would not be sufficient for running it as a public web server connected to the global internet infrastructure. Especially because response rates rapidly decrease with increasing byte size of responses, because of a larger amount of TCP packets required for transmitting the response.
+
+A reduction in the number of TCP packets could be achieved by using so called "Jumbo Frames". These are Ethernet frames with a data size larger than the default \gls{mtu} of 1500 bytes. The required setting can be configured executing the command "\texttt{ifconfig eth0 mtu [new size]}". Where \texttt{[new size]} is the new \gls{mtu} size in bytes. Unfortunately this does not seem to be fully supported by the \textit{Xilinx LL TEMAC} Ethernet driver\footnote{see Xilinx forum: \url{http://forums.xilinx.com/t5/Embedded-Linux/Jumbo-frames-ifconfig-crash-and-xps-ll-temac-issues/td-p/211911} (as of 12/2012)}, leading to TCP packets with a total size larger than 1500 bytes to be corrupted and therefore lost "on the network". Besides this, Jumbo Frames would have to be supported on the client and all intermediate stations as well, which can not be guaranteed on a public network or service.
+
+\textit{nginx} provides a configuration setting "\texttt{worker\_connections}" which limits the maximum amount of concurrently handled connections by a worker process. During tests this setting had a value of 768. But neither changing the number of maximum allowed connection to 1024 nor 512 had any influence in observed response rates. Therefore it is save to be assumed that no internal limit for concurrent connections affected the test results. But therefore this part does not have any room for improvements, either.
+
+Especially the tests for maximum network throughput showed that the main bottleneck is in the TCP/network stack on the test system. Besides providing more processing power to the system, optimizing this part of the Linux kernel is hardly possible in the project context. Another option would be to offload processing of TCP connections, requests and responses to dedicated hardware circuitry, implemented as a network interface with enhanced functionality. This possible solution is also refereed to by the title of this thesis using the word "accelerated", but requires deep integration into already available functions of the operating system. Therefore the next two chapters will focus on giving an overview of the Linux network stack and possible integration options for a TCP Offload Engine (TOE).

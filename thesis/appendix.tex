@@ -1,6 +1,8 @@
 \chapter{Resources}
 
-\section{Hardware Architecture Overview}
+\section{Hardware}
+
+\subsection{Architecture Overview}
 \label{sec:hw_arch}
 
 \begin{figure}[H]
@@ -8,7 +10,7 @@
 \includegraphics[width=0.9\textwidth]{images/system_blkd.jpg}
 \end{figure}
 
-\section{Hardware Project Configurations}
+\subsection{Project Configurations}
 
 The configuration files contain more than 800 lines, being too much to include them directly in the project report. Therefore the \textit{Microprocessor Hardware Specification (mhs)} and \textit{User Constraint File (ucf)} files can be downloaded as part of the projects for \textit{\gls{xps}} and the \textit{Xilinx ISE Project Navigator} from the following address: \url{http://www.peschuster.de/ies-project/IesHttpProject-Hardware.zip}.
 \\
@@ -67,7 +69,9 @@ The patch file "\texttt{new-microblaze-versions.patch}" is also included in the 
 The \textit{bitstream} (\texttt{system.bit}) and Linux kernel image (\texttt{simpleImage.xupv5}) files for the \textit{Xilinx XUPV5-LX110T} board and described hardware system are available for download at \url{http://www.peschuster.de/ies-project/IesHttpProject-Images.zip}.
 
 
-\section{SoC Environment Evaluation Program}
+\section{Auxiliary Scripts}
+
+\subsection{SoC Environment Evaluation Program}
 \label{sec:nginx-env-eval}
 
 \textbf{C program}
@@ -117,6 +121,62 @@ size of sig_atomic_t: 4
 size of size_t: 4
 size of off_t: 4
 size of time_t: 4
+\end{verbatim}
+
+\subsection{C\# Load Test Console Application}
+\label{appendix:csharp-load}
+
+\begin{verbatim}
+using System;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        while (true)
+        {
+            Console.WriteLine("Specify params. Form: [number]:[threads]");
+            string input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input))
+                return;
+
+            string[] p = input.Split(':');
+            int req = int.Parse(p[0]);
+            if (req <= 0)
+                return;
+
+            long count = 0;
+            DateTime start = DateTime.Now;
+
+            int parallel = int.Parse(p[1]);
+            string baseUrl = "http://192.168.2.125/10K.html?id=";
+            var parellelOptions = new ParallelOptions { MaxDegreeOfParallelism = parallel };
+
+            Parallel.For(0, req, parellelOptions, i =>
+            {
+                var http = HttpWebRequest.CreateHttp(baseUrl + i);
+                    
+                using (http.GetResponse())
+                {
+                }
+
+                double c = Interlocked.Increment(ref count);
+
+                if (i % 10 == 0)
+                {
+                    Console.WriteLine(
+                        "{0, 8} {1:0.000}", 
+                        c, 
+                        c / (DateTime.Now - start).TotalSeconds);
+                }
+            });
+        }
+    }
+}
 \end{verbatim}
 
 \section{nginx patch: memory guard}
@@ -340,61 +400,4 @@ index 0000000..0a3d035
 -- 
 1.7.8.msysgit.0
 
-\end{verbatim}
-
-
-\section{C\# Load Test Console Application}
-\label{appendix:csharp-load}
-
-\begin{verbatim}
-using System;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-
-class Program
-{
-    static void Main(string[] args)
-    {
-        while (true)
-        {
-            Console.WriteLine("Specify params. Form: [number]:[threads]");
-            string input = Console.ReadLine();
-
-            if (string.IsNullOrWhiteSpace(input))
-                return;
-
-            string[] p = input.Split(':');
-            int req = int.Parse(p[0]);
-            if (req <= 0)
-                return;
-
-            long count = 0;
-            DateTime start = DateTime.Now;
-
-            int parallel = int.Parse(p[1]);
-            string baseUrl = "http://192.168.2.125/10K.html?id=";
-            var parellelOptions = new ParallelOptions { MaxDegreeOfParallelism = parallel };
-
-            Parallel.For(0, req, parellelOptions, i =>
-            {
-                var http = HttpWebRequest.CreateHttp(baseUrl + i);
-                    
-                using (http.GetResponse())
-                {
-                }
-
-                double c = Interlocked.Increment(ref count);
-
-                if (i % 10 == 0)
-                {
-                    Console.WriteLine(
-                        "{0, 8} {1:0.000}", 
-                        c, 
-                        c / (DateTime.Now - start).TotalSeconds);
-                }
-            });
-        }
-    }
-}
 \end{verbatim}
