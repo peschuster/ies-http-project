@@ -1,12 +1,13 @@
 \chapter{Performance-Analysis}
 
-Before going into performance tests, it is required to understand some fundamentals about network communication and the anatomy of a \gls{http} request.
+Before going into the performance tests itself, it is required to understand some fundamentals about network communication and the anatomy of a \gls{http} request.
+\\
 
 \section{Introduction}
 
 "To reduce their design complexity, most networks are organized as a \textbf{stack of layers or levels}, each one built upon the one below it" \cite{kn1}[sec. 1.3.1]. The same holds true for the protocol stack driving the "internet". There exist various models for naming and describing the different layers. In context of the internet usually the "TCP/IP Reference Model" is used \cite{kn1}. This model describes five independent layers, each build upon the next underlying layer. 
 
-Real communication between two systems, i.e. exchange of data, always happens on the lowest layer (the "Physical Layer"). But from a logical point of view, communication happens on each layer between the two systems. Therefore each layer might add a header in front of the data, specifying meta information for its counterpart on the other system. Headers of layers above the current layer are treated as plain data, just as the actual message (see figure \ref{fig:header-layers}).
+Real communication between two systems, i.e. exchange of data, always happens on the lowest layer (the "Physical Layer"). But from a logical point of view, communication happens on each layer between the two systems. Therefore each layer might add a header in front of the data, specifying meta information for its counterpart on the other system. Header data of layers above the current layer are treated as if they would belong to the message itself (see figure \ref{fig:header-layers}).
 
 %\begin{wrapfigure}{r}{.45\textwidth}
 \begin{figure}[H]
@@ -17,7 +18,7 @@ Real communication between two systems, i.e. exchange of data, always happens on
 \end{figure}
 %\end{wrapfigure}
 
-Figure \ref{fig:net-layers} shows the five layers of the TCP/IP model with corresponding communication protocol and module implementing the protocol on the developed test system. When constructing performance tests this needs to be taken into account to determine for a single parameter which parts of the system are involved and might limit further improvements.
+Figure \ref{fig:net-layers} shows the five layers of the TCP/IP model with corresponding communication protocols and modules implementing the protocol on the developed test system. On construction of single parameters for a performance benchmarks, it needs to be taken into account which parts of the system are effected by this parameter and might influence the results.
 
 %\begin{wrapfigure}{r}{.5\textwidth}
 \begin{figure}[H]
@@ -31,44 +32,57 @@ Figure \ref{fig:net-layers} shows the five layers of the TCP/IP model with corre
 \subsection{Maximal Transfer Unit (MTU)}
 \label{subsec:mtu}
 
-The \gls{mtu} is the maximum size of a single unit transferred over the network in bytes. It is a parameter set for a complete network (sender, receiver, intermediate stations), specifying and limiting its capacity to a robust and reliable usage level. On differing \gls{mtu} values for connected stations the lowest takes effect. In Ethernet networks the \gls{mtu} is usually set to 1500 bytes \cite{kn1}. This includes only the data as received by the Ethernet layer. Header data of  the Ethernet protocol does not count into this size limit. When messages (including header data of upper layers) exceed the \gls{mtu} size, they are split up into multiple packets. In practice this means that for transmitting a single HTTP message (i.e. request or response) two or more \gls{tcp} messages might be required.
+\gls{mtu} is a parameter specifying the maximum size of a single unit transferred over the network in bytes. It is set for a complete network (sender, receiver, intermediate stations), specifying and limiting its capacity to a robust and reliable usage level. When \gls{mtu} values for connected stations differ, the lowest takes effect. In Ethernet networks the \gls{mtu} is usually set to 1500 bytes \cite{kn1}. The \gls{mtu} value as used in Linux includes only message data as received by the Ethernet layer. Header data of the Ethernet protocol does not count into this size limit. When messages (including header data of upper layers) exceed the \gls{mtu} size, they are split into multiple packets. In practice this means that for transmitting a single HTTP message (i.e. request or response) two or more \gls{tcp} messages might be required.
+\\
 
 \subsection{Transmission Control Protocol (TCP)}
 
-Although \gls{http} is not fixed to be used only with \gls{tcp}; \gls{http} on top of \gls{tcp} on top of \gls{ip} is the most dominant usage combination. This is, because \gls{tcp} provides reliable communication on top of unreliable networks \cite{tcp}. \gls{tcp} accomplishes this by setting up and maintaining a connection. Therefore sending data over TCP consists of three steps: establishing a connection, sending the actual message, closing the connection. To guarantee arrival of sent data, \gls{tcp} works with a handshake protocol between both involved parties. Maintaining a connection is the price to be paid for a reliable communication channel between two systems. But it also allows sending more than one messages using an already established connection. This comes in handy, when a message size exceed the \gls{mtu} or multiple \gls{http} requests are send to a server (used in persistent HTTP connections, also called "HTTP keep-alive" \cite{http}).
+Although \gls{http} is not fixed to be used only with \gls{tcp}; \gls{http} on top of \gls{tcp} on top of \gls{ip} is the most dominant usage combination. This is, because \gls{tcp} provides reliable communication on top of unreliable networks \cite{tcp}. \gls{tcp} accomplishes this by setting up and maintaining a connection. Therefore sending data over TCP consists of three steps: establishing a connection, sending the actual message, closing the connection. To guarantee arrival of sent data, \gls{tcp} works with a handshake protocol between both involved parties for connection state management and acknowledge messages for transferred packets. 
 
-\gls{ip} introduced so called IP addresses as identifiers for single systems. \gls{tcp} extends this model by port numbers. An application providing services to other system (i.e. a server) uses one single port, but client applications need to open separate ports for each \gls{tcp} connection. This is required, because \gls{tcp} connections are identified by the four parts "server address", "server port", "client address" and "client port" \cite{tcp}. The TCP header contains two 16 bit fields for source and destination port \cite{kn1}. This leads to a maximum of $2^{16} = 65,536$ concurrently used (open) \gls{tcp} connections on a single client system.
+The overhead of maintaining a connection is the price to be paid for a reliable communication channel between two systems. But it also allows sending more than one message using an already established connection. This comes in handy, when the size of a message exceeds the \gls{mtu} or multiple \gls{http} requests are send to a server (used in persistent HTTP connections, also called "HTTP keep-alive" \cite{http}).
 
+The \textit{Internet Protocol} (IP) introduced so called IP addresses as identifiers for single systems. \gls{tcp} extends this model by port numbers. An application providing services to other systems (i.e. a server) uses one single port, but client applications need to open separate ports for each \gls{tcp} connection. This is required, because \gls{tcp} connections are identified by the four parts "server address", "server port", "client address" and "client port" \cite{tcp}. The TCP header contains two 16 bit fields for source and destination port \cite{kn1}. This leads to a maximum of $2^{16} = 65,536$ concurrently used (open) \gls{tcp} connections on a single client system. This limitation on the capacity of clients needs to be taken into consideration for the design of performance benchmarks. Otherwise observed performance limits might be mistakenly interpreted as limits of the server system \cite{httperf}.
+\\
+
+\clearpage
 \section{Measuring Web Server Performance}
 
-Network performance is often measured as throughput in bits per second. While this gives a great insight in the capabilities of the network, there is no indication as to how many users can be served concurrently by a web server running on the system under test. To gain insights in this performance parameter, dedicated tests on \gls{http} level need to be performed.
+Pure network performance is often measured as throughput in bits per second. While this gives a great insight in the capabilities of the network, there is no indication as to how many users can be served concurrently by a web server running on the system under test. To gain insights in this performance parameter, dedicated tests on \gls{http} level need to be performed.
 
-A simple method for measuring request throughput is to "send requests to the server at a fixed rate and to measure the rate at which replies arrive" \cite{httperf}. By monotonically increasing the request rate, the server becomes saturate  at a certain point. This becomes visible in leveling off reply rates and shows that the server operates at full capacity. \cite{httperf}
+A simple method for measuring performance in terms of request throughput is to "send requests to the server at a fixed rate and to measure the rate at which replies arrive" \cite{httperf}. By monotonically increasing the request rate, the server becomes saturated at a certain point. This becomes visible in leveling off reply rates and shows that the server operates at full capacity. \cite{httperf}
+\\
 
 \subsection{Tools}
 
 \subsubsection{httperf}
 
-\textit{httperf}\footnote{\url{http://www.hpl.hp.com/research/linux/httperf/}} is a tool developed at Hewlett-Packard by David Mosberger and Tai Jin to specifically measure web server performance \cite{httperf}.
+\textit{httperf}\footnote{\url{http://www.hpl.hp.com/research/linux/httperf/}} is a tool developed by David Mosberger and Tai Jin at Hewlett-Packard to specifically measure web server performance \cite{httperf}.
 
-\textit{httperf} has three relevant command line arguments for performing the desired performance tests: \texttt{rate}, \texttt{num-conns} and \texttt{num-calls}.
+Characteristics of performed tests can be specified by command line arguments to \textit{httperf}. Besides a number of self-explanatory parameters, there are three relevant parameters shaping the actual performance test: \texttt{rate}, \texttt{num-conns} and \texttt{num-calls}.
 
 The \texttt{rate} parameter specifies the rate at which connections are created per second. \texttt{num-conns} specifies the total number of connections to be created during one test run. \texttt{num-calls} specifies the number of requests made over a single TCP connection before it is closed.
+
+A call to \textit{httperf} used for performance tests looks like the following:
+
+\texttt{httperf --timeout=5 --client=0/1 --server=192.168.2.125 --port=80 --uri=/index.html} $\hookleftarrow$ \\
+\texttt{--rate=120 --send-buffer=4096 --recv-buffer=16384 --num-conns=3000 --num-calls=3} \\
 
 When executing \textit{httperf} a warning might be displayed:
 
 \texttt{warning: open file limit > FD\_SETSIZE; limiting max. \# of open files to FD\_SETSIZE}
 
-What it basically means is that the current process reached the limit of concurrently allowed open file descriptors. This is a per process limit enforced by the \gls{os}. \textit{httperf} is using the \textit{select}\footnote{"\texttt{select}" is an event library provided by the Linux kernel.} module for dealing with network tasks and creates a new file descriptor for every TCP connection. Therefore the limit on open file descriptors limits the number of TCP connections by \textit{httperf} and therefore might influence conducted performance tests.
+What it basically means is that the process reached the limit of concurrently allowed open file descriptors. This is a per process limit enforced by the \gls{os}. \textit{httperf} is using the \textit{select}\footnote{"\texttt{select}" is an event library provided by the Linux kernel.} module for dealing with network tasks and creates a new file descriptor for every TCP connection. Therefore the limit on open file descriptors limits the number of usable TCP connections by \textit{httperf} and might influence the result of performance tests.
 
-To circumvent this issue limits on the current system need to be increased and \textit{httperf} re-compiled. This includes three steps\footnote{The described solution to the FD\_SETSIZE problem was taken from Guillaume Maury: \url{http://gom-jabbar.org/articles/2009/02/04/httperf-and-file-descriptors}.}:
+\clearpage
+To fix this issue, limits on the current system need to be increased and \textit{httperf} re-compiled. This includes three steps\footnote{The described solution to the FD\_SETSIZE problem was taken from Guillaume Maury: \url{http://gom-jabbar.org/articles/2009/02/04/httperf-and-file-descriptors}.}:
 
 \begin{enumerate}
-\item The following line needs to be inserted (or updated) in \texttt{/etc/security/limits.conf}: "\texttt{* hard nofile 65535}". This increases the hard limit of open file descriptors for all users.
+\item To increase the hard limit of open file descriptors for all users, the following line needs to be inserted (or updated) in \texttt{/etc/security/limits.conf}: "\texttt{* hard nofile 65535}"
 
-\item The value of the pre-compiler constant "\texttt{\_\_FD\_SET\_SIZE} needs to be increased to \texttt{65535}. It is defined in "\texttt{/usr/include/bits/typesizes.h}". (Note: This file might be located in another sub-directory, e.g. "\texttt{/usr/include/x86\_64-linux-gnu/bits/typesizes.h}".)
+\item The value of the pre-compiler constant "\texttt{\_\_FD\_SET\_SIZE}" needs to be increased to \texttt{65535}. It is defined in "\texttt{/usr/include/bits/typesizes.h}". \\
+This file might be located in another sub-directory, e.g. "\texttt{/usr/include/x86\_64-linux-gnu/bits/typesizes.h}".
 
-\item httperf needs to be re-compiled from source:\\
+\item \textit{httperf} needs to be re-compiled from source:\\
  \\
 \texttt{wget} \url{ftp://ftp.hpl.hp.com/pub/httperf/httperf-0.9.0.tar.gz}\\
 \texttt{tar xvzf httperf-0.9.0.tar.gz \&\& cd httperf-0.9.0\\
@@ -76,30 +90,34 @@ To circumvent this issue limits on the current system need to be increased and \
 sudo make install}
 \end{enumerate}
 
-A useful helper for automating test runs with increasing connection rate is \textit{autobench}\footnote{\url{http://www.xenoclast.org/autobench/}}. It is a Perl script acting as a wrapper around \textit{httperf} written by Julian Midgley.
+A useful helper for automating test runs with increasing connection rate is \textit{autobench}\footnote{\url{http://www.xenoclast.org/autobench/}}. It is a Perl script acting as a wrapper around \textit{httperf} and was published by Julian Midgley.
+\\
 
 \subsubsection{Custom Scripts}
 
-In addition to accurate engineered test cases using \textit{httperf}, custom scripts were used to simply generate load on the server. A small Windows console application written in \texttt{C\#}, utilizing the \textit{Task Parallel Library}\footnote{\url{http://msdn.microsoft.com/de-de/library/vstudio/dd460717.aspx}} turned out to be the most efficient one with best performance characteristics.
+In addition to accurate engineered test cases using \textit{httperf}, custom scripts were used to generate load on the server. A small Windows console application written in \texttt{C\#}, utilizing the \textit{Task Parallel Library}\footnote{\url{http://msdn.microsoft.com/de-de/library/vstudio/dd460717.aspx}}, turned out to be the most efficient one with best performance characteristics.
 
-It is also included in the appendix of this report (see \ref{appendix:csharp-load}).
+This console application is also included in the appendix of this report (see \ref{appendix:csharp-load}).
+\\
 
 \subsubsection{Wireshark}
 
-\textit{Wireshark}\footnote{\url{http://www.wireshark.org}} is a network protocol analysis software, which captures all traffic going through a network interface. It especially helps in analyzing and inspecting captured data through deep knowledge of all common protocols.
+\textit{Wireshark}\footnote{\url{http://www.wireshark.org}} is a network protocol analysis software, which captures all traffic going through a network interface. It especially helps in analyzing and inspecting captured data through its deep knowledge of all common protocols.
 
-It was used in this project for debugging initial problems with the network stack and low-level analysis of performance  test parameters.
-
+It was used in this project for debugging initial problems with the network stack and low-level analysis of performance test parameters.
+\\
 
 \section{Tests}
 
-The tests were conducted using \textit{httperf} on a virtual machine running \textit{Ubuntu Linux 12.04}. To proof that the limiting factor during the tests is not this client machine, but the system under test, all tests were also performed against a \textit{Microsoft IIS 7.5} web server instance on top of a \textit{Microsoft Windows 7 Professional} operating system running on a bare metal machine with an \textit{AMD Phenom II X4 965} processor at 3.40 GHz.
+The tests were conducted using \textit{httperf} on a virtual machine running \textit{Ubuntu Linux 12.04}. To proof that the limiting factor during the tests is not this client machine, but the system under test, all tests were also performed against a \textit{Microsoft IIS 7.5} web server instance, which was hosted on a bare metal machine with an \textit{AMD Phenom II X4 965} processor at 3.40 GHz, running \textit{Microsoft Windows 7 Professional} as operating system.
 
-According to the \textit{HTTP Archive}\footnote{\url{http://httparchive.org/interesting.php\#responsesizes} (as of Dec. 15th 2012)} an average HTML page has a size of about 6 kB. Other content types, like images, stylesheets and script files vary on average between 5 kB and 21 kB. Therefore tests were performed using static files with two sizes: one file having exactly 10 kB (10.240 bytes) from now on referred to as "10K.html" and one very minimal HTML page having just 354 bytes ("index.html"). The major difference between these two files from a "network perspective" is that the small file can be transmitted in two TCP packets, one is used for the HTTP header and one for the actual data (see section \ref{sec:nginx-os-if}), whereas the 10 KB file needs to be split up in 9 TCP packets due to the default \gls{mtu} size of 1500 bytes. A third test run was performed requesting a file that does not exist. This results in a HTTP response with code "404 - Not Found". This is a special case, because the response is transmitted in a single TCP packet and no file needs to be read from the file system.
+According to statistics of the \textit{HTTP Archive}\footnote{\url{http://httparchive.org/interesting.php\#responsesizes} (as of Dec. 15th 2012)} an average HTML page has a size of about 6 KB. Other content types, like images, stylesheets and script files vary on average between 5 KB and 21 KB. 
+
+Taking this usage pattern of websites into consideration, tests were performed using static files with two sizes: one file having exactly 10 KB (10.240 bytes) from now on referred to as "10K.html" and one very minimal HTML page having just 354 bytes ("index.html"). The major difference between these two files from a "network perspective" is that the small file can be transmitted in two TCP packets, one is used for the HTTP header and one for the actual data (see section \ref{sec:nginx-os-if}), whereas the 10 KB file needs to be split up in 9 TCP packets due to the default \gls{mtu} size of 1500 bytes. A third test-run was performed requesting a file that does not exist. This results in a HTTP response with code "404 -- Not Found". It is a special case, because the response is transmitted in a single TCP packet and no file needs to be read from the file system.
 
 Figure \ref{fig:initial-req} shows request and response rates for all three test cases with an increasing connection rate (20 conn./s to 120 conn./s, step size: 10). On each connection three HTTP requests were made to the respective file. 
 
-On every connection rate level 3,000 connections were opened to obtain reliable results. Therefore each test run included $11 \cdot 3,000 = 33,000$ connections and up to $33,000 \cdot 3 = 99,000$ requests.
+On every connection rate level 3,000 connections were opened to obtain reliable results. Therefore each test run included 33,000 connections and up to 99,000 requests.
 
 \begin{figure}[H]
 	\centering
@@ -131,7 +149,7 @@ On every connection rate level 3,000 connections were opened to obtain reliable 
   \label{fig:initial-req}
 \end{figure}
 
-The test result shows that at a certain request rate, the response rates levels off. For the two test runs with small response sizes, response rates even decrease slightly. At this points the server becomes saturated and requests overstep its actual capacity. These points are namely at about 300 req./s for the very small response, at about 270 req./s for the "index.html" file and at about 190 req./s for the "10K.html" file.
+The test result shows that at a certain request rate, the response rates levels off. For the two test runs requesting files, response rates even decrease slightly. At this points the server becomes saturated and the number of requests oversteps its actual capacity. These points are namely at about 300 req./s for the very small response, at about 270 req./s for the "index.html" file and at about 190 req./s for the "10K.html" file.
 
 The difference between request and response rate origins in failed requests. The following figure shows the corresponding error rate. It increases with over-saturating the system.
 
@@ -161,7 +179,7 @@ The difference between request and response rate origins in failed requests. The
   \label{fig:initial-req-errors}
 \end{figure}
 
-The response \textbf{rate} decreases only slowly with growing saturation, but the average response \textbf{time} increases from  5 ms to about 500-700 ms:
+The response \textbf{rate} decreases only slowly with growing saturation, but the average response \textbf{time} increases from $5\text{ ms}$ to about 500-700 ms:
 
 \begin{figure}[H]
 	\centering
@@ -231,7 +249,7 @@ The reason for decreasing slopes in response times might be a clogged backlog fo
 The difference in request and response rates the system can handle is also visible in \textbf{CPU utilization}. Main responsibility of \textit{nginx} for serving requests is to handle the HTTP part of the process. This includes parsing request headers, generating responses and delivering static files. The \gls{os} on the other hand does the "translation" to and from \gls{tcp} and handles all work on lower network layers (see also figure \ref{fig:net-layers}). An increased payload size of single responses entails therefore a shift in processing time from \textit{nginx} ("user space") towards the operations inside the Linux kernel. Figure \ref{fig:initial-req-cpu} shows exactly this correlation.
 
 \clearpage
-Network \textbf{throughput} of the tests follows naturally the trend of response rates. For tests requesting the "index.html" file and those resulting in "HTTP 404 - Not Found" responses, the shown throughput is very low, because \textit{httperf} calculates throughput using the formula $\frac{\text{[size]} \cdot \text{[total repsonses]}}{\text{[test time]}}$. Therefore very small response sizes yield a low average throughput.
+Network \textbf{throughput} of the tests follows naturally the trend of response rates. For tests requesting the "index.html" file and those resulting in "HTTP 404 -- Not Found" responses, the shown throughput is very low, because \textit{httperf} calculates throughput using the formula $\frac{\text{[size]} \cdot \text{[total repsonses]}}{\text{[test time]}}$. Therefore very small response sizes yield a low average throughput.
 
 \begin{figure}[H]
 	\centering
@@ -261,7 +279,7 @@ Network \textbf{throughput} of the tests follows naturally the trend of response
 
 \subsection{Dedicated Network Throughput Tests}
 
-To test the maximal network throughput the server can provide, a test needs to be designed focusing on just this parameter. This prevents other parts of the system from getting into the way. A constant high exchange of TCP packets can be achieved by transferring very few, but large files over the network. Therefore a large binary file having a size of 33.4 MB was used for throughput tests.
+To test the maximal network throughput the server can provide, a test needs to be designed focusing on just this parameter. This approach prevents other parts of the system from getting into the way. A constant high exchange of TCP packets can be achieved by transferring very few, but large files over the network. Therefore a large binary file having a size of 33.4 MB was used for throughput tests.
 
 Figure \ref{fig:tcp-io-perf} shows the network throughput for requests to this file with an increasing connection rate and two HTTP requests on each connection. The system under test goes into saturation at about 61 Megabits/sec. This is equivalent to $6.1\ \%$ of the available network bandwidth, providing a maximum of 1 Gigabit/sec.
 
@@ -350,7 +368,7 @@ Figure \ref{fig:tcp-io-perf-cpu} shows the CPU utilization by time spent in the 
   \label{fig:tcp-io-perf-cpu}
 \end{figure}
 
-To proof that obtained performance limits were not limits of the client executing the tests or the network infrastructure, the same test was executed against a "reference system" running an \textit{Microsoft IIS 7.5} web server. Figure \ref{fig:tcp-io-perf-iis} shows the results. Measured throughput (averaged per request) had a maximum at about 515.7 Megabits/sec which outplays the results of the \textit{MicroBlaze} system by more than a factor of eight.
+To proof that obtained performance limits were not limits of the client executing the tests or the network infrastructure, the same test was also executed against a "reference system" running a \textit{Microsoft IIS 7.5} web server. Figure \ref{fig:tcp-io-perf-iis} shows the results. Measured throughput (averaged per request) had a maximum at about 515.7 Megabits/sec which outplays the results of the \textit{MicroBlaze} system by more than a factor of eight.
 
 \begin{figure}[H]
 	\centering
@@ -375,10 +393,10 @@ To proof that obtained performance limits were not limits of the client executin
 
 \section{Discussion of Results}
 
-Obtained performance results show that the designed System on Chip with custom configured and compiled Linux kernel is capable of running a web server serving up to about 300 requests per second and 100 concurrent connections. Compared to the low performance indicator of 48.94 BogoMIPS\footnote{"The number of million times per second a processor can do absolutely nothing." (untraceable source: Eric S Raymond, Geoff Mackenzie -- \url{http://www.tldp.org/HOWTO/html\_single/BogoMips/})}, which is less than a $\frac{1}{130}$ of the value Linux kernel reports for a virtualized \textit{AMD Phenom II X4} processor at 3.40 GHz running on two cores\footnote{6414.98 BogoMips}, this is not to bad. But the capacity of the server would not be sufficient for running it as a public web server connected to the global internet infrastructure. Especially because response rates rapidly decrease with increasing byte size of responses, because of a larger amount of TCP packets required for transmitting the response.
+Obtained performance results show that the designed System on Chip with custom configured and compiled Linux kernel is capable of running a web server serving up to about 300 requests per second and 100 concurrent connections. Compared to the low performance indicator of 48.94 BogoMIPS\footnote{"The number of million times per second a processor can do absolutely nothing." (untraceable source: Eric S Raymond, Geoff Mackenzie -- \url{http://www.tldp.org/HOWTO/html\_single/BogoMips/})}, which is less than a $\frac{1}{130}$ of the value Linux kernel reports for a virtualized \textit{AMD Phenom II X4} processor at 3.40 GHz running on two cores\footnote{6414.98 BogoMips}, this is not to bad. But the capacity of the server would not be sufficient for running it as a public web server connected to the global internet infrastructure. Especially because response rates rapidly decrease with increasing byte size of responses, reasoned in a larger amount of TCP packets required for transmitting the response.
 
-A reduction in the number of TCP packets could be achieved by using so called "Jumbo Frames". These are Ethernet frames with a data size larger than the default \gls{mtu} of 1500 bytes. The required setting can be configured executing the command "\texttt{ifconfig eth0 mtu [new size]}". Where \texttt{[new size]} is the new \gls{mtu} size in bytes. Unfortunately this does not seem to be fully supported by the \textit{Xilinx LL TEMAC} Ethernet driver\footnote{see Xilinx forum: \url{http://forums.xilinx.com/t5/Embedded-Linux/Jumbo-frames-ifconfig-crash-and-xps-ll-temac-issues/td-p/211911} (as of 12/2012)}, leading to TCP packets with a total size larger than 1500 bytes to be corrupted and therefore lost "on the network". Besides this, Jumbo Frames would have to be supported on the client and all intermediate stations as well, which can not be guaranteed on a public network or service.
+A reduction in the number of TCP packets could be achieved by using so called "Jumbo Frames". These are Ethernet frames with a data size larger than the default \gls{mtu} of 1500 bytes. The responsible setting can be changed executing the command "\texttt{ifconfig eth0 mtu [new size]}". Where \texttt{[new size]} is the new \gls{mtu} size in bytes. Unfortunately this does not seem to be fully supported by the \textit{Xilinx LL TEMAC} Ethernet driver\footnote{see Xilinx forum: \url{http://forums.xilinx.com/t5/Embedded-Linux/Jumbo-frames-ifconfig-crash-and-xps-ll-temac-issues/td-p/211911} (as of 12/2012)}, leading to TCP packets with a total size larger than 1500 bytes to be corrupted and therefore lost "on the network". Besides this, Jumbo Frames would have to be supported on the client and all intermediate stations as well, which can not be guaranteed on a public network or providing a public service.
 
-\textit{nginx} provides a configuration setting "\texttt{worker\_connections}" which limits the maximum amount of concurrently handled connections by a worker process. During tests this setting had a value of 768. But neither changing the number of maximum allowed connection to 1024 nor 512 had any influence in observed response rates. Therefore it is save to be assumed that no internal limit for concurrent connections affected the test results. But therefore this part does not have any room for improvements, either.
+\textit{nginx} provides a configuration setting "\texttt{worker\_connections}" which limits the maximum amount of concurrently handled connections by a worker process. During tests this setting had a value of 768. But neither changing the number of maximum allowed connection to 1024 nor 512 had any influence in observed response rates. Therefore it is safe to be assumed that no internal limit for concurrent connections affected the test results. But therefore this part does not have any room for improvements, either.
 
-Especially the tests for maximum network throughput showed that the main bottleneck is in the TCP/network stack on the test system. Besides providing more processing power to the system, optimizing this part of the Linux kernel is hardly possible in the project context. Another option would be to offload processing of TCP connections, requests and responses to dedicated hardware circuitry, implemented as a network interface with enhanced functionality. This possible solution is also refereed to by the title of this thesis using the word "accelerated", but requires deep integration into already available functions of the operating system. Therefore the next two chapters will focus on giving an overview of the Linux network stack and possible integration options for a TCP Offload Engine (TOE).
+Especially the tests for maximum network throughput showed that the main bottleneck is in the TCP/network stack on the test system. Besides providing more processing power to the system, optimizing this part of the Linux kernel is hardly possible in the project context. Another option would be to offload processing of TCP connections, requests and responses to dedicated hardware, implemented as a network interface with enhanced functionality. This possible solution is also refereed to by the title of this thesis using the word "accelerated", but requires deep integration into already available functions of the operating system. Therefore the next two chapters will provide an overview of the Linux network stack and possible integration options for a \textit{TCP Offload Engine} (TOE).

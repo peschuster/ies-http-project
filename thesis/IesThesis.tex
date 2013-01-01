@@ -1,6 +1,6 @@
 \documentclass[parskip,
 			twoside,
-			%longdoc,
+			longdoc,
 			10pt,
 			noheadingspace,
 			accentcolor=tud0a,
@@ -13,6 +13,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc} 
 \usepackage{microtype} % optischer Randausgleich bei pdflatex mit Zeichendehnung
+\DisableLigatures[-]{family=tt*}
 
 %% Grafikeinstellungen
 \usepackage{float} % u.a. genaue Plazierung von Gleitobjekten mit H
@@ -43,11 +44,11 @@
 	%\lstset{numbers=left, numberstyle=\tiny}  %, numbersep=2pt
 	%\lstset{language=Perl}
 
-\usepackage{calc}
-\usepackage{etoolbox}
-\makeatletter
-\preto{\@verbatim}{\topsep=0pt \partopsep=0pt }
-\makeatother
+%\usepackage{calc}
+%\usepackage{etoolbox}
+%\makeatletter
+%\preto{\@verbatim}{\topsep=0pt \partopsep=0pt }
+%\makeatother
 
 
 %% sonstige Einstellungen
@@ -80,6 +81,42 @@
 
 \setcounter{tocdepth}{1}
 
+\lowertitleback{
+\begin{addmargin}[.5in]{0cm}
+Bachelor Thesis\\
+\\
+\begin{large}
+\textbf{Design of an Accelerated Event-based Server}
+\end{large}
+\\
+\\
+submitted in partial fulfillment of the requirements \\
+for the Degree of \textit{Bachelor of Science} \\
+in \textit{Electrical Engineering and Information Technology}.
+\\
+\\
+\\
+Peter Schuster\\Darmstadt
+\\
+\\
+\\
+\begin{tabbing}
+  \hspace{2.5cm} \= \kill
+  Advisor: \> Dipl.-Ing. Boris Traskov \\
+  Examiner: \> Prof. Dr.-Ing. Klaus Hofmann\\
+\end{tabbing}
+\vspace*{3mm}
+\begin{tabbing}
+  \hspace{4cm} \= \kill
+  Start: \> 01/10/2012 \\
+  \\
+  Date of Submission: \> 02/01/2013 \\
+  Date of Exam: \> 10/01/2013 \\
+\end{tabbing}
+\vspace*{5cm}
+\end{addmargin}
+}
+
 \begin{document}
 
 %% Titel %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -90,7 +127,12 @@
 \pagestyle{empty}
 \pagenumbering{none}
 
+\cleardoublepage
 \input{decls_en}
+
+
+% include glossary
+\include{glossary}
 
 \cleardoublepage
 \tableofcontents
@@ -101,19 +143,6 @@
 %\listoffigures
 
 \pagenumbering{arabic}
-
-% include glossary
-\include{glossary}
-\makeglossaries
-
-\clearpage
-\glossarystyle{list}
-\renewcommand{\glsgroupskip}{}
-\begin{normalsize}
-	\setlength{\parskip}{8pt}
-	
-	\printglossary[type=\acronymtype ,title={Acronyms}]
-\end{normalsize}
 
 %% Hauptteil %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagestyle{headings}
@@ -130,6 +159,17 @@
 
 %% Anhang %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
+
+\makeglossaries
+
+\clearpage
+\glossarystyle{list}
+\renewcommand{\glsgroupskip}{}
+\begin{normalsize}
+	\setlength{\parskip}{8pt}
+	
+	\printglossary[type=\acronymtype ,title={Acronyms}]
+\end{normalsize}
 
 \clearpage
 % \nocite{*}

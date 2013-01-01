@@ -2,19 +2,17 @@
 
 \section{Project Context and Objectives}
 
-Context of this project is ongoing research for high performance network interface cards at the Integrated Electronics Systems Labs by Boris Traskov, also supervisor of this project.
+Context of this project is ongoing research for high performance network interface cards at the Integrated Electronic Systems Labs by Boris Traskov, also supervisor of this project.
 
-In our environment an increasing amount of data is created by every kind of device. Furthermore, the amount of transferred data over networks (i.e. the internet) increases dramatically. This generates a demand for high speed network interfaces, on the one hand and high performance, low cost full stack network implementations on the other hand. 
+In an environment with an ever increasing amount of created data by all kinds of devices, the amount of transferred data over networks (i.e. the internet) increases dramatically. This generates a demand for high speed network interfaces, on the one hand and high performance, low cost full stack network implementations on the other hand. 
 
-Service providers and back-end nodes need to be able to transfer large amounts of data to multiple receivers concurrently, requiring high speed network interfaces. To circumvent - potentially unnecessary - \gls{cpu} utilization, much of the work can be "offloaded" to a network interface, providing a higher level of abstraction to the transfer of data, than current state of the art systems provide.
+Service providers and back-end nodes need to be able to transfer large amounts of data to multiple receivers concurrently, requiring high speed network interfaces. To circumvent -- potentially unnecessary -- \gls{cpu} utilization, much of the work could be "offloaded" to a network interface, providing a higher level of abstraction to the transfer of data, than current state of the art systems provide.
 
 In a future scenario with all devices being connected to each other, often described as the "internet of things", an increasing demand for simple to implement network interfaces, not requiring the presence of an operating system or high performance processors, will be created.
 
-%The ability to provide network interfaces at low cost, becomes especially relevant in the future "`internet of things"', describing a connection of almost all devices among each other.
+Objectives for the whole project entitled "Design of an Accelerated Event-based Server" is to setup a hardware system on a \textit{Xilinx} \gls{fpga} utilizing \gls{ip} cores, running \textit{nginx} (an event-based web server) on top. Furthermore benchmarks have to be conducted, to prove the strength of such a system. The ideal outcome of this project would be to prove that the system is capable of utilizing the full bandwidth of a Gigabit Ethernet interface. Therefore break downs of the server system on attempted \gls{dos} attacks would belong to the past.
 
-Objectives for the whole project entitled "Design of an Accelerated Event-based Server" is to setup a hardware system on a \textit{Xilinx} \gls{fpga} utilizing \gls{ip} cores, running \textit{nginx} (an event-based web server) on top. Furthermore benchmarks have to be conducted, to prove the strength of such a system. Ideally proving that the system is capable of utilizing the full Gigabit Ethernet interface without breaking down on attempted \gls{dos} attacks.
-
-Desired goal for this project seminar was to lay the necessary foundations, so that outstanding implementation work and extensive measurements can be completed in a subsequent bachelor thesis.
+The first part of this project included the design of a System on Chip, as well as getting an operating system up and running on top of it. This was implemented in a preceding project seminar, May to September 2012. Reached accomplishments of this project seminar are documented in the corresponding report \cite{projectseminar}. All results are also briefly summarized in chapter \ref{cha:preceding} of this thesis.
 
 \section{Hardware Platform and Tool Set}
 

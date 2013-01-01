@@ -1,6 +1,6 @@
 \chapter{Conclusion}
 
-\section{Project Review and Evaluation}
+\section{Project Review}
 
 I chose this project, because it promised to cover many topics of personal interest, including network systems, performance oriented research and optimization, web technology and System on chip design. In retrospective these expectations were fulfilled, but came with a steep learning curve.
 
@@ -10,8 +10,6 @@ One of the major difficulties solved during this project seminar was the fact th
 
 All in all working through this project seminar was a hard but valuable experience, especially learning about all the interfaces and dependencies between the different levels in the stack of a computer system.
 
-\section{Outlook}
-
 The project seminar covered only the first part of the project goal. So there is naturally some work to be done to finish the project. This covers especially everything around incorporating custom user space applications (like \textit{nginx}) and an accurate measurement and evaluation of performance parameters of the designed system.
 
 Besides these outstanding topics, improvements to already implemented parts of the system could be made, too. To name a few, the baud rate of the serial \gls{ip} core could be increased to enable a more responsive console interface for accessing the system. An additional, non-volatile file system could be added to the system to circumvent the need for programming a complete image onto the \gls{fpga} on every persisted change to the file system. This could be done by including a \textit{Network File System (NFS)} or a file system stored on a flash drive.
@@ -19,3 +17,6 @@ Besides these outstanding topics, improvements to already implemented parts of t
 When the complete system is implemented, including the event-based server, as stated in the project title, the focus of the project work needs to be shifted more towards measuring the performance parameters of the system. As part of this work an "\textit{TCP Offload Engine}", designed in a parallel project could be incorporated into the system. Purpose of this offload engine is to fork processing load resulting from incoming and outgoing network traffic from the \gls{cpu} to a designated hardware core. It is expected that this will speed up the overall performance of the system, allowing either the usage of less hardware resources or a higher network throughput.
 
 The next steps in a subsequent project seminar or bachelor thesis would be to get  cross compilation of user space applications working, incorporate \textit{nginx} into the system and conduct the mentioned performance measurements.
+
+
+\section{Evaluation}
