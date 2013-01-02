@@ -1,6 +1,6 @@
 \documentclass[parskip,
-			twoside,
-			longdoc,
+			%twoside,
+			%longdoc,
 			10pt,
 			noheadingspace,
 			accentcolor=tud0a,
@@ -133,16 +133,22 @@ Peter Schuster\\Darmstadt
 
 % include glossary
 \include{glossary}
+\makeglossaries
+
+\pagenumbering{arabic}
 
 \cleardoublepage
 \tableofcontents
 
-%\newpage
-%\phantomsection %notwendig, damit Link nicht unterhalb der Überschrift zeigt
-%\addcontentsline{toc}{chapter}{List of figures}
-%\listoffigures
+\clearpage
+\phantomsection %notwendig, damit Link nicht unterhalb der Überschrift zeigt
+\addcontentsline{toc}{chapter}{Lists of Figures and Tables}
+\begingroup
+\let\clearpage\relax
+\listoffigures
+\listoftables
+\endgroup
 
-\pagenumbering{arabic}
 
 %% Hauptteil %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagestyle{headings}
@@ -159,8 +165,6 @@ Peter Schuster\\Darmstadt
 
 %% Anhang %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
-
-\makeglossaries
 
 \clearpage
 \glossarystyle{list}

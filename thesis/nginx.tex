@@ -285,7 +285,7 @@ Usage of the newly implemented functionality needs to be activated upon build co
 The complete patch is included in the appendix of this report (see \ref{appendix:memguard}) or can be found in the master branch of the \textit{nginx} fork at \url{https://github.com/peschuster/nginx}.
 \\
 
-\section{Compilation and Installation}
+\subsection{Compilation and Installation}
 
 After configuration, the \textit{nginx} binary file is compiled using "\texttt{make -f objs/Makefile}". The resulting image file has a size of about 1.8 MB.
 
@@ -294,7 +294,7 @@ Installation into the target directory is initiated executing the command "\text
 Executing the described \texttt{install} command creates the required directory structure with default configuration files and copies the binary image file.
 \\
 
-\section{Runtime Configuration}
+\subsection{Runtime Configuration}
 
 Runtime configuration of an \textit{nginx} installation is stored in the \texttt{conf/} directory relative to the \textit{nginx} root. For this project and conducted performance tests, there was no need to change the default configuration (\texttt{nginx.conf}), which is loaded at application start up when no other options are specified.
 \\

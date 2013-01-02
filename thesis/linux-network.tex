@@ -68,9 +68,51 @@ This is a proprietary solution by Microsoft and some hardware vendors. There are
 
 The last to be introduced solution can be described as "\textit{Full-stack TCP Offload}". All processing of \gls{tcp} and \gls{ip} concerns is done by hardware. This requires a great deal of protocol knowledge and functionality to be implemented in hardware, but promises also the best performance gains, leaving just a minimal part of TCP/IP stack processing to the operating system.
 
-The next section contains some considerations for integrating such a \textit{TOE} into the Linux kernel and remarks concerning device driver development and interfaces of the \textit{TOE}.
+This is the chosen way by the research project enclosing this thesis. Therefore the next section provides some considerations for integrating a \textit{TOE} following this concept into the Linux kernel and remarks concerning device driver development and interfaces of the \textit{TOE}.
 \\
 
-\section{Integrating a Custom \textit{Full-stack} TOE}
+\section{Integration into Linux}
 
-\subsubsection{Direct Memory Access (DMA)}
+Integration of a \textit{Full-stack TOE} into the network stack of Linux kernel must consist of two major parts:
+
+\begin{enumerate}
+\item A network device driver handling communication with the actual \textit{TCP Offload Engine} device.
+\item Changes to the current network stack for -- conditionally -- short cutting the existing TCP processing implementation.
+\end{enumerate}
+
+\textit{Chelsio Communications}, a hardware vendor, developing network interfaces, made an attempt to integrate an own \gls{toe} following this approach into the Linux kernel in 2005.\footnote{\url{http://lwn.net/Articles/147289/} (as of 12/2012)} Their solution called "\textit{OPEN TOE}" claimed to be vendor neutral and could therefore serve as a model for a custom implementation.\footnote{\url{http://lwn.net/Articles/146060/} (as of 12/2012)}
+
+Central unit for communication with the \gls{toe} device is the new \texttt{struct toedev}. It represents "a new type of extended network device [\dots] with an with an additional set of methods" \cite{linux-toe}.
+
+The provided, additional methods are listed below:
+
+\begin{verbatim}
+int (*open)(struct toedev *dev);
+int (*close)(struct toedev *dev);
+int (*can_offload)(struct toedev *dev, struct sock *sk);
+int (*connect)(struct toedev *dev, struct sock *sk);
+int (*send)(struct toedev *dev, struct sk_buff *skb);
+int (*recv)(struct toedev *dev, struct sk_buff **skb, int n);
+int (*ctl)(struct toedev *dev, unsigned int req, void *data);
+void (*neigh_update)(struct net_device *lldev,
+		     struct toedev *dev,
+		     struct neighbour *neigh, int fl);
+
+Source: http://lwn.net/Articles/147289/
+\end{verbatim}
+
+The methods can easily mapped to known features of \gls{tcp}:
+
+\texttt{open(..)}, respectively \texttt{connect(..)} for client scenarios, signal the availability for incoming TCP connections or initiate the creation of an outgoing TCP connection. \texttt{close(..)} ends an existing TCP connection.
+
+The two functions \texttt{send(..)} and \texttt{recv(..)} are well known from the socket interface layer and facilitate transmission and receiving of single or multiple TCP packets in form of \texttt{sk\_buff} structures.
+
+\texttt{can\_offload(..)} and \texttt{ctl(..)} provide control access to the TOE device. The function \texttt{neigh\_update(..)} is required for usage of the \textit{neighbor subsystem}\footnote{\url{http://www.linuxfoundation.org/collaborate/workgroups/networking/neighboringsubsystem} (as of 12/2012)} which enables discovery and mapping between physical (\textit{MAC}) and logical (\textit{IP}) network addresses.
+
+The actual data in form of \texttt{sk\_buff} structures should be transferred to and from the TOE device using \gls{dma}. DMA stands for \textit{Direct Memory Access} and describes an architecture featuring direct memory access of devices to system's main memory. Therefore no processing power is deducted from the \gls{cpu} shifting data between the Linux kernel structures and the TOE device.
+
+One challenge of \gls{dma} usage combined with a \gls{mmu} is the translation between virtual (used by the \gls{os}) and physical (used by the device) memory addresses. Continuous memory regions in virtual address space do not need to be continuous in physical address space. Therefore the device might be required to access multiple fragments of memory, although only a single data structure written by the Linux kernel should be accessed.
+
+DMA is on the other hand widely used for high bandwidth devices, which is why many references for these problems should exist, alleviating the implementation of appropriate solutions.
+
+Without further knowledge about the concrete \gls{toe} implementation, this is as far as preparations and research on the topic of a possible integration into the Linux kernel can go. Next steps would be to work on that implementation.

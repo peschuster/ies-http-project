@@ -1,75 +1,209 @@
+\chapter{Performance Test Results}
+
+\subsubsection{Results of the first set of tests}
+
+\begin{table}[H]
+  \centering
+    \begin{tabular}{|m{2.5cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|}
+    \hline
+    \textbf{Demanded Req. Rate} (1/s) & \textbf{Req. Rate} (1/s) & \textbf{Conn. Rate} (1/s) & \textbf{Resp. Rate} (1/s) & \textbf{Resp. Time} (ms) & \textbf{IO} (KB/s) & \textbf{Error Rate} (1/s) \\
+    \hline
+    60 & 60.0 & 20.0 & 60.0 & 5.3 & 33.0 & 0.00 \\
+    90 & 90.0 & 30.0 & 90.0 & 5.2 & 49.5 & 0.00 \\
+    120 & 120.0 & 40.0 & 120.0 & 5.3 & 66.0 & 0.00 \\
+    150 & 150.0 & 50.0 & 150.0 & 7.2 & 82.5 & 0.00 \\
+    180 & 180.0 & 60.0 & 179.9 & 8.3 & 98.9 & 0.00 \\
+    210 & 209.9 & 70.0 & 209.9 & 8.6 & 115.4 & 0.00 \\
+    240 & 239.8 & 80.0 & 239.5 & 13.3 & 131.8 & 0.02 \\
+    270 & 269.6 & 89.9 & 269.6 & 14.9 & 148.2 & 0.00 \\
+    300 & 271.2 & 92.5 & 270.0 & 397.7 & 149.0 & 0.82 \\
+    330 & 261.7 & 98.1 & 258.4 & 523.6 & 142.3 & 4.64 \\
+    360 & 257.2 & 104.1 & 252.2 & 558.5 & 138.2 & 8.25 \\
+    \hline
+    \end{tabular}
+  \caption{Results of performance tests requesting the "index.html" file.}
+  \label{tab:perf-res-index}
+\end{table}
+\hspace{2cm}
+
+\begin{table}[H]
+  \centering
+    \begin{tabular}{|m{2.5cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|}
+    \hline
+    \textbf{Demanded Req. Rate} (1/s) & \textbf{Req. Rate} (1/s) & \textbf{Conn. Rate} (1/s) & \textbf{Resp. Rate} (1/s) & \textbf{Resp. Time} (ms) & \textbf{IO} (KB/s) & \textbf{Error Rate} (1/s) \\
+    \hline
+    60 & 60.0 & 20.0 & 60.0 & 5.5 & 618.6 & 0.00 \\
+    90 & 90.0 & 30.0 & 90.0 & 5.7 & 927.8 & 0.00 \\
+    120 & 120.0 & 40.0 & 119.9 & 5.9 & 1236.6 & 0.00 \\
+    150 & 150.0 & 50.0 & 150.0 & 8.3 & 1545.9 & 0.00 \\
+    180 & 179.9 & 60.0 & 179.9 & 15.1 & 1854.0 & 0.00 \\
+    210 & 192.1 & 65.6 & 191.4 & 528.2 & 1975.0 & 1.00 \\
+    240 & 189.7 & 72.8 & 186.8 & 650.9 & 1922.6 & 6.00 \\
+    270 & 187.8 & 80.6 & 180.3 & 676.4 & 1865.9 & 11.00 \\
+    300 & 187.0 & 86.9 & 178.5 & 697.1 & 1843.0 & 15.00 \\
+    330 & 185.0 & 93.6 & 173.5 & 710.4 & 1781.2 & 21.00 \\
+    360 & 185.0 & 100.5 & 170.0 & 724.2 & 1754.9 & 26.00 \\
+    \hline
+    \end{tabular}
+  \caption{Results of performance tests requesting the "10K.html" file.}
+  \label{tab:perf-res-10k}
+\end{table}
+\hspace{2cm}
+
+\begin{table}[H]
+  \centering
+    \begin{tabular}{|m{2.5cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|}
+    \hline
+    \textbf{Demanded Req. Rate} (1/s) & \textbf{Req. Rate} (1/s) & \textbf{Conn. Rate} (1/s) & \textbf{Resp. Rate} (1/s) & \textbf{Resp. Time} (ms) & \textbf{IO} (KB/s) & \textbf{Error Rate} (1/s) \\
+    \hline
+    60 & 60.0 & 20.0 & 60.0 & 5.3 & 23.3 & 0.00 \\
+    90 & 90.0 & 30.0 & 90.0 & 5.4 & 35.0 & 0.00 \\
+    120 & 120.0 & 40.0 & 120.0 & 5.3 & 46.6 & 0.00 \\
+    150 & 150.0 & 50.0 & 150.0 & 6.2 & 58.3 & 0.00 \\
+    180 & 180.0 & 60.0 & 179.9 & 7.2 & 69.9 & 0.00 \\
+    210 & 209.9 & 70.0 & 209.9 & 8.3 & 81.6 & 0.00 \\
+    240 & 239.8 & 80.0 & 239.8 & 12.1 & 93.2 & 0.01 \\
+    270 & 269.3 & 89.8 & 269.8 & 11.7 & 104.7 & 0.00 \\
+    300 & 296.7 & 98.9 & 296.3 & 76.5 & 115.3 & 0.00 \\
+    330 & 295.7 & 100.2 & 297.9 & 380.8 & 114.8 & 0.61 \\
+    360 & 301.9 & 107.3 & 298.9 & 442.4 & 116.7 & 2.47 \\
+    \hline
+    \end{tabular}
+  \caption{Results of performance tests requesting a none existing file.}
+  \label{tab:perf-res-404}
+\end{table}
+\hspace{2cm}
+
+\subsubsection{Results of dedicated throughput tests}
+
+\begin{table}[H]
+  \centering
+    \begin{tabular}{|m{1cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|m{1.5cm}|}
+    \hline
+    \textbf{Conn.} & \textbf{usr} (\%) & \textbf{sys} (\%) & \textbf{nic} (\%) & \textbf{idle} (\%) & \textbf{io} (\%) & \textbf{irq} (\%) & \textbf{sirq} (\%) & \textbf{Total} (\%) \\
+    \hline
+    1  & 2.9 & 8.5 & 0  & 63.8 & 0  & 0  & 24.7 & 36.1 \\
+    2  & 3  & 25 & 0  & 16.6 & 0  & 0  & 55.2 & 83.2 \\
+    3  & 1.9 & 40.3 & 0  & 0.9 & 0  & 0  & 56.7 & 98.9 \\
+    4  & 1.3 & 40.9 & 0  & 0.1 & 0  & 0  & 57.4 & 99.6 \\
+    5  & 2.9 & 40.1 & 0  & 0  & 0  & 0  & 56.8 & 99.8 \\
+    6  & 2.5 & 43.4 & 0  & 0  & 0  & 0  & 54 & 99.9 \\
+    7  & 1.9 & 42.3 & 0  & 0  & 0  & 0  & 55.7 & 99.9 \\
+    8  & 1.7 & 41.7 & 0  & 0  & 0  & 0  & 56.4 & 99.8 \\
+    9  & 1.5 & 37.7 & 0  & 0  & 0  & 0  & 60.7 & 99.9 \\
+    10 & 1.7 & 40 & 0  & 0  & 0  & 0  & 58.1 & 99.8 \\
+    \hline
+    \end{tabular}
+  \caption{Results (CPU utilization) of dedicated network throughput tests.}
+  \label{tab:perf-io-cpu}
+\end{table}
+
+\textbf{usr}: user space, \textbf{sys}: system/kernel, \textbf{nic}: low priority (nice), \textbf{idle}: idle time, \textbf{io}: waiting for i/o, \textbf{irq}: serving irqs, \textbf{sirq}: serving soft irqs
+
+\begin{table}[H]
+  \centering
+    \begin{tabular}{|m{1cm}|m{2cm}|m{2cm}|}
+    \hline
+    \textbf{Conn.} & \textbf{nginx} (Mbps) & \textbf{IIS} (Mbps) \\
+    \hline
+    1  & 24.451 & 43.730 \\
+    2  & 48.424 & 162.263 \\
+    3  & 56.835 & 329.177 \\
+    4  & 60.965 & 413.588 \\
+    5  & 57.501 & 490.823 \\
+    6  & 57.809 & 476.802 \\
+    7  & 61.128 & 469.405 \\
+    8  & 61.286 & 511.762 \\
+    9  & 57.928 & 502.813 \\
+    10 & 57.652 & 515.770 \\
+    \hline
+    \end{tabular}
+  \caption{Results (Mbps) of dedicated network throughput tests.}
+  \label{tab:perf-io-mbps}
+\end{table}
+
 \chapter{Resources}
 
-\section{Hardware}
+\section{Supplied Digital Assets}
 
-\subsection{Architecture Overview}
-\label{sec:hw_arch}
+Provided with this thesis is a CD containing all digital assets mentioned in the previous chapters or necessary for replicating the accomplished results. Besides the delivery on CD, required by formalities of handing in a thesis, everything is available for download, too.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.85\textwidth]{images/system_blkd.jpg}
-\end{figure}
+Data on the CD is organized in the following structure:
 
-\subsection{Project Configurations}
+\subsection{Hardware}
+$\Rightarrow$ Download at \url{http://www.peschuster.de/ies-thesis/Hardware.zip} (20 KB)
 
-The configuration files contain more than 800 lines, being too much to include them directly in the project report. Therefore the \textit{Microprocessor Hardware Specification (mhs)} and \textit{User Constraint File (ucf)} files can be downloaded as part of the projects for \textit{\gls{xps}} and the \textit{Xilinx ISE Project Navigator} from the following address: \url{http://www.peschuster.de/ies-project/IesHttpProject-Hardware.zip}.
+The \texttt{Hardware} directory contains project files for \textit{Xilinx ISE Project Navigator} and \textit{Xilinx Platform Studio} in version 14.1, as well as all required configuration files (mhs and ucf).
+
+Additionally a \texttt{xmd.ini} is included, which can be placed in a directory and automates programming the \textit{MicroBlaze} processor with the custom Linux image file (note: the contained path must be adjusted to the own environment).
 \\
 
-\section{Linux Kernel Assets}
+\subsection{Software}
+$\Rightarrow$ Download at \url{http://www.peschuster.de/ies-thesis/Software.zip} (917 KB)
 
-\subsection{Configuration}
-
-The Linux kernel configuration file contains more than 1,200 lines and is therefore not included directly within this appendix, but can be downloaded together with all other scripts concerning the software part of this project from the following address: \url{http://www.peschuster.de/ies-project/IesHttpProject-Software.zip}.
-
-Here are the configuration settings specific for the \textit{MicroBlaze} processor used in this project:
-
-\begin{verbatim}
-CONFIG_KERNEL_BASE_ADDR=0x50000000
-CONFIG_XILINX_MICROBLAZE0_FAMILY="virtex5"
-CONFIG_XILINX_MICROBLAZE0_USE_MSR_INSTR=1
-CONFIG_XILINX_MICROBLAZE0_USE_PCMP_INSTR=1
-CONFIG_XILINX_MICROBLAZE0_USE_BARREL=1
-CONFIG_XILINX_MICROBLAZE0_USE_DIV=1
-CONFIG_XILINX_MICROBLAZE0_USE_HW_MUL=2
-CONFIG_XILINX_MICROBLAZE0_USE_FPU=0
-CONFIG_XILINX_MICROBLAZE0_HW_VER="8.30.a"
-\end{verbatim} 
-
-\subsection{Patches}
+\subsubsection{Linux}
 \label{subsec:pvr_patch}
 
-Path for correct recognition of the latest \textit{MicroBlaze} processor versions with enabled \gls{pvr}:
+The \texttt{Linux} sub-directory contains 
 
-\begin{verbatim}
-commit 9be0160c855d1740f392d74a90197421c1380946
-Author: Peter Schuster <schuster.pe@gmail.com>
-Date:   Sat Sep 8 19:48:56 2012 +0200
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{2pt}
+  \setlength{\parsep}{2pt}
+\item The complete Linux kernel \texttt{.config} file (\texttt{linux.config}
+\item The \textit{Device Tree Source} file (\texttt{xupv5.dts}
+\item A script for packing a directory structure in a gzipped cpio archive (\texttt{pack-fs.sh}).
+\item A TCL helper function for usage with \textit{XMD} to dump the Linux system variable \texttt{\_\_log\_buf} from memory into a local file and decode its content (\texttt{syslog.tcl}).
+\item The mentioned path enabling processor version recognition for recent \textit{MicroBlaze} processor version (\texttt{new-microblaze-versions.patch}).
+\item The published supplied by \textit{Chelsio Communications} integration their \textit{TOE} solution into the Linux kernel (\texttt{toe-chelsio.patch}).
+\end{itemize}
 
-    Added new MicroBlaze versions.
+\subsubsection{nginx}
+\label{appendix:memguard}
 
-diff --git a/arch/microblaze/kernel/cpu/cpuinfo.c b/arch/microblaze/kernel/cpu/cpuinfo.c
-index 54194b2..783c7087 100644
---- a/arch/microblaze/kernel/cpu/cpuinfo.c
-+++ b/arch/microblaze/kernel/cpu/cpuinfo.c
-@@ -35,6 +35,8 @@ const struct cpu_ver_key cpu_ver_lookup[] = {
- 	{"8.00.b", 0x13},
- 	{"8.10.a", 0x14},
- 	{"8.20.a", 0x15},
-+        {"8.20.b", 0x16},
-+        {"8.30.a", 0x17},
- 	{NULL, 0},
- };
-\end{verbatim}
+The \texttt{nginx} sub-directory contains 
 
-The patch file "\texttt{new-microblaze-versions.patch}" is also included in the zip archive available at \url{http://www.peschuster.de/ies-project/IesHttpProject-Software.zip}.
-\\
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{2pt}
+  \setlength{\parsep}{2pt}
+\item A snapshot of the nginx source code repository containing the latest version with all integrated changes (\texttt{source/}).
+\item The patch for incorporating a "memory guard" in a separate file (\texttt{0001-Added-a-memory-guard.patch}).
+\item A small C program to be executed on the \textit{MicroBlaze} processor evaluating correct values for configuration of the nginx build (\texttt{mb-env-analysis.c}).
+\item Debug log of nginx for startup, two subsequent requests on one connection and shutdown as an Excel file incl. color highlighting for some message categories and process ids (\texttt{nginx-debug-log.xlsx}).
+\end{itemize}
 
-\section{Image files}
+\subsection{Images}
+$\Rightarrow$ Download at \url{http://www.peschuster.de/ies-thesis/Images.zip} (41,987 KB)
 
-The \textit{bitstream} (\texttt{system.bit}) and Linux kernel image (\texttt{simpleImage.xupv5}) files for the \textit{Xilinx XUPV5-LX110T} board and described hardware system are available for download at \url{http://www.peschuster.de/ies-project/IesHttpProject-Images.zip}.
+The \texttt{Images} directory contains 
 
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{2pt}
+  \setlength{\parsep}{2pt}
+\item The \textit{bitstream} files for the \textit{Xilinx XUPV5-LX110T} board (\texttt{download.bit}).
+\item The Linux kernel image file, containing with working nginx installation and static IP address \texttt{192.168.2.125} (\texttt{simpleImage.xupv5}).
+\item The root file system as linked into the Linux kernel image file in a separate, gzipped cpio archive (\texttt{complete\_fs.cpio.gz}).
+\end{itemize}
+
+\subsection{Performance-Tests}
+$\Rightarrow$ Download at \url{http://www.peschuster.de/ies-thesis/Performance-Tests.zip} (41 KB)
+
+The \texttt{Performance-Tests} directory contains 
+
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{2pt}
+  \setlength{\parsep}{2pt}
+\item The C\# console application generating requests for high load on the nginx system as source code and binary file (\texttt{CsharpLoadGenerator/}).
+\item The test HTML file having a file size of exactly 10.240 bytes (\texttt{10K.html})
+\item Scripts with automated performance tests using \textit{httperf} (\texttt{*.sh})
+\item Results of the performance tests in form of log files (\texttt{results/*.log}), summarized key figures (\texttt{results/*.tsv}) and graphs (\texttt{results/*.ps}).
+\end{itemize}
 
 \section{Auxiliary Scripts}
+The following section contains the source code of two of the supplied scripts for easier access:
 
 \subsection{SoC Environment Evaluation Program}
 \label{sec:nginx-env-eval}
@@ -179,9 +313,4 @@ class Program
 }
 \end{verbatim}
 
-\section{nginx patch: memory guard}
-\label{appendix:memguard}
 
-\begin{verbatim}
-
-\end{verbatim}
