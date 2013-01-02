@@ -6,13 +6,13 @@
 	\caption{Linux network stack.}
 	\label{fig:net-stack}
 \end{wrapfigure}
-The top most layer of the Linux network stack is the \textbf{system call interface} to create and operate on sockets \cite{netstackana}. The usage of this interface by \textit{nginx} was already described in section \ref{sec:nginx-os-if}. Its purpose is to multiplex networking calls by the user into the kernel \cite{netstackana}. Once a file descriptor was created using the socket interface, data can be exchanged with the network system through general operations on file descriptors like \textit{write} and \textit{read}, too. The socket interface is completely agnostic to different protocols or implementations by network devices and drivers. Its main underlying structure is "\texttt{struct sock}", containing all relevant information about a specific socket, like available functions and protocol specific state information.\footnote{\url{http://www.ecsl.cs.sunysb.edu/elibrary/linux/network/LinuxKernel.pdf}} Thereby also protocol and implementation specific functionality is bind to a socket using function pointers (as defined in "\texttt{struct inet\_protosw}") \cite{netstackana}.
+The top most layer of the Linux network stack is the \textbf{system call interface} to create and operate on sockets \cite{netstackana}. The usage of this interface by \textit{nginx} is already described in section \ref{sec:nginx-os-if}. Its purpose is to multiplex networking calls by the user into the kernel \cite{netstackana}. Once a file descriptor was created using the socket interface, data can be exchanged with the network system through general operations on file descriptors like \textit{write} and \textit{read}, too. The socket interface is completely agnostic to different protocols or implementations by network devices and drivers. Its main underlying structure is "\texttt{struct sock}", containing all relevant information about a specific socket, like available functions and protocol specific state information.\footnote{\url{http://www.ecsl.cs.sunysb.edu/elibrary/linux/network/LinuxKernel.pdf}} Thereby also protocol and implementation specific functionality is bind to a socket using function pointers (defined in "\texttt{struct inet\_protosw}") \cite{netstackana}.
 
 Whereas the more general data structure "\texttt{struct sock}" contains mainly meta information about a socket, the major structure for storing data is "\texttt{struct sk\_buff}". \textbf{\texttt{sk\_buff}} contains packet data and state information. It is used for to be sent, as well as for received packets almost through out all layers of the network stack. \cite{netstackana}
 
 The gap between protocol handling and device drivers is bridged by the \textbf{network interface} (\textit{netif}) layer. This is a hardware device "agnostic interface layer" \cite{netstackana}. Its major purpose is to connect protocols to hardware devices. Information about devices is provided through "\texttt{struct net\_device}". On system start-up all available devices register themselves with a filled out "\texttt{net\_device}" structure. From there on they are know to the network interface layer.
 
-The lowest layer of the network stack being part of the Linux kernel is build by \textbf{device drivers}. These hook into the network interface layer and manage physical/hardware network controllers. For the implemented System on Chip this is the \texttt{xps\_ll\_temac} \gls{ip} core.
+The lowest layer of the network stack being part of the Linux kernel is formed by \textbf{device drivers}. These hook into the network interface layer and manage physical/hardware network controllers. For the implemented System on Chip this is the \texttt{xps\_ll\_temac} \gls{ip} core.
 
 \begin{wrapfigure}[10]{r}{.23\textwidth}
 	\centering
@@ -33,12 +33,12 @@ The network interface layer enqueues \texttt{sk\_buff} packets for transmission 
 
 Conducted performance tests showed\footnote{see figures \ref{fig:initial-req-cpu} and \ref{fig:tcp-io-perf-cpu}} that much processing time is spend handling interrupt requests of the network sub system. Especially on TCP-heavy-requests this circumstance tuned out to be a bottleneck for a system with little processing power like the designed System on Chip.
 
-On the other hand is handling of TCP connections and processing messages a well defined and general problem that could be outsourced to an own "processor" leaving more processing power of the main system for other tasks. This is the approach of \textit{TCP Offload Engines} (TOE).
+Handling of TCP connections and processing messages is on the other hand a well defined and general problem that could be outsourced to an own "processor", leaving more processing power of the main system (\gls{cpu}) for other tasks. This is the approach of \textit{TCP Offload Engines} (TOE).
 \\
 
 \subsection{State of the Art}
 
-Throughout recent years some attempts by companies manufacturing network interface cards were made to integrate support for \textit{TCP Offload Engines} into the Linux kernel (e.g. by \textit{Chelsio}: \url{http://lwn.net/Articles/147289/}). However, maintainers\footnote{\url{http://lwn.net/Articles/148701/}} of the Linux network stack and the \textit{Linux Foundation}\footnote{\url{http://www.linuxfoundation.org/collaborate/workgroups/networking/toe}} have a strong opinion against integrating drivers and support through out the network stack for these hardware devices.
+Throughout recent years some attempts by hardware vendors developingBücher network interface cards were made to integrate support for \textit{TCP Offload Engines} into the Linux kernel (e.g. by \textit{Chelsio Communications}: \url{http://lwn.net/Articles/147289/}). However, maintainers\footnote{\url{http://lwn.net/Articles/148701/}} of the Linux network stack and the \textit{Linux Foundation}\footnote{\url{http://www.linuxfoundation.org/collaborate/workgroups/networking/toe}} have a strong opinion against integrating drivers and support through out the network stack for these hardware devices.
 
 This is partially based on reservations about quality standards and the lack of possible benefits, but includes also arguments of a more general nature. A \textit{TOE} would "short out much of the Linux networking code" and therefore "cut out little features like \textit{netfilter}, traffic control, and more" \cite{linux-toe}. Additionally it is not easily possible to supply security fixes for \textit{TOE} functionality implemented in hardware. Therefore it would be necessary to cut off integration of a \textit{TOE} on occurring security vulnerabilities by releasing Linux kernel hot fix versions.
 
@@ -61,7 +61,7 @@ The other way round is called \textit{Large Receive Offload} (LRO). This concept
 
 Microsoft has introduced a technique called \textit{TCP Chimney Offload} with \textit{Microsoft\textsuperscript{\textregistered} Windows Server\textsuperscript{\textregistered} 2003 Scalable Networking Pack (SNP)}. This allows offloading the complete handling of TCP processing "on demand" to the network interface card. Connections are therefore known to the operating system and can be managed complete in software. But it is also possible to offload further processing of a connection to hardware to alleviate bottlenecks. Because not only packet, but also connection and state handling can be done by the hardware, the network interface card requires a complete implementation of the TCP/IP protocol stack. \cite{dell-toe}
 
-This is a proprietary solution by Microsoft and some hardware vendors. There are no approaches of bringing it to the Linux kernel or other unix-based operating systems, to the knowledge of this report's author.
+This is a proprietary solution by Microsoft and some hardware vendors. There are no approaches of bringing it to the Linux kernel or other unix-based operating systems, to the knowledge of the author.
 \\
 
 \subsubsection{Full-stack TCP Offload}
@@ -82,9 +82,9 @@ Integration of a \textit{Full-stack TOE} into the network stack of Linux kernel 
 
 \textit{Chelsio Communications}, a hardware vendor, developing network interfaces, made an attempt to integrate an own \gls{toe} following this approach into the Linux kernel in 2005.\footnote{\url{http://lwn.net/Articles/147289/} (as of 12/2012)} Their solution called "\textit{OPEN TOE}" claimed to be vendor neutral and could therefore serve as a model for a custom implementation.\footnote{\url{http://lwn.net/Articles/146060/} (as of 12/2012)}
 
-Central unit for communication with the \gls{toe} device is the new \texttt{struct toedev}. It represents "a new type of extended network device [\dots] with an with an additional set of methods" \cite{linux-toe}.
+Central unit for communication with the \gls{toe} device is the new \texttt{struct toedev}. It represents "a new type of extended network device [\dots] with an additional set of methods" \cite{linux-toe}.
 
-The provided, additional methods are listed below:
+The provided additional methods are listed below:
 
 \begin{verbatim}
 int (*open)(struct toedev *dev);
@@ -103,7 +103,7 @@ Source: http://lwn.net/Articles/147289/
 
 The methods can easily mapped to known features of \gls{tcp}:
 
-\texttt{open(..)}, respectively \texttt{connect(..)} for client scenarios, signal the availability for incoming TCP connections or initiate the creation of an outgoing TCP connection. \texttt{close(..)} ends an existing TCP connection.
+\texttt{open(..)}, respectively \texttt{connect(..)} for client scenarios, signals the availability for incoming TCP connections or initiates the creation of an outgoing TCP connection. \texttt{close(..)} ends an existing TCP connection.
 
 The two functions \texttt{send(..)} and \texttt{recv(..)} are well known from the socket interface layer and facilitate transmission and receiving of single or multiple TCP packets in form of \texttt{sk\_buff} structures.
 
@@ -111,7 +111,7 @@ The two functions \texttt{send(..)} and \texttt{recv(..)} are well known from th
 
 The actual data in form of \texttt{sk\_buff} structures should be transferred to and from the TOE device using \gls{dma}. DMA stands for \textit{Direct Memory Access} and describes an architecture featuring direct memory access of devices to system's main memory. Therefore no processing power is deducted from the \gls{cpu} shifting data between the Linux kernel structures and the TOE device.
 
-One challenge of \gls{dma} usage combined with a \gls{mmu} is the translation between virtual (used by the \gls{os}) and physical (used by the device) memory addresses. Continuous memory regions in virtual address space do not need to be continuous in physical address space. Therefore the device might be required to access multiple fragments of memory, although only a single data structure written by the Linux kernel should be accessed.
+One challenge of \gls{dma} usage combined with a \gls{mmu} is the translation between virtual (used by the \gls{os}) and physical (used by the device) memory addresses. Continuous memory regions in virtual address space do not need to be continuous in physical address space. Therefore the device might be required to access multiple fragments of memory, although it was passed only a single data structure written by the Linux kernel.
 
 DMA is on the other hand widely used for high bandwidth devices, which is why many references for these problems should exist, alleviating the implementation of appropriate solutions.
 

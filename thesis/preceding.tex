@@ -6,11 +6,11 @@ Preceding to this bachelor thesis, a project seminar with the same title was tak
 The outcome of this project seminar is described in the following chapter. A detailed description on how this was accomplished can be found in the respecting project report \cite{projectseminar}.
 \\
 
-\section{The Hardware System}
+\section{Hardware System}
 
 \subsection{Architecture}
 
-In this project a \gls{soc} was build on top of a \gls{fpga} using predefined \gls{ip} cores for the processor and additional system components.
+In this project a \gls{soc} was build on top of an \gls{fpga} using predefined \gls{ip} cores for the processor and additional system components.
 
 An overview of the complete hardware architecture of the system described in the next sections is included in the appendix of the project seminar report (see \cite{projectseminar}, sec. A.1).
 \\
@@ -20,7 +20,7 @@ An overview of the complete hardware architecture of the system described in the
 
 The used \textit{XC5VLX110T} \gls{fpga} does not have a build-in hard core processor, therefore a single core \textit{MicroBlaze} soft core processor was chosen. The \textit{MicroBlaze} processor is a proprietary processor, developed by \textit{Xilinx} for their \gls{fpga} families and supported by the Xilinx hard- and software development kits. Its design follows the Harvard architecture with separate data and instruction memory.
 
-Running Linux kernel requires the presence of a \gls{mmu}. To improve the system performance instruction and data caches (16 KB), barrel shifter, multiplier (64 bit) and the hardware division modules were enabled.
+Running Linux kernel requires the presence of an \gls{mmu}. To improve the system performance instruction and data caches (16 KB), barrel shifter, multiplier (64 bit) and the hardware division modules were enabled.
 \\
 
 \subsubsection{Bus System}
@@ -51,7 +51,7 @@ Clocks for the system are generated using a \textit{clock\_generator} \gls{ip} c
 
 Due to high delays on data paths in the decode pipeline stage, a clock period of at least \textit{9.12 ns} is required, resulting in a system clock frequency for the processor and local bus of 100 MHz.
 
-The memory controller (MPMC) is driven by a base clock of 200 MHz, a clock with half the frequency of the base clock (100 MHs) and a 200 MHz clock signal, shifted by 90°. All these clock signals are controlled by the same \gls{pll} used by the system clock signal.
+The memory controller (MPMC) is driven by a base clock of 200 MHz, a clock with half the frequency of the base clock (100 MHz) and a 200 MHz clock signal, shifted by 90°. All these clock signals are controlled by the same \gls{pll} used by the system clock signal.
 
 The \texttt{GTX\_CLK} port of the Ethernet \gls{mac} \gls{ip} core is driven by a clock signal with exactly 125 MHz for operating \textit{GMII} (defined by the specifications of GMII \cite{ieee802_3}[sec. 35.2.2.1]). For \gls{dma} and control logic, a clock signal with a frequency identical to the local bus clock is required. The \texttt{REFCLK} was connected to a 200 MHz clock, according to the respective manual of the \gls{ip} core \cite{xps_ll_temac}[p. 11, table 3].
 
@@ -61,7 +61,7 @@ The \texttt{GTX\_CLK} port of the Ethernet \gls{mac} \gls{ip} core is driven by 
  "Endianness describes how multi-byte data is represented by a computer system and is dictated by the CPU architecture of the system." \cite{intel_endiannness}[p. 5]
 \end{quote}
 
-Architectures utilizing the little endian concept store the least significant byte (LSB) at the lowest address, in big endian architectures the most significant byte (MSB) is stored at the highest address. \cite{intel_endiannness}[p. 6]
+Architectures utilizing the little endian concept store the least significant byte (LSB) at the lowest address, in big endian architectures the most significant byte (MSB) is stored at the lowest address. \cite{intel_endiannness}[p. 6]
 
 Linux can be build for little, as well as for big endian systems. Only confinement is that the used toolchain (compiler, etc. -- see \cite{projectseminar}[sec. 3.2.2]) needs to support the endianness of the architecture.
 
@@ -70,11 +70,11 @@ The \textit{MicroBlaze} processor has the parameter \texttt{C\_ENDIANNESS} to sp
 Therefore big endian was selected for the system architecture of this project.
 
 \clearpage
-\section{The Software}
+\section{Software}
 
 \subsection{Linux Kernel}
 
-\textit{Linux kernel} was chosen as the \gls{os} for the system. This is the pure core Linux \gls{os}, in comparison to enriched Linux distributions (like \textit{Ubuntu}, \textit{Debian}, \textit{openSUSE}, \textit{Fedora} and many more), which contain additional libraries, applications and configuration. The Linux kernel version used in this project contains further additions and bug fixes by \textit{Xilinx}.
+\textit{Linux kernel} was chosen as the \gls{os} for the system. This is the pure core Linux \gls{os}, in comparison to enriched Linux distributions (like \textit{Ubuntu}, \textit{Debian}, \textit{openSUSE}, \textit{Fedora} and many more), which contain additional libraries, applications and configuration. The Linux kernel version used in this project contains further additions and bug fixes specific to the \textit{MicroBlaze} architecture by \textit{Xilinx}.
 
 To enable correct recognition of the latest \textit{MicroBlaze} processor versions with enabled \gls{pvr}, it might be necessary to apply a patch included in the appendix of this report (\ref{subsec:pvr_patch}) to the Linux kernel sources. The patch was extracted from the \textit{PetaLogix} Linux kernel fork.
 
@@ -93,7 +93,7 @@ Building Linux kernel sources to an executable image file requires a set of tool
 
 Linux kernel consists of many optional sub-parts for target architectures, device drivers, special features, etc. Which of these parts are compiled and linked into the Linux kernel binary image needs to be configured in the \texttt{.config} file in the Linux kernel root directory. This file is "the configuration blueprint for building a Linux kernel image" \cite{linuxPrimer}[sec. 4.3.1] and contains all (required) settings.
 
-The \textit{MicroBlaze} processor can be configured with different feature sets (multiplier, barrel shifter, etc.). Therefore the \gls{gcc} compiler needs to be parameterized for matching the provided features of the target system \cite{mb_linux}[sec. "Kernel Configuration Details"]. These need to be specified in the \texttt{XILINX\_MICROBLAZE0\_*} settings inside of the \texttt{.config} file. The \texttt{KERNEL\_BASE\_ADDR} is also an imported setting which need to match the base address of the systems main memory.
+The \textit{MicroBlaze} processor can be configured with different feature sets (multiplier, barrel shifter, etc.). Therefore the \gls{gcc} compiler needs to be parameterized for matching the provided features of the target system \cite{mb_linux}[sec. "Kernel Configuration Details"]. These need to be specified in the \texttt{XILINX\_MICROBLAZE0\_*} settings inside of the \texttt{.config} file. The \texttt{KERNEL\_BASE\_ADDR} is also an imported setting which must match the base address of the system's main memory.
 
 The \texttt{XILINX\_LL\_TEMAC} driver is used for the Ethernet interface.
 
@@ -119,7 +119,7 @@ The preceding sections describe the state of the hardware and software system, a
 
 \section{Hardware}
 
-Data and instructions caches were extended to 64 Kilobytes. This gives a slight performance gain for the system, while the used \gls{fpga} had sufficient resources left.
+Data and instruction caches were extended to 64 kilobytes. This gives a slight performance gain for the system, while the used \gls{fpga} had sufficient resources left.
 \\
 
 \section{Software}

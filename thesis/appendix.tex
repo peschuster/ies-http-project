@@ -6,7 +6,7 @@
   \centering
     \begin{tabular}{|m{2.5cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|}
     \hline
-    \textbf{Demanded Req. Rate} (1/s) & \textbf{Req. Rate} (1/s) & \textbf{Conn. Rate} (1/s) & \textbf{Resp. Rate} (1/s) & \textbf{Resp. Time} (ms) & \textbf{IO} (KB/s) & \textbf{Error Rate} (1/s) \\
+    \textbf{Demanded Req. Rate} (1/s) & \textbf{Req. Rate} (1/s) & \textbf{Conn. Rate} (1/s) & \textbf{Resp. Rate} (1/s) & \textbf{Resp. Time} (ms) & \textbf{IO} (KB/s) & \textbf{Error Rate} (\%) \\
     \hline
     60 & 60.0 & 20.0 & 60.0 & 5.3 & 33.0 & 0.00 \\
     90 & 90.0 & 30.0 & 90.0 & 5.2 & 49.5 & 0.00 \\
@@ -30,7 +30,7 @@
   \centering
     \begin{tabular}{|m{2.5cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|}
     \hline
-    \textbf{Demanded Req. Rate} (1/s) & \textbf{Req. Rate} (1/s) & \textbf{Conn. Rate} (1/s) & \textbf{Resp. Rate} (1/s) & \textbf{Resp. Time} (ms) & \textbf{IO} (KB/s) & \textbf{Error Rate} (1/s) \\
+    \textbf{Demanded Req. Rate} (1/s) & \textbf{Req. Rate} (1/s) & \textbf{Conn. Rate} (1/s) & \textbf{Resp. Rate} (1/s) & \textbf{Resp. Time} (ms) & \textbf{IO} (KB/s) & \textbf{Error Rate} (\%) \\
     \hline
     60 & 60.0 & 20.0 & 60.0 & 5.5 & 618.6 & 0.00 \\
     90 & 90.0 & 30.0 & 90.0 & 5.7 & 927.8 & 0.00 \\
@@ -54,7 +54,7 @@
   \centering
     \begin{tabular}{|m{2.5cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|m{2cm}|}
     \hline
-    \textbf{Demanded Req. Rate} (1/s) & \textbf{Req. Rate} (1/s) & \textbf{Conn. Rate} (1/s) & \textbf{Resp. Rate} (1/s) & \textbf{Resp. Time} (ms) & \textbf{IO} (KB/s) & \textbf{Error Rate} (1/s) \\
+    \textbf{Demanded Req. Rate} (1/s) & \textbf{Req. Rate} (1/s) & \textbf{Conn. Rate} (1/s) & \textbf{Resp. Rate} (1/s) & \textbf{Resp. Time} (ms) & \textbf{IO} (KB/s) & \textbf{Error Rate} (\%) \\
     \hline
     60 & 60.0 & 20.0 & 60.0 & 5.3 & 23.3 & 0.00 \\
     90 & 90.0 & 30.0 & 90.0 & 5.4 & 35.0 & 0.00 \\
@@ -69,7 +69,7 @@
     360 & 301.9 & 107.3 & 298.9 & 442.4 & 116.7 & 2.47 \\
     \hline
     \end{tabular}
-  \caption{Results of performance tests requesting a none existing file.}
+  \caption{Results of performance tests requesting a non-existent file.}
   \label{tab:perf-res-404}
 \end{table}
 \hspace{2cm}
@@ -126,7 +126,7 @@
 
 \section{Supplied Digital Assets}
 
-Provided with this thesis is a CD containing all digital assets mentioned in the previous chapters or necessary for replicating the accomplished results. Besides the delivery on CD, required by formalities of handing in a thesis, everything is available for download, too.
+Provided with this thesis is a CD containing all digital assets mentioned in the previous chapters or necessary for replicating the accomplished results. Besides the delivery on CD, required by formalities of delivering a thesis, everything is available for download, too.
 
 Data on the CD is organized in the following structure:
 
@@ -150,12 +150,12 @@ The \texttt{Linux} sub-directory contains
   \setlength{\itemsep}{1pt}
   \setlength{\parskip}{2pt}
   \setlength{\parsep}{2pt}
-\item The complete Linux kernel \texttt{.config} file (\texttt{linux.config}
-\item The \textit{Device Tree Source} file (\texttt{xupv5.dts}
-\item A script for packing a directory structure in a gzipped cpio archive (\texttt{pack-fs.sh}).
+\item The complete Linux kernel \texttt{.config} file (\texttt{linux.config})
+\item The \textit{Device Tree Source} file (\texttt{xupv5.dts})
+\item A script for packing a directory structure in a gzipped \textit{cpio} archive (\texttt{pack-fs.sh}).
 \item A TCL helper function for usage with \textit{XMD} to dump the Linux system variable \texttt{\_\_log\_buf} from memory into a local file and decode its content (\texttt{syslog.tcl}).
-\item The mentioned path enabling processor version recognition for recent \textit{MicroBlaze} processor version (\texttt{new-microblaze-versions.patch}).
-\item The published supplied by \textit{Chelsio Communications} integration their \textit{TOE} solution into the Linux kernel (\texttt{toe-chelsio.patch}).
+\item A patch enabling processor version recognition for recent \textit{MicroBlaze} processor versions\\ (\texttt{new-microblaze-versions.patch}).
+\item The published patch by \textit{Chelsio Communications} integrating their \textit{TOE} solution into the Linux kernel (\texttt{toe-chelsio.patch}).
 \end{itemize}
 
 \subsubsection{nginx}
@@ -183,8 +183,8 @@ The \texttt{Images} directory contains
   \setlength{\parskip}{2pt}
   \setlength{\parsep}{2pt}
 \item The \textit{bitstream} files for the \textit{Xilinx XUPV5-LX110T} board (\texttt{download.bit}).
-\item The Linux kernel image file, containing with working nginx installation and static IP address \texttt{192.168.2.125} (\texttt{simpleImage.xupv5}).
-\item The root file system as linked into the Linux kernel image file in a separate, gzipped cpio archive (\texttt{complete\_fs.cpio.gz}).
+\item The Linux kernel image file with working nginx installation and static IP address \texttt{192.168.2.125} (\texttt{simpleImage.xupv5}).
+\item The root file system as linked into the Linux kernel image file in a separate, gzipped \textit{cpio} archive (\texttt{complete\_fs.cpio.gz}).
 \end{itemize}
 
 \subsection{Performance-Tests}
@@ -196,7 +196,7 @@ The \texttt{Performance-Tests} directory contains
   \setlength{\itemsep}{1pt}
   \setlength{\parskip}{2pt}
   \setlength{\parsep}{2pt}
-\item The C\# console application generating requests for high load on the nginx system as source code and binary file (\texttt{CsharpLoadGenerator/}).
+\item The C\# console application generating requests for high load on the nginx system as source code and binary (\texttt{CsharpLoadGenerator/}).
 \item The test HTML file having a file size of exactly 10.240 bytes (\texttt{10K.html})
 \item Scripts with automated performance tests using \textit{httperf} (\texttt{*.sh})
 \item Results of the performance tests in form of log files (\texttt{results/*.log}), summarized key figures (\texttt{results/*.tsv}) and graphs (\texttt{results/*.ps}).
