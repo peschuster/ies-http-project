@@ -1,55 +1,12 @@
-IES Project Seminar: Evend Based Server
+Design of an Accelerated Event-based Server
 ===============
 
-
-## Structure
-
-`report/` - Project report (LaTeX)
+> a combined project seminar and bachelor thesis at TU Darmstadt, [Integrated Electronic Systems Lab (IES)](http://www.ies.tu-darmstadt.de/ies/aktuelles_2/aktuelles.en.jsp "Integrated Electronic Systems Lab (IES)")
 
 
-## Project Schedule
+## Repository Structure
 
-#### 1. Evaluation Phase
-
-##### Outcomes
-
-* Deep understanding of "Xilinx Platform Studio" (xps)
-* Configuring FPGAs using IP cores
-* Utilizing hardware components in software
-* Using bootloaders and non-volatile firmware memory
-
-**Duration**: 3-4 weeks  
-**Start**: 29.04.2012  
-**End**: 19.06.-26.06.2012
-
-#### 2. Implementation Phase
-
-##### Outcomes
-
-* Implementation of hardware design for Linux usage
-* Installation of Linux and nginx on FPGA
-* Design and execution of a network benchmark test
-
-**Duration**: 5-6 weeks  
-**Start**: 20.06.-27.06.2012  
-**End**: 31.07.2012
-
-#### 3. Documentation Phase
-
-##### Outcomes
-
-12-page project report, consisting of 
-
-* introduction
-* background/context
-* preparations
-* implementation description
-* evaluation
-
-**Duration**: 1-2 weeks  
-**Start**: 01.08.2012  
-**End**: 10.08.2012
-
-#### 4. Project presentation
-
-**Contemplated date**: 6.-20.09.2012
+`report/` - Project Seminar report (LaTeX)  
+`thesis/` - Bachelor Thesis (LaTeX)  
+`thesis/final/` - Bachelor Thesis (PDF)  
+`projects/` - Xilinx project files and data  
