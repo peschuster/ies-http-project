@@ -1,0 +1,3 @@
+[submodule "software/nginx"]
+	path = software/nginx
+	url = git://github.com/peschuster/nginx.git
